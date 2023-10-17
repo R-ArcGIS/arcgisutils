@@ -1,0 +1,226 @@
+#' Esri field type mapping
+#'
+#' Infers Esri field types from R objects.
+#'
+#' @details
+#'
+#' - `get_ptype()` takes a scalar character containing the Esri field type and returns a prototype of the pertinent R type
+#' - `infer_esri_type()` takes a data frame-like object and infers the Esri field type from it.
+#' - `remote_ptype_tbl()` takes a data frame of fields as derived from `list_fields()` and
+#' creates a lazy table proto type intended to be used with `dbplyr` integration
+#'
+#' ### Field type mapping:
+#'
+#' Esri field types are mapped as
+#'
+#' - `esriFieldTypeSmallInteger`: integer
+#' - `esriFieldTypeSingle`: double
+#' - `esriFieldTypeGUID`: integer
+#' - `esriFieldTypeOID`: integer
+#' - `esriFieldTypeInteger`: integer
+#' - `esriFieldTypeBigInteger`: double
+#' - `esriFieldTypeDouble`: double
+#' - `esriFieldTypeString`: character
+#' - `esriFieldTypeDate`: date
+#'
+#' R types are mapped as
+#'
+#' - `double`: esriFieldTypeDouble
+#' - `integer`: esriFieldTypeInteger
+#' - `character`: esriFieldTypeString
+#' - `date`: esriFieldTypeDate
+#' - `raw`: esriFieldTypeBlob
+#'
+#' @examples
+#'
+#' get_ptype("esriFieldTypeDouble")
+#'
+#' infer_esri_type(iris)
+#'
+#' @returns
+#'
+#' - `get_pytpe()` returns an object of the class of the prototype.
+#' - `infer_esri_ptype()` returns a `data.frame` with columns `name`, `type`, `alias`, `nullable`, and `editable` columns
+#'   - This resembles that of the `fields` returned by a FeatureService
+#' @export
+#' @rdname field_mapping
+#' @param .data an object of class `data.frame`.
+infer_esri_type <- function(.data) {
+
+  if (!inherits(.data, "data.frame")) stop("`.data` must be a data frame like object")
+  if (inherits(.data, "sf")) .data <- sf::st_drop_geometry(.data)
+
+  if (nrow(.data) == 0) {
+    empty_fields <- data.frame(
+      name = character(),
+      type = character(),
+      alias = character(),
+      nullable = logical(),
+      editable = logical()
+    )
+
+    return(empty_fields)
+  }
+
+  # field mappings
+  field_base_types <- vapply(.data, typeof, character(1))
+  date_check <- vapply(.data, is_date, logical(1))
+  factor_check <- vapply(.data, is.factor, logical(1))
+
+  field_base_types[date_check] <- "date"
+  field_base_types[factor_check] <- "factor"
+
+  data.frame(
+    name = colnames(.data),
+    type = vec_mapping[field_base_types],
+    alias = colnames(.data),
+    length = ifelse(factor_check, 255L, NA),
+    nullable = TRUE,
+    editable = TRUE
+  )
+
+}
+
+
+
+#' @export
+#' @rdname field_mapping
+#' @param fields a data.frame containing, at least, the columns `type` and `name`.
+#'  Typically retrieved from the `field` metadata frome a `FeatureLayer` or `Table`.
+#'  Also can use the output of `infer_esri_type()`.
+#'
+remote_ptype_tbl <- function(fields) {
+
+  rlang::check_installed("dbplyr")
+
+  ftype <- fields[["type"]]
+  fname <- fields[["name"]]
+
+  dbplyr::lazy_frame(
+    as.data.frame(
+      lapply(rlang::set_names(ftype, fname), get_ptype)
+    )
+  )
+
+}
+
+#' @export
+#' @rdname field_mapping
+#' @param field_type a character of a desired Esri field type. See details for more.
+get_ptype <- function(field_type) {
+  res <- switch(
+    field_type,
+    "esriFieldTypeSmallInteger" = integer(1),
+    "esriFieldTypeSingle" = double(1),
+    "esriFieldTypeGUID" = integer(1),
+    "esriFieldTypeOID" = integer(1),
+    "esriFieldTypeInteger" = integer(1),
+    "esriFieldTypeBigInteger" = double(1),
+    "esriFieldTypeDouble" = double(1),
+    "esriFieldTypeString" = character(1),
+    "esriFieldTypeDate" = Sys.Date()
+  )
+
+  if (is.null(res)) stop("Column of type `", field_type, "` cannot be mapped")
+
+  res
+}
+
+
+vec_mapping <- c(
+  "double" = "esriFieldTypeDouble",
+  "integer" = "esriFieldTypeInteger",
+  "character" = "esriFieldTypeString",
+  "factor" = "esriFieldTypeString",
+  # date will be manually defined as being Date or POSIX
+  "date" = "esriFieldTypeDate",
+  # i think....
+  "raw" = "esriFieldTypeBlob"
+)
+
+
+
+
+
+
+# notes -------------------------------------------------------------------
+
+
+# fields is a dateframe
+
+# users are to provide a character vector name of the
+# OID column esriFieldTypeOID
+# global ID would be inferred by the feature layer or
+# provided by the user I suspect esriFieldTypeGlobalID
+
+# list columns will be omitted and a warning emitted
+
+# field types that will be ignored
+# esriFieldTypeSmallInteger
+# esriFieldTypeSingle
+# esriFieldTypeGeometry (not sure when this would be used)
+# esriFieldTypeRaster (not sure when this would be used)
+# esriFieldTypeGUID (not sure when this would be used)
+# esriFieldTypeXML (oh boy i hope no one has to use this lol)
+# esriFieldTypeBigInteger (not sure how this would be supported)
+
+# by default when adding new feature only fields in the feature
+# layer should be snet up because they will be ignored
+# if there are non-matching field names emit a warning and
+# suggest them to use update_fields
+
+
+
+
+
+# #' fields will always take preference over .data
+# #' @details
+# #'
+# #' `fields` must be a data frame with 5 columns `name`, `type`, `alias`, `
+# nullable`, and `editable`
+#
+# add_fields <- function(x, .data = NULL, fields = NULL, token = Sys.getenv("ARCGIS_TOKEN")) {
+#
+#   if (!is.null(.data) && !is.null(fields)) {
+#     warning(
+#       "Both `.data` and `fields` were provided. Using `fields`."
+#     )
+#   }
+#
+#   if (is.null(fields) && !is.null(.data)) fields <- infer_esri_type(.data)
+#
+#   if (is.null(.data) && is.null(fields)) {
+#     stop("`.data` or `fields` must be provided")
+#   }
+#
+#   field_json <- jsonify::to_json(
+#     list(addToDefinition = list(fields = transpose(fields))),
+#     unbox = TRUE
+#   )
+#
+#   # begin making the request
+#   b_url <- x[["url"]]
+#
+#   # https://developers.arcgis.com/rest/services-reference/online/add-to-definition-feature-ayer-.htm
+#   req <-
+#     httr2::request(b_url) |>
+#     httr2::req_url_path_append("addToDefinition")
+#
+#
+#   req <-
+#     httr2::req_url_query(req, token = token) |>
+#     httr2::req_body_json(
+#       list(
+#         addToDefinition = jsn,
+#         async = FALSE
+#       )
+#     )
+#
+#
+#   resp <- httr2::req_perform(req)
+#
+#   (res <- RcppSimdJson::fparse(httr2::resp_body_string(resp)))
+#   invisible(res)
+#
+# }
+

@@ -1,0 +1,37 @@
+url: ~
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    right:  [search, github]
+
+reference:
+
+- title: Requests
+  contents:
+  - fetch_layer_metadata
+  - count_features
+  - detect_errors
+- title: Authorization
+  contents:
+  - auth_code
+- title: Geometry
+  contents:
+  - determine_dims
+  - determine_esri_geo_type
+  - validate_crs
+- title: JSON
+  contents:
+  - as_esri_geometry
+  - as_layer
+  - as_extent
+  - parse_esri_json
+- title: Types
+  contents:
+  - infer_esri_type
+  - is_date
+- title: Utilities
+  contents:
+  - compact
+
