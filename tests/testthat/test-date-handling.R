@@ -3,7 +3,7 @@ test_that("date handling is correct", {
   # create sf object
   x <- sf::st_sf(
     data.frame(today = as.POSIXct(Sys.Date())),
-    geometry = sf::st_sfc(sf::st_point(c(0, 1)))
+    geometry = sf::st_sfc(sf::st_point(c(0, 1)), crs = 4326)
   )
 
   # create json object
