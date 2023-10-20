@@ -31,7 +31,7 @@
 #' - `fetch_layer_metadata()` returns a list object
 #' - `count_features()` returns a scalar integer
 fetch_layer_metadata <- function(request, token) {
-  req_url <- httr2::req_url_query(
+  req_url <- httr2::req_body_form(
     request,
     f = "json",
     token = token
@@ -52,7 +52,7 @@ fetch_layer_metadata <- function(request, token) {
 #' @name requests
 count_features <- function(request, token) {
 
-  req_url <- httr2::req_url_query(
+  req_url <- httr2::req_body_form(
     httr2::req_url_path_append(request, "query"),
     returnCountOnly = "true",
     where = "1 = 1",
