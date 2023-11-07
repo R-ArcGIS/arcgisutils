@@ -64,17 +64,6 @@ as_extent <- function(x, crs = sf::st_crs(x)) {
     crs <- validate_crs(crs)
   }
 
-  # if wkid is provided use latestWkid instead of wkid
-  # and if not use the wkt. This is an inconsistency I'e noted.
-  # email subject "Feature Service REST Documentation" for personal ref.
-  if (!is.null(crs[[c("spatialReference", "wkid")]])) {
-    crs <- list(
-      spatialReference = list(
-        latestWkid = crs[[c("spatialReference", "wkid")]]
-      )
-    )
-  }
-
   bbox <- as.list(sf::st_bbox(x))
   compact(c(bbox, crs))
 

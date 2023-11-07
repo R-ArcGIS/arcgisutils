@@ -10,15 +10,12 @@
 \alias{validate_or_refresh_token}
 \title{Authorization}
 \usage{
-auth_code(
-  client = Sys.getenv("ARCGIS_CLIENT"),
-  host = "https://www.arcgis.com"
-)
+auth_code(client = Sys.getenv("ARCGIS_CLIENT"), host = host())
 
 auth_client(
   client = Sys.getenv("ARCGIS_CLIENT"),
   secret = Sys.getenv("ARCGIS_SECRET"),
-  host = "https://www.arcgis.com",
+  host = host(),
   expiration = 120
 )
 
@@ -27,22 +24,18 @@ auth_binding()
 auth_user(
   username = Sys.getenv("ARCGIS_USER"),
   password = Sys.getenv("ARCGIS_PASSWORD"),
-  host = "https://www.arcgis.com",
+  host = host(),
   expiration = 60
 )
 
 set_auth_token(token, quietly = FALSE)
 
-refresh_token(
-  token,
-  client = Sys.getenv("ARCGIS_CLIENT"),
-  host = "https://arcgis.com"
-)
+refresh_token(token, client = Sys.getenv("ARCGIS_CLIENT"), host = host())
 
 validate_or_refresh_token(
   token,
   client = Sys.getenv("ARCGIS_CLIENT"),
-  host = "https://arcgis.com",
+  host = host(),
   refresh_threshold = 0
 )
 }
@@ -67,9 +60,10 @@ Your password to login. \strong{Do not} hard code this value.}
 
 \item{quietly}{default \code{FALSE}. Whether function is verbose.}
 
-\item{refresh_threshold}{default \code{0}. If token expiry is within this threshold (in seconds)
-the token will be refreshed only if a \code{refresh_token} is available. Token refreshing is only
-possible with \code{auth_code()} flow.}
+\item{refresh_threshold}{default \code{0}. If token expiry is within this
+threshold (in seconds) the token will be refreshed only if a
+\code{refresh_token} is available. Token refreshing is only possible with
+\code{auth_code()} flow.}
 }
 \value{
 an \code{httr2_token}
