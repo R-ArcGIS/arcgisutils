@@ -33,5 +33,6 @@ reference:
   - is_date
 - title: Utilities
   contents:
+  - host
   - compact
 
