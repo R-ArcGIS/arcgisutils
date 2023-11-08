@@ -37,7 +37,7 @@
 #' @returns an `httr2_token`
 auth_code <- function(
     client = Sys.getenv("ARCGIS_CLIENT"),
-    host = host()
+    host = arc_host()
 ) {
 
   token_url <- paste(
@@ -96,7 +96,7 @@ auth_code <- function(
 #' @rdname auth
 auth_client <- function(client = Sys.getenv("ARCGIS_CLIENT"),
                         secret = Sys.getenv("ARCGIS_SECRET"),
-                        host = host(),
+                        host = arc_host(),
                         expiration = 120) {
   # https://developers.arcgis.com/documentation/mapping-apis-and-services/security/application-credentials/
   token_url <- paste(
@@ -142,7 +142,7 @@ auth_binding <- function() {
 auth_user <- function(
     username = Sys.getenv("ARCGIS_USER"),
     password = Sys.getenv("ARCGIS_PASSWORD"),
-    host = host(),
+    host = arc_host(),
     expiration = 60
 ) {
 
@@ -207,7 +207,7 @@ set_auth_token <- function(token, quietly = FALSE) {
 refresh_token <- function(
     token,
     client = Sys.getenv("ARCGIS_CLIENT"),
-    host = host()
+    host = arc_host()
 ) {
 
   token_url <- paste(
@@ -246,7 +246,7 @@ refresh_token <- function(
 validate_or_refresh_token <- function(
     token,
     client = Sys.getenv("ARCGIS_CLIENT"),
-    host = host(),
+    host = arc_host(),
     refresh_threshold = 0
 ) {
 
@@ -272,10 +272,10 @@ validate_or_refresh_token <- function(
 #'
 #' @export
 #' @examples
-#' host()
+#' arc_host()
 #' @returns
 #' A scalar character, `"https://www.arcgis.com"` by default.
-host <- function() {
+arc_host <- function() {
   host <- Sys.getenv("ARCGIS_HOST")
 
   if (host == "") {

@@ -10,12 +10,12 @@
 \alias{validate_or_refresh_token}
 \title{Authorization}
 \usage{
-auth_code(client = Sys.getenv("ARCGIS_CLIENT"), host = host())
+auth_code(client = Sys.getenv("ARCGIS_CLIENT"), host = arc_host())
 
 auth_client(
   client = Sys.getenv("ARCGIS_CLIENT"),
   secret = Sys.getenv("ARCGIS_SECRET"),
-  host = host(),
+  host = arc_host(),
   expiration = 120
 )
 
@@ -24,18 +24,18 @@ auth_binding()
 auth_user(
   username = Sys.getenv("ARCGIS_USER"),
   password = Sys.getenv("ARCGIS_PASSWORD"),
-  host = host(),
+  host = arc_host(),
   expiration = 60
 )
 
 set_auth_token(token, quietly = FALSE)
 
-refresh_token(token, client = Sys.getenv("ARCGIS_CLIENT"), host = host())
+refresh_token(token, client = Sys.getenv("ARCGIS_CLIENT"), host = arc_host())
 
 validate_or_refresh_token(
   token,
   client = Sys.getenv("ARCGIS_CLIENT"),
-  host = host(),
+  host = arc_host(),
   refresh_threshold = 0
 )
 }
