@@ -33,6 +33,6 @@ reference:
   - is_date
 - title: Utilities
   contents:
-  - host
+  - arc_host
   - compact
 
