@@ -16,6 +16,9 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/arc_host.html</loc>
+  </url>
+  <url>
     <loc>/reference/as_extent.html</loc>
   </url>
   <url>
@@ -38,9 +41,6 @@
   </url>
   <url>
     <loc>/reference/field_mapping.html</loc>
-  </url>
-  <url>
-    <loc>/reference/host.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
