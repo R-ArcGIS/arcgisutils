@@ -39,4 +39,10 @@ date_to_ms <- function(x, tz = "UTC") {
 
 #' @export
 #' @rdname dates
-from_esri_date <- function(x) as.POSIXct(x / 1000, tz = "UTC")
+from_esri_date <- function(x) {
+  as.POSIXct(
+    x / 1000,
+    tz = "UTC",
+    origin = "1970-01-01"
+  )
+}
