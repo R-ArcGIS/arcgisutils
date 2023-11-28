@@ -60,7 +60,7 @@ auth_code <- function(
 
 
   client <- httr2::oauth_client(
-    id = Sys.getenv("ARCGIS_CLIENT"),
+    id = client,
     token_url = token_url
   )
 
