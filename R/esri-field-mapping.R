@@ -113,12 +113,14 @@ get_ptype <- function(field_type) {
     "esriFieldTypeSmallInteger" = integer(1),
     "esriFieldTypeSingle" = double(1),
     "esriFieldTypeGUID" = integer(1),
+    "esriFieldTypeGlobalID" = character(1),
     "esriFieldTypeOID" = integer(1),
     "esriFieldTypeInteger" = integer(1),
     "esriFieldTypeBigInteger" = double(1),
     "esriFieldTypeDouble" = double(1),
     "esriFieldTypeString" = character(1),
-    "esriFieldTypeDate" = Sys.Date()
+    "esriFieldTypeDate" = Sys.Date(),
+    "esriFieldTypeGeometry" = numeric(1)
   )
 
   if (is.null(res)) stop("Column of type `", field_type, "` cannot be mapped")
