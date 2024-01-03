@@ -68,8 +68,11 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Alternatively, if
-#' ### Geometry type mapping</p><ul><li><p><code>POINT</code>:  <code>esriGeometryPoint</code></p></li>
+    
+<div class="section">
+<h3 id="geometry-type-mapping">Geometry type mapping<a class="anchor" aria-label="anchor" href="#geometry-type-mapping"></a></h3>
+
+<ul><li><p><code>POINT</code>:  <code>esriGeometryPoint</code></p></li>
 <li><p><code>MULTIPOINT</code>:  <code>esriGeometryMultipoint</code></p></li>
 <li><p><code>LINESTRING</code>:  <code>esriGeometryPolyline</code></p></li>
 <li><p><code>MULTILINESTRING</code>:  <code>esriGeometryPolyline</code></p></li>
@@ -77,10 +80,11 @@
 <li><p><code>MULTIPOLYGON</code>:  <code>esriGeometryPolygon</code></p></li>
 </ul></div>
 
+    </div>
+
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">determine_esri_geo_type</span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">st_point</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">determine_esri_geo_type</span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">st_point</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "esriGeometryPoint"</span>
 </code></pre></div>
     </div>

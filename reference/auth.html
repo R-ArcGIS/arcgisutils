@@ -136,8 +136,7 @@ threshold (in seconds) the token will be refreshed only if a
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>ArcGIS Online and Enterprise Portals utilize OAuth2 authorization via their REST APIs.
-For more on configuring OAuth2 authorization see the <a href="authorization%20article">authorization article</a>.</p><ul><li><p><code>auth_code()</code> is the recommend OAuth2 workflow for interactive sessions</p></li>
+    <p>ArcGIS Online and Enterprise Portals utilize OAuth2 authorization via their REST APIs.</p><ul><li><p><code>auth_code()</code> is the recommend OAuth2 workflow for interactive sessions</p></li>
 <li><p><code>auth_client()</code> is the recommended OAuth2 workflow for non-interactive sessions</p></li>
 <li><p><code>auth_user()</code> uses legacy username and password authorization using the <code>generateToken</code> endpoint. It is only recommended for legacy systems that do not implement OAuth2.</p></li>
 <li><p><code>auth_binding()</code> fetches a token from the active portal set by <code>arcgisbinding</code>. Uses <code>arcgisbinding::arc.check_portal()</code> to extract the authorization token. Recommended if using arcgisbinding.</p></li>
