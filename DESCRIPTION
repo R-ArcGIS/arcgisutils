@@ -7,7 +7,7 @@ Authors@R:
 Description: Developer oriented utility functions designed to be used as
     the building blocks of R packages that work with ArcGIS Location
     Services. It provides functionality for authorization, Esri JSON
-    construction and parsing, as well as other utilities pertianing to
+    construction and parsing, as well as other utilities pertaining to
     geometry and Esri type conversions.
 License: Apache License (>= 2)
 URL: https://github.com/R-ArcGIS/arcgisutils,
