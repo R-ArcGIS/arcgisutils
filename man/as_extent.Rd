@@ -9,7 +9,7 @@ as_extent(x, crs = sf::st_crs(x))
 \arguments{
 \item{x}{an sf or sfc object}
 
-\item{crs}{the CRS of the object. Must be parsible by \code{sf::st_crs()}}
+\item{crs}{the CRS of the object. Must be parsable by \code{sf::st_crs()}}
 }
 \value{
 An extent json object. Use \code{jsonify::to_json(x, unbox = TRUE)} to convert

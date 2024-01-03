@@ -2,8 +2,7 @@
 #'
 #' Takes an `sf` or `sfc` object and returns the appropriate Esri geometry type.
 #'
-#' Alternatively, if
-#' #' ### Geometry type mapping
+#' ### Geometry type mapping
 #'
 #' - `POINT`:  `esriGeometryPoint`
 #' - `MULTIPOINT`:  `esriGeometryMultipoint`
@@ -16,7 +15,6 @@
 #' @returns returns a character scalar of the corresponding Esri geometry type
 #' @export
 #' @examples
-#'
 #' determine_esri_geo_type(sf::st_point(c(0, 0)))
 determine_esri_geo_type <- function(x) {
 

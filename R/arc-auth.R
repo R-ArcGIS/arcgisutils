@@ -9,9 +9,7 @@
 #' @details
 #'
 #' ArcGIS Online and Enterprise Portals utilize OAuth2 authorization via their REST APIs.
-#' For more on configuring OAuth2 authorization see the [authorization article]().
 #'
-
 #' - `auth_code()` is the recommend OAuth2 workflow for interactive sessions
 #' - `auth_client()` is the recommended OAuth2 workflow for non-interactive sessions
 #' - `auth_user()` uses legacy username and password authorization using the `generateToken` endpoint. It is only recommended for legacy systems that do not implement OAuth2.

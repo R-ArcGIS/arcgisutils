@@ -43,7 +43,7 @@ transpose <- function(.l, .names = NULL) {
 #' component that will be eventually converted into json using the above function.
 #'
 #' @param x an sf or sfc object
-#' @param crs the CRS of the object. Must be parsible by `sf::st_crs()`
+#' @param crs the CRS of the object. Must be parsable by `sf::st_crs()`
 #' @export
 #' @examples
 #' nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)

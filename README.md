@@ -9,7 +9,7 @@
 arcgisutils is a developer oriented package that provides the basic
 functions to build R packages that work with ArcGIS Location Services.
 It provides functionality for authorization, Esri JSON construction and
-parsing, as well as other utilities pertianing to geometry and Esri type
+parsing, as well as other utilities pertaining to geometry and Esri type
 conversions.
 
 ## Installation

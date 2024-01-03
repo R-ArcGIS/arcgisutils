@@ -19,7 +19,7 @@ response an error is thrown with the error code and the error message.
 \description{
 The requests responses from ArcGIS don't return the status code
 in the response itself but rather from the body in the json.
-This function checks for the existence of an error. If it is found
+This function checks for the existence of an error. If an error is found,
 the contents of the error message are bubbled up.
 }
 \examples{

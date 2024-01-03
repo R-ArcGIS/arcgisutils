@@ -4,15 +4,17 @@ Version: 0.1.0
 Authors@R: 
     person("Josiah", "Parry", , "josiah.parry@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9910-865X"))
-Description: 'arcgisutils' provides common utility functions for the 'arcgis' metapackage.
+Description: Developer oriented utility functions designed to be used as
+    the building blocks of R packages that work with ArcGIS Location
+    Services. It provides functionality for authorization, Esri JSON
+    construction and parsing, as well as other utilities pertianing to
+    geometry and Esri type conversions.
 License: Apache License (>= 2)
-Encoding: UTF-8
-Language: en
-Roxygen: list(markdown = TRUE)
-URL: https://github.com/R-ArcGIS/arcgisutils, https://r.esri.com/arcgisutils/
+URL: https://github.com/R-ArcGIS/arcgisutils,
+    https://r.esri.com/arcgisutils/
 BugReports: https://github.com/R-ArcGIS/arcgisutils/issues
-RoxygenNote: 7.2.3
 Imports: 
+    dbplyr,
     httr2,
     jsonify,
     Rcpp,
@@ -20,9 +22,13 @@ Imports:
     rlang,
     sf,
     utils
+Suggests: 
+    arcgisbinding,
+    testthat (>= 3.0.0)
 LinkingTo: 
     Rcpp
-Suggests: 
-    dbplyr,
-    testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Encoding: UTF-8
+Language: en
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

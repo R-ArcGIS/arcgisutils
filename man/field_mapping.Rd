@@ -16,7 +16,7 @@ get_ptype(field_type)
 \item{.data}{an object of class \code{data.frame}.}
 
 \item{fields}{a data.frame containing, at least, the columns \code{type} and \code{name}.
-Typically retrieved from the \code{field} metadata frome a \code{FeatureLayer} or \code{Table}.
+Typically retrieved from the \code{field} metadata from a \code{FeatureLayer} or \code{Table}.
 Also can use the output of \code{infer_esri_type()}.}
 
 \item{field_type}{a character of a desired Esri field type. See details for more.}

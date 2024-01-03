@@ -82,13 +82,11 @@ infer_esri_type <- function(.data) {
 }
 
 
-
 #' @export
 #' @rdname field_mapping
 #' @param fields a data.frame containing, at least, the columns `type` and `name`.
-#'  Typically retrieved from the `field` metadata frome a `FeatureLayer` or `Table`.
+#'  Typically retrieved from the `field` metadata from a `FeatureLayer` or `Table`.
 #'  Also can use the output of `infer_esri_type()`.
-#'
 remote_ptype_tbl <- function(fields) {
 
   rlang::check_installed("dbplyr")

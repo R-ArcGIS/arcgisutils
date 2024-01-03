@@ -73,7 +73,6 @@ Authorize your R session to connect to an ArcGIS Portal. See details.
 }
 \details{
 ArcGIS Online and Enterprise Portals utilize OAuth2 authorization via their REST APIs.
-For more on configuring OAuth2 authorization see the \url{authorization article}.
 \itemize{
 \item \code{auth_code()} is the recommend OAuth2 workflow for interactive sessions
 \item \code{auth_client()} is the recommended OAuth2 workflow for non-interactive sessions

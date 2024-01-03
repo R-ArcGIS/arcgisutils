@@ -73,7 +73,7 @@ count_features <- function(request, token) {
 #'
 #' The requests responses from ArcGIS don't return the status code
 #' in the response itself but rather from the body in the json.
-#' This function checks for the existence of an error. If it is found
+#' This function checks for the existence of an error. If an error is found,
 #' the contents of the error message are bubbled up.
 #'
 #' @param response a [`httr2::response`] object.
