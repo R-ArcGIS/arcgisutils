@@ -23,8 +23,7 @@ This function checks for the existence of an error. If an error is found,
 the contents of the error message are bubbled up.
 }
 \examples{
-
-if (interactive()) {
+\dontrun{
   response <- list(
     error = list(
       code = 400L,

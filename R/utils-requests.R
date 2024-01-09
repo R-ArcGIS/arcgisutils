@@ -86,8 +86,7 @@ count_features <- function(request, token) {
 #' @export
 #' @family requests
 #' @examples
-#'
-#' if (interactive()) {
+#' \dontrun{
 #'   response <- list(
 #'     error = list(
 #'       code = 400L,

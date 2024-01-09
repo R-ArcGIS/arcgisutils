@@ -26,7 +26,7 @@
 #' @export
 #' @examples
 #'
-#' if (interactive()) {
+#' \dontrun{
 #'   auth_code()
 #'   auth_client()
 #'   auth_user()

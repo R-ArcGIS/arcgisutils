@@ -82,7 +82,7 @@ ArcGIS Online and Enterprise Portals utilize OAuth2 authorization via their REST
 }
 \examples{
 
-if (interactive()) {
+\dontrun{
   auth_code()
   auth_client()
   auth_user()
