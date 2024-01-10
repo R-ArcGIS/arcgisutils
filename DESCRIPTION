@@ -8,7 +8,10 @@ Description: Developer oriented utility functions designed to be used as
     the building blocks of R packages that work with ArcGIS Location
     Services. It provides functionality for authorization, Esri JSON
     construction and parsing, as well as other utilities pertaining to
-    geometry and Esri type conversions.
+    geometry and Esri type conversions. To support 'ArcGIS Pro' users,
+    authorization can done via 'arcgisbinding'. Installation instructions
+    for 'arcgisbinding' can be found at
+    <https://r.esri.com/r-bridge-site/arcgisbinding/installing-arcgisbinding.html>.
 License: Apache License (>= 2)
 URL: https://github.com/R-ArcGIS/arcgisutils,
     https://r.esri.com/arcgisutils/
@@ -32,4 +35,3 @@ Encoding: UTF-8
 Language: en
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Additional_repositories: https://r.esri.com
