@@ -42,8 +42,6 @@ today <- Sys.Date()
 
 is_date(today)
 
-today_ms <- date_to_ms(today)
-
-as.POSIXct(today_ms / 1000)
+date_to_ms(today)
 
 }
