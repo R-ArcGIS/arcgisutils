@@ -1,4 +1,4 @@
-# arcgisutils (development version)
+# arcgisutils 0.1.1
 
 * fix typo in description 
 
