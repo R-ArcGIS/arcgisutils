@@ -1,3 +1,5 @@
+# arcgisutils (development version)
+
 # arcgisutils 0.1.1
 
 * fix failing tests on oldrel. Use as.POSIXct.character instead of numeric
