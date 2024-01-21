@@ -1,6 +1,6 @@
 # arcgisutils (development version)
 
-* Define `arc_token()` to get "ARCGIS_TOKEN" environment variable. This ensures that empty strings do not cause HTTP 498 "invalid token" error. (#6)
+* Define `arc_token()` to get "ARCGIS_TOKEN" environment variable. This ensures that empty strings do not cause HTTP 498 "invalid token" error. ([#6](https://github.com/R-ArcGIS/arcgisutils/pull/6))
 
 # arcgisutils 0.1.1
 
