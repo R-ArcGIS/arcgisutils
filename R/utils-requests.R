@@ -31,20 +31,27 @@
 #' - `fetch_layer_metadata()` returns a list object
 #' - `count_features()` returns a scalar integer
 fetch_layer_metadata <- function(request, token) {
-  req_url <- httr2::req_body_form(
-    request,
-    f = "json",
-    token = token
-  )
 
+  # add f=json to the url for querying
+  req <- httr2::req_url_query(request, f = "json")
+
+  # add the token
+  if (!is.null(token)) {
+    req <- httr2::req_auth_bearer_token(req, token)
+  }
+
+  # process the request and capture the response string
   resp_string <- httr2::resp_body_string(
-    httr2::req_perform(req_url)
+    httr2::req_perform(req)
   )
 
+  # process the response string
   meta <- RcppSimdJson::fparse(resp_string)
 
+  # check if any errors occurred
   detect_errors(meta)
 
+  # return the list
   meta
 }
 
