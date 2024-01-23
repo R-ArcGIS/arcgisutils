@@ -34,5 +34,7 @@ reference:
 - title: Utilities
   contents:
   - arc_host
+  - arc_token
   - compact
+
 
