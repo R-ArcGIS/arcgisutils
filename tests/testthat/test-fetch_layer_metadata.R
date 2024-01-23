@@ -18,3 +18,14 @@ test_that("fetch_layer_metadata() known working MapServer", {
     fetch_layer_metadata(req, "")
   )
 })
+
+
+test_that("fetch_layer_metadata() works for private content", {
+  skip("must be done interactively")
+  furl <- "https://services1.arcgis.com/hLJbHVT9ZrDIzK0I/arcgis/rest/services/North%20Carolina%20SIDS%20sample/FeatureServer"
+  req <- httr2::request(furl)
+  token <- auth_code()
+
+  expect_no_error(fetch_layer_metadata(req, token$access_token))
+
+})
