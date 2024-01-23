@@ -36,7 +36,7 @@ fetch_layer_metadata <- function(request, token) {
   req <- httr2::req_url_query(request, f = "json")
 
   # add the token
-  if (!is.null(token)) {
+  if (!is.null(token) && nzchar(token)) {
     req <- httr2::req_auth_bearer_token(req, token)
   }
 
