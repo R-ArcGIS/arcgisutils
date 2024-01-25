@@ -140,8 +140,8 @@ detect_errors <- function(response, error_call = rlang::caller_env()) {
 #' @return an httr2 request object
 #' @export
 #' @examples
-#' httr2::request("http://example.com") |>
-#'   arc_agent()
+#' req <- httr2::request("http://example.com")
+#' arc_agent(req)
 arc_agent <- function(req) {
   ver <- utils::packageVersion("arcgisutils")
   httr2::req_user_agent(req, paste0("arcgisutils v", ver))
