@@ -40,6 +40,9 @@ fetch_layer_metadata <- function(request, token) {
     req <- httr2::req_auth_bearer_token(req, token)
   }
 
+  # add user agent
+  req <- arc_agent(req)
+
   # process the request and capture the response string
   resp_string <- httr2::resp_body_string(
     httr2::req_perform(req)

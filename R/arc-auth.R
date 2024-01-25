@@ -59,7 +59,8 @@ auth_code <- function(
 
   client <- httr2::oauth_client(
     id = client,
-    token_url = token_url
+    token_url = token_url,
+    name = "arcgisutils"
   )
 
 
@@ -106,7 +107,13 @@ auth_client <- function(client = Sys.getenv("ARCGIS_CLIENT"),
     sep = "/"
   )
 
-  cln <- httr2::oauth_client(client, token_url, secret)
+  cln <- httr2::oauth_client(
+    client,
+    token_url,
+    secret,
+    name = "arcgisutils"
+  )
+
   httr2::oauth_flow_client_credentials(
     cln,
     token_params = list(expiration = expiration)
@@ -147,9 +154,10 @@ auth_user <- function(
   if (expiration > 21600) stop("`expiration` cannot be more than 15 days (21600)")
 
   burl <- paste0(host, "/sharing/rest/generateToken")
+  b_req <- httr2::request(burl)
 
   req <- httr2::req_body_form(
-    httr2::request(burl),
+    b_req,
     username = username,
     password = password,
     client = "requestip",
@@ -157,12 +165,19 @@ auth_user <- function(
     f = "json"
   )
 
+  # set the user agent
+  req <- arc_agent(req)
+
+  # perform request
   resp <- httr2::req_perform(req)
 
+  # fetch token
   token_raw <- httr2::resp_body_string(resp)
 
+  # parse the response
   token <- RcppSimdJson::fparse(token_raw)
 
+  # detect the errors
   detect_errors(token)
 
   # return the token
@@ -217,7 +232,7 @@ refresh_token <- function(
     sep = "/"
   )
 
-  cln <- httr2::oauth_client(client, token_url)
+  cln <- httr2::oauth_client(client, token_url, name = "arcgisutils")
 
   # get the current time
   cur_time <- as.numeric(Sys.time())
