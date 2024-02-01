@@ -1,4 +1,5 @@
 test_that("fetch_layer_metadata() NULL and empty string", {
+  skip()
   furl <- "https://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer"
   req <- httr2::request(furl)
 
@@ -9,6 +10,7 @@ test_that("fetch_layer_metadata() NULL and empty string", {
 })
 
 test_that("fetch_layer_metadata() known working MapServer", {
+  skip()
   furl <- "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer"
   req <- httr2::request(furl)
 
