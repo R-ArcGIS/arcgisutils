@@ -17,6 +17,6 @@ Override the default user-agent set by httr2 to indicate that a request
 came from arcgisutils.
 }
 \examples{
-httr2::request("http://example.com") |>
-  arc_agent()
+req <- httr2::request("http://example.com")
+arc_agent(req)
 }

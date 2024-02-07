@@ -1,5 +1,6 @@
 # arcgisutils (development version)
 
+- `arc_base_req()` is introduce creating a standardized way to making base httr2 request objects. 
 - httr2 must be >= 1.0.0 now
 * New function `arc_agent()` is added to set a package sepcific user agent 
 * `fetch_layer_metadata()` now puts `f=json` in the url instead of the request body
