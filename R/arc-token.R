@@ -34,8 +34,9 @@ token_env <- rlang::env()
 #' @export
 #' @rdname token
 #' @examples
-#' # create a fake token
-#' token <- httr2::oauth_token("1234")
+#' # create fake tokens
+#' token_a <- httr2::oauth_token("1234")
+#' token_b <- httr2::oauth_token("abcd")
 #'
 #' # set token to the default location
 #' set_arc_token(token)
@@ -44,10 +45,11 @@ token_env <- rlang::env()
 #' arc_token()
 #'
 #' # set token by name
-#' set_arc_token(org_a = token, org_b = token)
+#' set_arc_token(org_a = token_a, org_b = token_b)
 #'
 #' # fetch token by name
 #' arc_token("org_a")
+#' arc_token("org_b")
 arc_token <- function(token = "ARCGIS_TOKEN") {
   # returns NULL if not found
   token_env[[token]]
