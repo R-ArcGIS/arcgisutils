@@ -194,7 +194,7 @@ auth_user <- function(
 
 # refreshment mmm tasty --------------------------------------------------------
 
-#'
+#' @param token an `httr2_token` as created by `auth_code()` or similar
 #' @rdname auth
 #' @export
 refresh_token <- function(

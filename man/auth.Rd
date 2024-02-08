@@ -53,6 +53,8 @@ Your username to login. \strong{Do not} hard code this value.}
 \item{password}{default \code{Sys.getenv("ARCGIS_PASSWORD")}.
 Your password to login. \strong{Do not} hard code this value.}
 
+\item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
+
 \item{refresh_threshold}{default \code{0}. If token expiry is within this
 threshold (in seconds) the token will be refreshed only if a
 \code{refresh_token} is available. Token refreshing is only possible with

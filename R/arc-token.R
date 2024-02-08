@@ -10,7 +10,7 @@ token_env <- rlang::env()
 #'   it is an `httr2_token` that will be set.
 #' @param ... named arguments to set `httr2_token`. Must be valid names and must be an `httr2_token`.
 #' @inheritParams cli::cli_abort
-#'
+#' @importFrom cli cli_abort
 #' @details
 #'
 #' It is possible to have multiple authorization tokens in one session. These
@@ -39,7 +39,7 @@ token_env <- rlang::env()
 #' token_b <- httr2::oauth_token("abcd")
 #'
 #' # set token to the default location
-#' set_arc_token(token)
+#' set_arc_token(token_a)
 #'
 #' # fetch token from the default location
 #' arc_token()
@@ -65,6 +65,16 @@ set_arc_token <- function(token, ...) {
     cli::cli_abort("Must provide {.arg token} or {.arg ...}")
   }
 
+  # if token arg is not missing set it
+  # note that this must come before the for loop because it
+  # adjusts the scoped variable `token`
+  if (!rlang::is_missing(token)) {
+    # check if token is the right class
+    obj_check_token(token)
+    # set the environment ARCGIS_TOKEN
+    rlang::env_bind(token_env, "ARCGIS_TOKEN" = token)
+  }
+
   # handle dots if present
   if (rlang::dots_n(...) > 0) {
 
@@ -88,13 +98,6 @@ set_arc_token <- function(token, ...) {
     cli::cli_alert_info("Access named tokens with {.code arc_token(\"name\")}")
   }
 
-  # if token arg is not missing set it
-  if (!rlang::is_missing(token)) {
-    # check if token is the right class
-    obj_check_token(token)
-    # set the environment ARCGIS_TOKEN
-    rlang::env_bind(token_env, "ARCGIS_TOKEN" = token)
-  }
 }
 
 #' @export
