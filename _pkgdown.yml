@@ -8,11 +8,12 @@ navbar:
 
 reference:
 
-- title: Requests
+- title: Request Utilities
   contents:
-  - fetch_layer_metadata
-  - count_features
-  - detect_errors
+  - arc_host
+  - arc_token
+  - arc_agent
+  - arc_base_req
 - title: Authorization
   contents:
   - auth_code
@@ -33,8 +34,10 @@ reference:
   - is_date
 - title: Utilities
   contents:
-  - arc_host
-  - arc_token
   - compact
-
+- title: Requests
+  contents:
+  - fetch_layer_metadata
+  - count_features
+  - detect_errors
 
