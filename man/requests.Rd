@@ -3,25 +3,17 @@
 \name{requests}
 \alias{requests}
 \alias{fetch_layer_metadata}
-\alias{count_features}
 \title{Retrieve metadata}
 \usage{
-fetch_layer_metadata(request, token)
-
-count_features(request, token)
+fetch_layer_metadata(url, token = NULL, call = rlang::caller_env())
 }
 \arguments{
-\item{request}{an \code{\link[httr2:request]{httr2::request}} object. Should be the \code{base_req}
-object that is created from a provided feature / server url}
+\item{url}{the url of the item.}
 
-\item{token}{scalar string the \code{access_token} e.g. from \code{auth_code()}
-or \code{auth_client()}.}
+\item{token}{an \code{httr2_token} from one of the provided \code{auth_} functions}
 }
 \value{
-\itemize{
-\item \code{fetch_layer_metadata()} returns a list object
-\item \code{count_features()} returns a scalar integer
-}
+returns a list object
 }
 \description{
 Utility functions for feature service metadata.
@@ -30,8 +22,6 @@ Utility functions for feature service metadata.
 \itemize{
 \item \code{fetch_layer_metadata()} given a request, fetches the metadata by setting
 the query parameter \code{f=json}
-\item \code{count_features()} is a simple helper that returns the total number of
-features in a feature service ignoring any saved query parameters.
 }
 }
 \examples{
@@ -42,8 +32,6 @@ url_parts <- c(
 )
 
 furl <- paste0(url_parts, collapse = "")
-req <- httr2::request(furl)
-meta <- fetch_layer_metadata(req, "")
+meta <- fetch_layer_metadata(furl)
 head(names(meta))
-count_features(req, "")
 }

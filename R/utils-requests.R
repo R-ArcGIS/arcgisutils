@@ -6,13 +6,9 @@
 #'
 #' - `fetch_layer_metadata()` given a request, fetches the metadata by setting
 #'    the query parameter `f=json`
-#' - `count_features()` is a simple helper that returns the total number of
-#'    features in a feature service ignoring any saved query parameters.
 #'
-#' @param request an [`httr2::request`] object. Should be the `base_req`
-#'   object that is created from a provided feature / server url
-#' @param token scalar string the `access_token` e.g. from `auth_code()`
-#' or `auth_client()`.
+#' @param url the url of the item.
+#' @param token an `httr2_token` from one of the provided `auth_` functions
 #' @export
 #' @name requests
 #' @examples
@@ -23,25 +19,15 @@
 #' )
 #'
 #' furl <- paste0(url_parts, collapse = "")
-#' req <- httr2::request(furl)
-#' meta <- fetch_layer_metadata(req, "")
+#' meta <- fetch_layer_metadata(furl)
 #' head(names(meta))
-#' count_features(req, "")
-#' @returns
-#' - `fetch_layer_metadata()` returns a list object
-#' - `count_features()` returns a scalar integer
-fetch_layer_metadata <- function(request, token) {
+#' @returns returns a list object
+fetch_layer_metadata <- function(url, token = NULL, call = rlang::caller_env()) {
+
+  req <- arc_base_req(url, token, call)
 
   # add f=json to the url for querying
-  req <- httr2::req_url_query(request, f = "json")
-
-  # add the token
-  if (!is.null(token) && nzchar(token)) {
-    req <- httr2::req_auth_bearer_token(req, token)
-  }
-
-  # add user agent
-  req <- arc_agent(req)
+  req <- httr2::req_url_query(req, f = "json")
 
   # process the request and capture the response string
   resp_string <- httr2::resp_body_string(
@@ -52,32 +38,11 @@ fetch_layer_metadata <- function(request, token) {
   meta <- RcppSimdJson::fparse(resp_string)
 
   # check if any errors occurred
-  detect_errors(meta)
+  detect_errors(meta, error_call = call)
 
   # return the list
   meta
 }
-
-#' @export
-#' @name requests
-count_features <- function(request, token) {
-
-  req_url <- httr2::req_body_form(
-    httr2::req_url_path_append(request, "query"),
-    returnCountOnly = "true",
-    where = "1 = 1",
-    f = "json",
-    token = token
-  )
-
-  resp <- httr2::req_perform(req_url)
-
-  RcppSimdJson::fparse(
-    httr2::resp_body_string(resp),
-    query = "/count"
-  )
-}
-
 
 #' Detect errors in parsed json response
 #'
