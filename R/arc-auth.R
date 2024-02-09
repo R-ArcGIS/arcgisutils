@@ -63,7 +63,6 @@ auth_code <- function(
     name = "arcgisutils"
   )
 
-
   auth_url <- httr2::oauth_flow_auth_code_url(
     client,
     auth_url = auth_url,
@@ -77,16 +76,20 @@ auth_code <- function(
     code <- readline(prompt = "Enter code: ")
   }
 
-  # use the internal fucntion from httr2 to complete the token
+  # use the internal function from httr2 to complete the token
   # transfer
   fx <- utils::getFromNamespace("oauth_client_get_token", "httr2")
 
-  fx(
+  res <- fx(
     client,
     grant_type = "authorization_code",
     code = code,
     redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
   )
+
+  # add host to the token
+  res[["arcgis_host"]]  <- host
+  res
 
 
 }
@@ -114,10 +117,14 @@ auth_client <- function(client = Sys.getenv("ARCGIS_CLIENT"),
     name = "arcgisutils"
   )
 
-  httr2::oauth_flow_client_credentials(
+  res <- httr2::oauth_flow_client_credentials(
     cln,
     token_params = list(expiration = expiration)
   )
+
+  # add host to the token
+  res[["arcgis_host"]]  <- host
+  res
 }
 
 
@@ -128,7 +135,10 @@ auth_client <- function(client = Sys.getenv("ARCGIS_CLIENT"),
 auth_binding <- function() {
   rlang::check_installed("arcgisbinding")
   tkn <- utils::getFromNamespace("arc.check_portal", "arcgisbinding")()
-  httr2::oauth_token(tkn[["token"]])
+  res <- httr2::oauth_token(tkn[["token"]])
+  # add host to the token
+  res[["arcgis_host"]] <- tkn[["url"]]
+  res
 }
 
 
@@ -185,6 +195,7 @@ auth_user <- function(
   # return the token
   httr2::oauth_token(
     token[["token"]],
+    arcgis_host = host,
     expires_in = expiration
   )
 

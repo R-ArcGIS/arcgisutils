@@ -103,10 +103,33 @@ set_arc_token <- function(token, ...) {
 #' @export
 #' @rdname token
 obj_check_token <- function(token, call = rlang::caller_env()) {
+  # if object is not a httr2 token
   if (!rlang::inherits_only(token, "httr2_token")) {
     cli::cli_abort(
-      "{.arg token} must be an {.cls httr2_token} not {.cls {class(token)}}"
+      "{.arg token} must be an {.cls httr2_token} not {.cls {class(token)}}",
+      call = call
     )
   }
+
+  # if no host is set
+  if (is.null(token[["arcgis_host"]])) {
+    cli::cli_abort(
+      c("{.arg token} does not have {.val arcgis_host}.",
+        "i" = "was your token created using {.pkg arcgisutils}?"
+      ),
+      call = call
+    )
+  }
+
+  # if more than one host is set, error
+  if (length(token[["arcgis_host"]]) > 1) {
+    cli::cli_abort(
+      c("{.arg token} has more than one {.val arcgis_host}.",
+        "i" = "was your token created using {.pkg arcgisutils}?"
+      ),
+      call = call
+    )
+  }
+
   invisible(token)
 }
