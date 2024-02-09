@@ -9,8 +9,8 @@
 #'
 #' @param url the url of the item.
 #' @param token an `httr2_token` from one of the provided `auth_` functions
+#' @param call default `rlang::caller_env()`. The calling environment passed to `detect_errors()`.
 #' @export
-#' @name requests
 #' @examples
 #' # url is broken into parts to fit within 100 characters to avoid CRAN notes
 #' url_parts <- c(

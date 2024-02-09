@@ -35,8 +35,8 @@ token_env <- rlang::env()
 #' @rdname token
 #' @examples
 #' # create fake tokens
-#' token_a <- httr2::oauth_token("1234")
-#' token_b <- httr2::oauth_token("abcd")
+#' token_a <- httr2::oauth_token("1234", arcgis_host = arc_host())
+#' token_b <- httr2::oauth_token("abcd", arcgis_host = arc_host())
 #'
 #' # set token to the default location
 #' set_arc_token(token_a)
