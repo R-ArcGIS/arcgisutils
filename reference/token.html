@@ -55,7 +55,9 @@
 <span></span>
 <span><span class="fu">set_arc_token</span><span class="op">(</span><span class="va">token</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">obj_check_token</span><span class="op">(</span><span class="va">token</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">obj_check_token</span><span class="op">(</span><span class="va">token</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">check_token_has_user</span><span class="op">(</span><span class="va">token</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -94,6 +96,8 @@ to <code>arc_token()</code> to fetch the <code>httr2_token</code> object.</p>
 <p><code>obj_check_token()</code> is a developer oriented function that can be used to check
 if an object is indeed an <code>httr2_token</code>. To check if a token has expired,
 <code><a href="auth.html">validate_or_refresh_token()</a></code> will do so.</p>
+<p><code>check_token_has_user()</code> is a developer oriented function that checks to see
+if a token has a <code>username</code> field associated with it.</p>
 <p>For developers:</p>
 <p><code>set_arc_token()</code> uses a package level environment to store the tokens. The
 tokens are fetched from the environment using <code>arc_token()</code>.</p>
