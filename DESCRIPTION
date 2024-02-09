@@ -20,6 +20,7 @@ URL: https://github.com/R-ArcGIS/arcgisutils,
     https://r.esri.com/arcgisutils/
 BugReports: https://github.com/R-ArcGIS/arcgisutils/issues
 Imports: 
+    cli,
     dbplyr,
     httr2 (>= 1.0.0),
     jsonify,
@@ -37,4 +38,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

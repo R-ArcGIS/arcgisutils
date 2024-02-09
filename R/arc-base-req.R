@@ -31,13 +31,3 @@ arc_base_req <- function(url, token = NULL, error_call = rlang::caller_env()) {
   req
 }
 
-
-
-obj_check_token <- function(token, call = rlang::caller_env()) {
-  if (!rlang::inherits_only(token, "httr2_token")) {
-    cli::cli_abort(
-      "{.arg token} must be an {.cls httr2_token} not {.cls {class(token)}}"
-    )
-  }
-  invisible(token)
-}

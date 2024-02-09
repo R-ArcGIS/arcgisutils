@@ -1,6 +1,13 @@
 # arcgisutils (development version)
 
+- Breaking change to how authorization tokens are handled
+  - Tokens are now stored in internal environment `token_env`
+  - `set_auth_token()` removed in favor of `set_arc_token()` 
+  - `set_arc_token()` allows for multiple named keys which are set to the `token_env`
+  - `arc_token()` fetches tokens directly from the `token_env` 
+  - intended to be used with `arc_base_req()` 
 - `arc_base_req()` is introduce creating a standardized way to making base httr2 request objects. 
+  - <https://github.com/R-ArcGIS/arcgisutils/pull/19>
 - httr2 must be >= 1.0.0 now
 * New function `arc_agent()` is added to set a package sepcific user agent 
 * `fetch_layer_metadata()` now puts `f=json` in the url instead of the request body
