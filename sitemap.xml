@@ -16,10 +16,13 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/arc_host.html</loc>
+    <loc>/reference/arc_agent.html</loc>
   </url>
   <url>
-    <loc>/reference/arc_token.html</loc>
+    <loc>/reference/arc_base_req.html</loc>
+  </url>
+  <url>
+    <loc>/reference/arc_host.html</loc>
   </url>
   <url>
     <loc>/reference/as_extent.html</loc>
@@ -43,6 +46,9 @@
     <loc>/reference/esri_geometry.html</loc>
   </url>
   <url>
+    <loc>/reference/fetch_layer_metadata.html</loc>
+  </url>
+  <url>
     <loc>/reference/field_mapping.html</loc>
   </url>
   <url>
@@ -55,7 +61,7 @@
     <loc>/reference/parse_esri_json.html</loc>
   </url>
   <url>
-    <loc>/reference/requests.html</loc>
+    <loc>/reference/token.html</loc>
   </url>
   <url>
     <loc>/reference/utilities.html</loc>

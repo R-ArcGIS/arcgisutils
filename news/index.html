@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,13 +46,34 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="arcgisutils-development-version">arcgisutils (development version)<a class="anchor" aria-label="anchor" href="#arcgisutils-development-version"></a></h2>
-<ul><li>
-<code><a href="../reference/requests.html">fetch_layer_metadata()</a></code> now puts <code>f=json</code> in the url instead of the request body
+<ul><li>Breaking change to how authorization tokens are handled
+<ul><li>Tokens are now stored in internal environment <code>token_env</code>
+</li>
+<li>
+<code>set_auth_token()</code> removed in favor of <code><a href="../reference/token.html">set_arc_token()</a></code>
+</li>
+<li>
+<code><a href="../reference/token.html">set_arc_token()</a></code> allows for multiple named keys which are set to the <code>token_env</code>
+</li>
+<li>
+<code><a href="../reference/token.html">arc_token()</a></code> fetches tokens directly from the <code>token_env</code>
+</li>
+<li>intended to be used with <code><a href="../reference/arc_base_req.html">arc_base_req()</a></code>
+</li>
+</ul></li>
+<li>
+<code><a href="../reference/arc_base_req.html">arc_base_req()</a></code> is introduce creating a standardized way to making base httr2 request objects.
+<ul><li><a href="https://github.com/R-ArcGIS/arcgisutils/pull/19" class="external-link uri">https://github.com/R-ArcGIS/arcgisutils/pull/19</a></li>
+</ul></li>
+<li>httr2 must be &gt;= 1.0.0 now</li>
+<li>New function <code><a href="../reference/arc_agent.html">arc_agent()</a></code> is added to set a package sepcific user agent</li>
+<li>
+<code><a href="../reference/fetch_layer_metadata.html">fetch_layer_metadata()</a></code> now puts <code>f=json</code> in the url instead of the request body
 <ul><li>accepts <code>NULL</code> tokens</li>
 <li>uses <code>req_auth_bearer_token()</code> to include token in header</li>
 <li><a href="https://github.com/R-ArcGIS/arcgisutils/pull/8" class="external-link uri">https://github.com/R-ArcGIS/arcgisutils/pull/8</a></li>
 </ul></li>
-<li>Define <code><a href="../reference/arc_token.html">arc_token()</a></code> to get “ARCGIS_TOKEN” environment variable. This ensures that empty strings do not cause HTTP 498 “invalid token” error by returning <code>NULL</code> in stead of an empty string. (<a href="https://github.com/R-ArcGIS/arcgisutils/pull/6" class="external-link">#6</a>) <a href="https://github.com/kbvernon" class="external-link">@kbvernon</a>
+<li>Define <code><a href="../reference/token.html">arc_token()</a></code> to get “ARCGIS_TOKEN” environment variable. This ensures that empty strings do not cause HTTP 498 “invalid token” error by returning <code>NULL</code> in stead of an empty string. (<a href="https://github.com/R-ArcGIS/arcgisutils/pull/6" class="external-link">#6</a>) <a href="https://github.com/kbvernon" class="external-link">@kbvernon</a>
 </li>
 </ul></div>
     <div class="section level2">

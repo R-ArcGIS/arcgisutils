@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="requests">Requests<a class="anchor" aria-label="anchor" href="#requests"></a></h2>
+      <h2 id="request-utilities">Request Utilities<a class="anchor" aria-label="anchor" href="#request-utilities"></a></h2>
       
       
 
@@ -56,14 +56,24 @@
 
       <dl><dt>
           
-          <code><a href="requests.html">fetch_layer_metadata()</a></code> <code><a href="requests.html">count_features()</a></code> 
+          <code><a href="arc_host.html">arc_host()</a></code> 
         </dt>
-        <dd>Retrieve metadata</dd>
+        <dd>Determines Portal Host</dd>
       </dl><dl><dt>
           
-          <code><a href="detect_errors.html">detect_errors()</a></code> 
+          <code><a href="token.html">arc_token()</a></code> <code><a href="token.html">set_arc_token()</a></code> <code><a href="token.html">obj_check_token()</a></code> 
         </dt>
-        <dd>Detect errors in parsed json response</dd>
+        <dd>Manage authorization tokens</dd>
+      </dl><dl><dt>
+          
+          <code><a href="arc_agent.html">arc_agent()</a></code> 
+        </dt>
+        <dd>Set user-agent for arcgisutils</dd>
+      </dl><dl><dt>
+          
+          <code><a href="arc_base_req.html">arc_base_req()</a></code> 
+        </dt>
+        <dd>Generate base request</dd>
       </dl></div><div class="section level2">
       <h2 id="authorization">Authorization<a class="anchor" aria-label="anchor" href="#authorization"></a></h2>
       
@@ -77,7 +87,7 @@
 
       <dl><dt>
           
-          <code><a href="auth.html">auth_code()</a></code> <code><a href="auth.html">auth_client()</a></code> <code><a href="auth.html">auth_binding()</a></code> <code><a href="auth.html">auth_user()</a></code> <code><a href="auth.html">set_auth_token()</a></code> <code><a href="auth.html">refresh_token()</a></code> <code><a href="auth.html">validate_or_refresh_token()</a></code> 
+          <code><a href="auth.html">auth_code()</a></code> <code><a href="auth.html">auth_client()</a></code> <code><a href="auth.html">auth_binding()</a></code> <code><a href="auth.html">auth_user()</a></code> <code><a href="auth.html">refresh_token()</a></code> <code><a href="auth.html">validate_or_refresh_token()</a></code> 
         </dt>
         <dd>Authorization</dd>
       </dl></div><div class="section level2">
@@ -171,19 +181,30 @@
 
       <dl><dt>
           
-          <code><a href="arc_host.html">arc_host()</a></code> 
-        </dt>
-        <dd>Determines Portal Host</dd>
-      </dl><dl><dt>
-          
-          <code><a href="arc_token.html">arc_token()</a></code> 
-        </dt>
-        <dd>Retrieve ARCGIS Token</dd>
-      </dl><dl><dt>
-          
           <code><a href="utilities.html">compact()</a></code> <code><a href="utilities.html">`%||%`</a></code> 
         </dt>
         <dd>General utility functions</dd>
+      </dl></div><div class="section level2">
+      <h2 id="requests">Requests<a class="anchor" aria-label="anchor" href="#requests"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="fetch_layer_metadata.html">fetch_layer_metadata()</a></code> 
+        </dt>
+        <dd>Retrieve metadata</dd>
+      </dl><dl><dt>
+          
+          <code><a href="detect_errors.html">detect_errors()</a></code> 
+        </dt>
+        <dd>Detect errors in parsed json response</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
