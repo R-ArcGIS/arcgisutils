@@ -26,6 +26,9 @@ token_env <- rlang::env()
 #' if an object is indeed an `httr2_token`. To check if a token has expired,
 #' [`validate_or_refresh_token()`] will do so.
 #'
+#' `check_token_has_user()` is a developer oriented function that checks to see
+#' if a token has a `username` field associated with it.
+#'
 #' For developers:
 #'
 #' `set_arc_token()` uses a package level environment to store the tokens. The
@@ -131,5 +134,19 @@ obj_check_token <- function(token, call = rlang::caller_env()) {
     )
   }
 
+  invisible(token)
+}
+
+#' @export
+#' @rdname token
+check_token_has_user <- function(token, call = rlang::caller_env()) {
+  obj_check_token(token, call)
+  if (is.null(token[["username"]])) {
+    cli::cli_abort(
+      c(
+        "{.arg token} does not have an associated {.val username}."
+      )
+    )
+  }
   invisible(token)
 }

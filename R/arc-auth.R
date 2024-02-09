@@ -138,6 +138,8 @@ auth_binding <- function() {
   res <- httr2::oauth_token(tkn[["token"]])
   # add host to the token
   res[["arcgis_host"]] <- tkn[["url"]]
+  # add the username to the token as well
+  res[["username"]] <- tkn[["user"]]
   res
 }
 
@@ -195,8 +197,9 @@ auth_user <- function(
   # return the token
   httr2::oauth_token(
     token[["token"]],
+    expires_in = expiration,
+    username = username,
     arcgis_host = host,
-    expires_in = expiration
   )
 
 }
@@ -217,6 +220,9 @@ refresh_token <- function(
   # validate the object is a token
   obj_check_token(token)
 
+  # extract host from token
+  host <- token[["arcgis_host"]]
+
   token_url <- paste(
     host,
     "sharing",
@@ -225,6 +231,7 @@ refresh_token <- function(
     "token",
     sep = "/"
   )
+
 
   cln <- httr2::oauth_client(client, token_url, name = "arcgisutils")
 
@@ -240,7 +247,13 @@ refresh_token <- function(
     }
 
   # should be able to refresh, go ahead.
-  httr2::oauth_flow_refresh(cln, token[["refresh_token"]])
+  res <- httr2::oauth_flow_refresh(cln, token[["refresh_token"]])
+
+  # set the host back into the token
+  # Note we don't do this for username because only `auth_code()` provides
+  # a refresh token
+  res[["arcgis_host"]] <- host
+  res
 
 }
 

@@ -4,6 +4,7 @@
 \alias{arc_token}
 \alias{set_arc_token}
 \alias{obj_check_token}
+\alias{check_token_has_user}
 \title{Manage authorization tokens}
 \usage{
 arc_token(token = "ARCGIS_TOKEN")
@@ -11,6 +12,8 @@ arc_token(token = "ARCGIS_TOKEN")
 set_arc_token(token, ...)
 
 obj_check_token(token, call = rlang::caller_env())
+
+check_token_has_user(token, call = rlang::caller_env())
 }
 \arguments{
 \item{token}{for \code{arc_token()}, the name of a token to fetch. For \code{set_arc_token()},
@@ -48,6 +51,9 @@ to \code{arc_token()} to fetch the \code{httr2_token} object.
 \code{obj_check_token()} is a developer oriented function that can be used to check
 if an object is indeed an \code{httr2_token}. To check if a token has expired,
 \code{\link[=validate_or_refresh_token]{validate_or_refresh_token()}} will do so.
+
+\code{check_token_has_user()} is a developer oriented function that checks to see
+if a token has a \code{username} field associated with it.
 
 For developers:
 
