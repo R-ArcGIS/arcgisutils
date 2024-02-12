@@ -59,6 +59,11 @@ parse_esri_json <- function(string, ...) {
   # extract the geometry features
   fts_raw <- b_parsed[["features"]]
 
+  if (is.null(fts_raw)) {
+    report_errors(b_parsed)
+    return(data.frame())
+  }
+
   # if this is a logical vector of length one we need to abort
   if (is.logical(fts_raw) && length(fts_raw) == 1L) return(data.frame())
 
