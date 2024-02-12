@@ -1,6 +1,6 @@
 # arcgisutils (development version)
 
-- `parse_esri_json()` will return an empty `data.frame` in the presence of empty results
+- `parse_esri_json()` will return an empty `data.frame` in the presence of empty results an error. If an error is present, the error is reported
 - Breaking change to how authorization tokens are handled
   - Tokens are now stored in internal environment `token_env`
   - `set_auth_token()` removed in favor of `set_arc_token()` 

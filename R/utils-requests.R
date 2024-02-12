@@ -98,6 +98,30 @@ detect_errors <- function(response, error_call = rlang::caller_env()) {
   }
 }
 
+#' @keywords internal
+#' @noRd
+report_errors <- function(response, error_call = rlang::caller_env()) {
+  e <- response[["error"]]
+  if (!is.null(e)) {
+    err_msg <- strwrap(
+      paste0("  Error", e$messageCode, ": ", e$message),
+      prefix = "    ",
+      initial = ""
+    )
+
+    full_msg <- c(
+      "Status code: ",
+      response[["error"]][["code"]],
+      "\n",
+      paste0(err_msg, collapse = "\n")
+    )
+
+    rlang::warn(
+      paste0(full_msg, collapse = ""),
+      call = error_call
+    )
+  }
+}
 
 #' Set user-agent for arcgisutils
 #'
