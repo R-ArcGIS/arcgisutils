@@ -59,6 +59,9 @@ parse_esri_json <- function(string, ...) {
   # extract the geometry features
   fts_raw <- b_parsed[["features"]]
 
+  # if this is a logical vector of length one we need to abort
+  if (is.logical(fts_raw) && length(fts_raw) == 1L) return(data.frame())
+
   # bind all of them together into a single data frame
   # TODO do call strips class. So any integer64 classes need to be restored
   fields <- do.call(rbind.data.frame, fts_raw[["attributes"]])
