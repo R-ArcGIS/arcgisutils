@@ -55,6 +55,8 @@
 <span></span>
 <span><span class="fu">set_arc_token</span><span class="op">(</span><span class="va">token</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">unset_arc_token</span><span class="op">(</span>token <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">obj_check_token</span><span class="op">(</span><span class="va">token</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">check_token_has_user</span><span class="op">(</span><span class="va">token</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -137,6 +139,12 @@ tokens are fetched from the environment using <code>arc_token()</code>.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   token_type: bearer</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   access_token: <span style="color: #555555;">&lt;REDACTED&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   arcgis_host: https://www.arcgis.com</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># unset tokens</span></span></span>
+<span class="r-in"><span><span class="fu">unset_arc_token</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Token `ARCGIS_TOKEN` has been unset.</span>
+<span class="r-in"><span><span class="fu">unset_arc_token</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"org_a"</span>, <span class="st">"org_b"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Tokens `org_a` and `org_b` have been unset.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
