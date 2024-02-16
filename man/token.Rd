@@ -17,7 +17,8 @@ check_token_has_user(token, call = rlang::caller_env())
 }
 \arguments{
 \item{token}{for \code{arc_token()}, the name of a token to fetch. For \code{set_arc_token()},
-it is an \code{httr2_token} that will be set.}
+it is an \code{httr2_token} that will be set. For \code{unset_arc_token()}, a character
+vector of token names to be unset.}
 
 \item{...}{named arguments to set \code{httr2_token}. Must be valid names and must be an \code{httr2_token}.}
 
@@ -46,7 +47,8 @@ functions assist you in managing them.
 However, they can be any valid character scalar. \code{set_arc_token()} will create
 store a token with the name \code{ARCGIS_TOKEN}. However, you can alternatively
 set the tokens by name using a key-value pair. The key is what you would pass
-to \code{arc_token()} to fetch the \code{httr2_token} object.
+to \code{arc_token()} to fetch the \code{httr2_token} object. To remove a token that has
+been set, use \code{unset_arc_token()}.
 
 \code{obj_check_token()} is a developer oriented function that can be used to check
 if an object is indeed an \code{httr2_token}. To check if a token has expired,
