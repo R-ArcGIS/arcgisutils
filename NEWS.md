@@ -6,6 +6,7 @@
   - `set_auth_token()` removed in favor of `set_arc_token()` 
   - `set_arc_token()` allows for multiple named keys which are set to the `token_env`
   - `arc_token()` fetches tokens directly from the `token_env` 
+  - `unset_arc_token()` removes tokens from `token_env`
   - intended to be used with `arc_base_req()` 
 - `arc_base_req()` is introduce creating a standardized way to making base httr2 request objects. 
   - <https://github.com/R-ArcGIS/arcgisutils/pull/19>
