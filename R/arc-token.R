@@ -109,6 +109,7 @@ set_arc_token <- function(token, ...) {
 
 }
 
+#' @rdname token
 #' @export
 unset_arc_token <- function(token = NULL) {
   if (is.null(token)) {

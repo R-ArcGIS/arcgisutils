@@ -3,6 +3,7 @@
 \name{arc_token}
 \alias{arc_token}
 \alias{set_arc_token}
+\alias{unset_arc_token}
 \alias{obj_check_token}
 \alias{check_token_has_user}
 \title{Manage authorization tokens}
@@ -10,6 +11,8 @@
 arc_token(token = "ARCGIS_TOKEN")
 
 set_arc_token(token, ...)
+
+unset_arc_token(token = NULL)
 
 obj_check_token(token, call = rlang::caller_env())
 
@@ -79,4 +82,8 @@ set_arc_token(org_a = token_a, org_b = token_b)
 # fetch token by name
 arc_token("org_a")
 arc_token("org_b")
+
+# unset tokens
+unset_arc_token()
+unset_arc_token(c("org_a", "org_b"))
 }
