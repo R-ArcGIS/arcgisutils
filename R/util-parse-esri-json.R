@@ -47,7 +47,7 @@ parse_esri_json <- function(string, ...) {
   b_parsed <- RcppSimdJson::fparse(
     string,
     empty_object = NA,
-    empty_array = NA,
+    empty_array = NULL,
     single_null = NA,
     ...
   )
@@ -115,9 +115,19 @@ parse_esri_json <- function(string, ...) {
 
   # manually apply the sfg class
   for (i in seq_along(geo_raw)) {
-    if (sfg_class == "POINT") {
+    if (rlang::is_scalar_integer(geo_raw[[i]])) {
+      geo_raw[[i]] <- rlang::eval_bare(
+        rlang::parse_expr(paste0("sf::st_", tolower(sfg_class), "()"))
+      )
+    } else if (sfg_class == "POINT") {
       geo_raw[[i]] <- unlist(geo_raw[[i]])
     } else if (sfg_class %in% c("MULTILINESTRING", "MULTIPOINT")) {
+      # weird edge case where we get a single matrix instead of a list
+      # of matrix we need to put it into a list
+      if (sfg_class == "MULTILINESTRING" && is.matrix(geo_raw[[i]])) {
+        geo_raw[[i]] <- list(geo_raw[[i]])
+      }
+
       geo_raw[[i]] <- geo_raw[[i]][[1]]
     } else if (sfg_class == "MULTIPOLYGON") {
       geo_raw[[i]][["spatialReference"]] <- NULL
