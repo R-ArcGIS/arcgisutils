@@ -16,12 +16,13 @@
 #' @export
 #' @examples
 #' determine_esri_geo_type(sf::st_point(c(0, 0)))
-determine_esri_geo_type <- function(x) {
+determine_esri_geo_type <- function(x, call = rlang::caller_env()) {
 
   # if `geom` is a data.frame return NULL
   if (inherits(x, "data.frame") && !inherits(x, "sf")) return(NULL)
 
   geom_type <- as.character(sf::st_geometry_type(x, by_geometry = FALSE))
+
   switch(
     geom_type,
     "POINT" = "esriGeometryPoint",
@@ -30,7 +31,10 @@ determine_esri_geo_type <- function(x) {
     "MULTILINESTRING" = "esriGeometryPolyline",
     "POLYGON" = "esriGeometryPolygon",
     "MULTIPOLYGON" = "esriGeometryPolygon",
-    stop("`", geom_type, "` is not a supported type")
+    cli::cli_abort(
+      "{.val {geom_type}} is not a supported Esri geometry type",
+      call = call
+    )
   )
 }
 

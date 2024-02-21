@@ -393,7 +393,8 @@ as_featureset.data.frame <- function(x, ...) {
 #' @param x an object of class `sfc` or `sf`
 #' @keywords internal
 #' @noRd
-featureset_geometry <- function(x) {
+featureset_geometry <- function(x, call = rlang::caller_env()) {
+
   # extract geometry
   x <- sf::st_geometry(x)
 
@@ -406,11 +407,13 @@ featureset_geometry <- function(x) {
 
   # error out if not one of the 6 types above
   if (is.null(esri_geo_type)) {
-    stop("`", geom_type, "` is not a supported Esri geometry type")
+    cli::cli_abort(
+      "{.val {geom_type}} is not a supported Esri geometry type",
+      call = call
+    )
   }
 
   # convert geometry
-
   geo_conversion_fn <- switch(
     geom_type,
     "POINT" = sfc_point_impl,

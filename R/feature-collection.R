@@ -58,13 +58,21 @@ as_layer <- function(
     id = NULL,
     layer_url = NULL,
     legend_url = NULL,
-    popup_info = NULL
+    popup_info = NULL,
+    call = rlang::caller_env()
 ) {
 
-  stopifnot(
-    "`x` must have a data.frame base class" = inherits(x, "data.frame"),
-    "`name` must be a scalar" = identical(length(name), 1L)
-  )
+  if (!rlang::inherits_any(x, "data.frame")) {
+    cli::cli_abort(
+      "Expected {.cls data.frame} found {.obj_type_friendly {x}}",
+      call = call
+    )
+  } else if (!rlang::is_scalar_character(name)) {
+    cli::cli_abort(
+      "{.arg name} must be a scalar character vector.",
+      call = call
+    )
+  }
 
   oid_field <- layer_definition[["objectIdField"]]
   # check that the OID field is present in x if not, create it.
@@ -73,7 +81,7 @@ as_layer <- function(
   if (!oid_field %in% colnames(x)) {
     x[[oid_field]] <- 1:nrow(x)
   } else if (!is.numeric(x[[oid_field]])) {
-    stop("`x` must have a numeric Object ID field")
+    cli::cli_abort("{.arg x} must have a numeric Object ID field", call = call)
   } else if (!is.integer(x[[oid_field]])) {
     x[[oid_field]] <- as.integer(x[[oid_field]])
   }

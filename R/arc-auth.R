@@ -239,11 +239,11 @@ refresh_token <- function(
   cur_time <- as.numeric(Sys.time())
 
   if (is.null(token[["refresh_token"]])) {
-    stop("`token` has expired and no `refresh_token` available")
+    cli::cli_abort("{.arg token} has expired and no {.field refresh_token} available")
   } else
     # if it has a refresh check to see if refresh hasn't expired
     if ((cur_time + token[["refresh_token_expires_in"]]) < cur_time) {
-      stop("`refresh_token` has gone past its expiry")
+      cli::cli_abort("Token's {.field refresh_token} has expired.")
     }
 
   # should be able to refresh, go ahead.
@@ -272,7 +272,6 @@ validate_or_refresh_token <- function(
 
   # validate the object is a token
   obj_check_token(token)
-
 
   cur_time <- as.numeric(Sys.time())
   # check if token is expired or expires within threshold
