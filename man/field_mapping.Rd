@@ -6,14 +6,19 @@
 \alias{get_ptype}
 \title{Esri field type mapping}
 \usage{
-infer_esri_type(.data)
+infer_esri_type(.data, call = caller_env())
 
-remote_ptype_tbl(fields)
+remote_ptype_tbl(fields, call = caller_env())
 
-get_ptype(field_type)
+get_ptype(field_type, call = caller_env())
 }
 \arguments{
 \item{.data}{an object of class \code{data.frame}.}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 
 \item{fields}{a data.frame containing, at least, the columns \code{type} and \code{name}.
 Typically retrieved from the \code{field} metadata frome a \code{FeatureLayer} or \code{Table}.

@@ -120,8 +120,8 @@ auth_client <- function(client = Sys.getenv("ARCGIS_CLIENT"),
 
 #' @export
 #' @rdname auth
-auth_binding <- function() {
-  rlang::check_installed("arcgisbinding")
+auth_binding <- function(error_call = caller_env()) {
+  rlang::check_installed(pkg = "arcgisbinding", call = error_call)
   tkn <- utils::getFromNamespace("arc.check_portal", "arcgisbinding")()
   httr2::oauth_token(tkn[["token"]])
 }
@@ -143,10 +143,14 @@ auth_user <- function(
     username = Sys.getenv("ARCGIS_USER"),
     password = Sys.getenv("ARCGIS_PASSWORD"),
     host = arc_host(),
-    expiration = 60
+    expiration = 60,
+    error_call = caller_env()
 ) {
 
-  if (expiration > 21600) stop("`expiration` cannot be more than 15 days (21600)")
+  if (expiration > 21600) {
+    cli::cli_abort("`expiration` cannot be more than 15 days (21600)",
+                 call = error_call)
+  }
 
   burl <- paste0(host, "/sharing/rest/generateToken")
 
@@ -159,20 +163,19 @@ auth_user <- function(
     f = "json"
   )
 
-  resp <- httr2::req_perform(req)
+  resp <- httr2::req_perform(req, error_call = error_call)
 
   token_raw <- httr2::resp_body_string(resp)
 
   token <- RcppSimdJson::fparse(token_raw)
 
-  detect_errors(token)
+  detect_errors(token, error_call = error_call)
 
   # return the token
   httr2::oauth_token(
     token[["token"]],
     expires_in = expiration
   )
-
 }
 
 
@@ -207,7 +210,8 @@ set_auth_token <- function(token, quietly = FALSE) {
 refresh_token <- function(
     token,
     client = Sys.getenv("ARCGIS_CLIENT"),
-    host = arc_host()
+    host = arc_host(),
+    error_call = caller_env()
 ) {
 
   token_url <- paste(
@@ -225,11 +229,13 @@ refresh_token <- function(
   cur_time <- as.numeric(Sys.time())
 
   if (is.null(token[["refresh_token"]])) {
-    stop("`token` has expired and no `refresh_token` available")
+    cli::cli_abort("`token` has expired and no `refresh_token` available",
+                 call = error_call)
   } else
     # if it has a refresh check to see if refresh hasn't expired
     if ((cur_time + token[["refresh_token_expires_in"]]) < cur_time) {
-      stop("`refresh_token` has gone past its expiry")
+      cli::cli_abort("`refresh_token` has gone past its expiry",
+                   call = error_call)
     }
 
   # should be able to refresh, go ahead.
@@ -247,7 +253,8 @@ validate_or_refresh_token <- function(
     token,
     client = Sys.getenv("ARCGIS_CLIENT"),
     host = arc_host(),
-    refresh_threshold = 0
+    refresh_threshold = 0,
+    error_call = caller_env()
 ) {
 
   cur_time <- as.numeric(Sys.time())
@@ -255,7 +262,7 @@ validate_or_refresh_token <- function(
   # the idea being if the token is going to expire soon, refresh it
   if (token[["expires_at"]] - refresh_threshold <= cur_time) {
     # if it is refresh the token
-    token <- refresh_token(client, host, token)
+    token <- refresh_token(client, host, token, error_call = error_call)
   } else {
     # if not return token
     token

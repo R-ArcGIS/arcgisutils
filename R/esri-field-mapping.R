@@ -45,9 +45,15 @@
 #' @export
 #' @rdname field_mapping
 #' @param .data an object of class `data.frame`.
-infer_esri_type <- function(.data) {
+infer_esri_type <- function(.data, call = caller_env()) {
 
-  if (!inherits(.data, "data.frame")) stop("`.data` must be a data frame like object")
+  if (!inherits(.data, "data.frame")) {
+    cli::cli_abort(
+      "`.data` must be a data frame like object",
+      call = call
+    )
+  }
+
   if (inherits(.data, "sf")) .data <- sf::st_drop_geometry(.data)
 
   if (nrow(.data) == 0) {
@@ -88,10 +94,10 @@ infer_esri_type <- function(.data) {
 #' @param fields a data.frame containing, at least, the columns `type` and `name`.
 #'  Typically retrieved from the `field` metadata frome a `FeatureLayer` or `Table`.
 #'  Also can use the output of `infer_esri_type()`.
-#'
-remote_ptype_tbl <- function(fields) {
+#' @inheritParams rlang::check_installed
+remote_ptype_tbl <- function(fields, call = caller_env()) {
 
-  rlang::check_installed("dbplyr")
+  rlang::check_installed("dbplyr", call = call)
 
   ftype <- fields[["type"]]
   fname <- fields[["name"]]
@@ -107,7 +113,7 @@ remote_ptype_tbl <- function(fields) {
 #' @export
 #' @rdname field_mapping
 #' @param field_type a character of a desired Esri field type. See details for more.
-get_ptype <- function(field_type) {
+get_ptype <- function(field_type, call = caller_env()) {
   res <- switch(
     field_type,
     "esriFieldTypeSmallInteger" = integer(1),
@@ -123,7 +129,12 @@ get_ptype <- function(field_type) {
     "esriFieldTypeGeometry" = numeric(1)
   )
 
-  if (is.null(res)) stop("Column of type `", field_type, "` cannot be mapped")
+  if (is.null(res)) {
+    cli::cli_abort(
+      paste0("Column of type `", field_type, "` cannot be mapped"),
+      call = call
+    )
+  }
 
   res
 }

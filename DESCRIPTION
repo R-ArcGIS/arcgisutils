@@ -11,8 +11,9 @@ Language: en
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/R-ArcGIS/arcgisutils, https://r.esri.com/arcgisutils/
 BugReports: https://github.com/R-ArcGIS/arcgisutils/issues
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Imports: 
+    cli,
     httr2,
     jsonify,
     Rcpp,
