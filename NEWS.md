@@ -1,4 +1,4 @@
-# arcgisutils (development version)
+# arcgisutils 0.2.0
 
 - `parse_esri_json()` will return an empty `data.frame` in the presence of empty results an error. If an error is present, the error is reported
 - Breaking change to how authorization tokens are handled
