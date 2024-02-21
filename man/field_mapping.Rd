@@ -6,14 +6,34 @@
 \alias{get_ptype}
 \title{Esri field type mapping}
 \usage{
-infer_esri_type(.data)
+infer_esri_type(
+  .data,
+  arg = rlang::caller_arg(.data),
+  call = rlang::caller_env()
+)
 
-remote_ptype_tbl(fields)
+remote_ptype_tbl(fields, call = rlang::caller_env())
 
-get_ptype(field_type)
+get_ptype(field_type, call = rlang::caller_env())
 }
 \arguments{
 \item{.data}{an object of class \code{data.frame}.}
+
+\item{arg}{An argument name in the current function.}
+
+\item{call}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
+
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
+
+Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
 
 \item{fields}{a data.frame containing, at least, the columns \code{type} and \code{name}.
 Typically retrieved from the \code{field} metadata from a \code{FeatureLayer} or \code{Table}.

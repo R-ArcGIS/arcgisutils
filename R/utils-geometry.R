@@ -12,6 +12,7 @@
 #' - `MULTIPOLYGON`:  `esriGeometryPolygon`
 #'
 #' @param x an object of class `data.frame`, `sf`, `sfc`, or `sfg`.
+#' @inheritParams cli::cli_abort
 #' @returns returns a character scalar of the corresponding Esri geometry type
 #' @export
 #' @examples

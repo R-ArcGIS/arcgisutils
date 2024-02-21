@@ -49,6 +49,7 @@
 #'
 #' @param x an object of class `sfg`
 #' @param crs a CRS ID, crs object, or a well-known text representation of CRS
+#' @inheritParams cli::cli_abort
 #' @examples
 #' library(sf)
 #' as_esri_geometry(st_point(c(0, 1, 3, 4)))
@@ -77,9 +78,6 @@ as_esri_geometry <- function(x, crs = 4326, ...) {
 #   jsonify::to_json(c(as.list(x), crs_text), unbox = TRUE)
 #
 # }
-
-
-
 
 # Esri Features Array -----------------------------------------------------
 
@@ -112,9 +110,9 @@ as_geometry <- function(x, crs, ...) {
 }
 
 #' @export
-as_geometry.POINT <- function(x, crs = 4326, ...) {
+as_geometry.POINT <- function(x, crs = 4326, ..., call = rlang::current_env()) {
 
-  crs_text <- validate_crs(crs)
+  crs_text <- validate_crs(crs, call = call)
 
   dims <- determine_dims(x)
 
@@ -129,38 +127,48 @@ as_geometry.POINT <- function(x, crs = 4326, ...) {
 }
 
 #' @export
-as_geometry.MULTIPOINT <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.MULTIPOINT <- function(x, crs = 4326, ..., call = rlang::current_env()) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfc_multipoint_impl(list(x))[[1]]
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 }
 
 #' @export
-as_geometry.LINESTRING <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.LINESTRING <- function(x, crs = 4326, ..., call = rlang::current_env()) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfc_linestring_impl(list(x))[[1]]
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 }
 
 #' @export
-as_geometry.MULTILINESTRING <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.MULTILINESTRING <- function(
+    x,
+    crs = 4326,
+    ...,
+    call = rlang::current_env()
+) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfc_multilinestring_impl(list(x))[[1]]
 
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 }
 
 #' @export
-as_geometry.POLYGON <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.POLYGON <- function(x, crs = 4326, ..., call = rlang::current_env()) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfg_polygon_impl(x)
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 
 }
 
 #' @export
-as_geometry.MULTIPOLYGON <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.MULTIPOLYGON <- function(
+    x,
+    crs = 4326,
+    ...,
+    call = rlang::current_env()
+) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfc_multipolygon_impl(list(x))[[1]]
   res <- c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
   res
@@ -182,16 +190,16 @@ as_geometry.MULTIPOLYGON <- function(x, crs = 4326, ...) {
 
 #' @export
 #' @rdname esri_geometry
-as_features <- function(x, ...) {
+as_features <- function(x, ..., call = rlang::caller_env()) {
   UseMethod("as_features")
 }
 
 
 
 #' @export
-as_features.sfc <- function(x, ...) {
+as_features.sfc <- function(x, ..., call = rlang::caller_env()) {
 
-  geoms <- featureset_geometry(x)
+  geoms <- featureset_geometry(x, call = call)
 
   res <- lapply(
     geoms[[1]],
@@ -205,7 +213,7 @@ as_features.sfc <- function(x, ...) {
 as_features.sf <- function(x, ...) {
 
   geo <- sf::st_geometry(x)
-  geom_list <- featureset_geometry(geo)
+  geom_list <- featureset_geometry(geo, call = call)
   x <- sf::st_drop_geometry(x)
 
   # handle dates
@@ -277,7 +285,8 @@ as_featureset <- function(x, ...) {
 }
 
 
-
+#' @inheritParams cli::cli_abort
+#' @inheritParams rlang::caller_arg
 #' @export
 as_featureset.sfc <- function(
     x,
@@ -302,9 +311,9 @@ as_featureset.sfc <- function(
 
     crs <- 4326
   }
-  crs_text <- validate_crs(crs)
+  crs_text <- validate_crs(crs, call = call)
 
-  geoms <- featureset_geometry(x)
+  geoms <- featureset_geometry(x, call = call)
 
   res <- lapply(
     geoms[[1]],
@@ -321,7 +330,13 @@ as_featureset.sfc <- function(
 }
 
 #' @export
-as_featureset.sf <- function(x, crs = sf::st_crs(x), ...) {
+as_featureset.sf <- function(
+    x,
+    crs = sf::st_crs(x),
+    ...,
+    arg = rlang::caller_arg(x),
+    call = rlang::caller_env()
+) {
 
   # check CRS first
   if (is.na(sf::st_crs(x)) && is.na(sf::st_crs(crs))) {
@@ -337,10 +352,10 @@ as_featureset.sf <- function(x, crs = sf::st_crs(x), ...) {
     crs <- 4326
   }
 
-  crs_text <- validate_crs(crs)
+  crs_text <- validate_crs(crs, call = call)
 
   geo <- sf::st_geometry(x)
-  geom_list <- featureset_geometry(geo)
+  geom_list <- featureset_geometry(geo, call = call)
   x <- sf::st_drop_geometry(x)
 
   # handle dates
@@ -425,7 +440,7 @@ featureset_geometry <- function(x, call = rlang::caller_env()) {
 
   # identify geometry type
   # TODO this duplicates the above call..maybe this can be simplified
-  esri_geo_type <- determine_esri_geo_type(x)
+  esri_geo_type <- determine_esri_geo_type(x, call = call)
 
   # error out if not one of the 6 types above
   if (is.null(esri_geo_type)) {

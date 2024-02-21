@@ -7,6 +7,8 @@
 #' See [`sf::st_crs()`] for more details on valid representations.
 #'
 #' @param crs a representation of a coordinate reference system.
+#' @inheritParams cli::cli_abort
+#' @inheritParams rlang::caller_arg
 #'
 #' @export
 #' @examples

@@ -36,6 +36,7 @@
 #'   [popupInfo](https://developers.arcgis.com/documentation/common-data-types/popupinfo.htm)
 #'   object defining the pop-up window content for the layer. There is no helper for
 #'   popupInfo objects.
+#' @inheritParams cli::cli_abort
 #'
 #' @returns
 #'

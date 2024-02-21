@@ -11,7 +11,6 @@ token_env <- rlang::env()
 #'   vector of token names to be unset.
 #' @param ... named arguments to set `httr2_token`. Must be valid names and must be an `httr2_token`.
 #' @inheritParams cli::cli_abort
-#' @importFrom cli cli_abort
 #' @details
 #'
 #' It is possible to have multiple authorization tokens in one session. These

@@ -45,6 +45,8 @@
 #' @export
 #' @rdname field_mapping
 #' @param .data an object of class `data.frame`.
+#' @inheritParams cli::cli_abort
+#' @inheritParams rlang::caller_arg
 infer_esri_type <- function(.data, arg = rlang::caller_arg(.data), call = rlang::caller_env()) {
 
   if (!inherits(.data, "data.frame")) {
