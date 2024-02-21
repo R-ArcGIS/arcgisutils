@@ -16,8 +16,7 @@ returns a character scalar of the corresponding Esri geometry type
 Takes an \code{sf} or \code{sfc} object and returns the appropriate Esri geometry type.
 }
 \details{
-Alternatively, if
-#' ### Geometry type mapping
+\subsection{Geometry type mapping}{
 \itemize{
 \item \code{POINT}:  \code{esriGeometryPoint}
 \item \code{MULTIPOINT}:  \code{esriGeometryMultipoint}
@@ -27,7 +26,7 @@ Alternatively, if
 \item \code{MULTIPOLYGON}:  \code{esriGeometryPolygon}
 }
 }
+}
 \examples{
-
 determine_esri_geo_type(sf::st_point(c(0, 0)))
 }

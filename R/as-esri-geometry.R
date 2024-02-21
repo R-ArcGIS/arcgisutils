@@ -67,7 +67,7 @@
 #' @rdname esri_geometry
 #' @returns a json Esri geometry object
 as_esri_geometry <- function(x, crs = 4326, ...) {
-  jsonify::to_json(as_geometry(x, crs, ...), unbox = TRUE)
+  unclass(jsonify::to_json(as_geometry(x, crs, ...), unbox = TRUE))
 }
 
 
@@ -86,7 +86,7 @@ as_esri_geometry <- function(x, crs = 4326, ...) {
 #' @export
 #' @rdname esri_geometry
 as_esri_features <- function(x, ...) {
-  jsonify::to_json(as_features(x, ...), unbox = TRUE)
+  unclass(jsonify::to_json(as_features(x, ...), unbox = TRUE))
 }
 
 
@@ -99,7 +99,7 @@ as_esri_features <- function(x, ...) {
 #' @rdname esri_geometry
 #' @export
 as_esri_featureset <- function(x, ...) {
-  jsonify::to_json(as_featureset(x, ...), unbox = TRUE)
+  unclass(jsonify::to_json(as_featureset(x, ...), unbox = TRUE))
 }
 
 

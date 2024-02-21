@@ -15,8 +15,8 @@ parse_esri_json(string, ...)
 A data.frame. If geometry is found, returns an sf object.
 }
 \description{
-Parses a string of Esri JSON into the appropriate type. If there is no geometry
-a data.frame is returned. If there is geometry, an sf object is returned.
+Parses an Esri FeatureSet JSON object into an R object. If there is no
+geometry present, a data.frame is returned. If there is geometry, an sf object is returned.
 }
 \examples{
 
