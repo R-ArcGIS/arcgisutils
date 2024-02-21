@@ -4,10 +4,15 @@
 \alias{determine_esri_geo_type}
 \title{Determine Esri Geometry type}
 \usage{
-determine_esri_geo_type(x)
+determine_esri_geo_type(x, call = caller_env())
 }
 \arguments{
 \item{x}{an object of class \code{data.frame}, \code{sf}, \code{sfc}, or \code{sfg}.}
+
+\item{call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 }
 \value{
 returns a character scalar of the corresponding Esri geometry type
@@ -28,5 +33,6 @@ Takes an \code{sf} or \code{sfc} object and returns the appropriate Esri geometr
 }
 }
 \examples{
+
 determine_esri_geo_type(sf::st_point(c(0, 0)))
 }

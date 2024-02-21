@@ -18,22 +18,29 @@ auth_client(
   expiration = 120
 )
 
-auth_binding()
+auth_binding(error_call = caller_env())
 
 auth_user(
   username = Sys.getenv("ARCGIS_USER"),
   password = Sys.getenv("ARCGIS_PASSWORD"),
   host = arc_host(),
-  expiration = 60
+  expiration = 60,
+  error_call = caller_env()
 )
 
-refresh_token(token, client = Sys.getenv("ARCGIS_CLIENT"), host = arc_host())
+refresh_token(
+  token,
+  client = Sys.getenv("ARCGIS_CLIENT"),
+  host = arc_host(),
+  error_call = caller_env()
+)
 
 validate_or_refresh_token(
   token,
   client = Sys.getenv("ARCGIS_CLIENT"),
   host = arc_host(),
-  refresh_threshold = 0
+  refresh_threshold = 0,
+  error_call = caller_env()
 )
 }
 \arguments{

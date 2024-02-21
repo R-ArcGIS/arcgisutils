@@ -24,14 +24,14 @@
 #' @returns returns a list object
 fetch_layer_metadata <- function(url, token = NULL, call = rlang::caller_env()) {
 
-  req <- arc_base_req(url, token, call)
+  req <- arc_base_req(url, token, call = call)
 
   # add f=json to the url for querying
   req <- httr2::req_url_query(req, f = "json")
 
   # process the request and capture the response string
   resp_string <- httr2::resp_body_string(
-    httr2::req_perform(req)
+    httr2::req_perform(req, error_call = call)
   )
 
   # process the response string
@@ -52,7 +52,7 @@ fetch_layer_metadata <- function(url, token = NULL, call = rlang::caller_env()) 
 #' the contents of the error message are bubbled up.
 #'
 #' @param response a [`httr2::response`] object.
-#' @param error_call default [`rlang::caller_env()`]. The environment from which
+#' @param error_call default [`caller_env()`]. The environment from which
 #'  to throw the error from.
 #' @returns
 #'
@@ -72,7 +72,7 @@ fetch_layer_metadata <- function(url, token = NULL, call = rlang::caller_env()) 
 #'
 #'   detect_errors(response)
 #' }
-detect_errors <- function(response, error_call = rlang::caller_env()) {
+detect_errors <- function(response, error_call = caller_env()) {
 
   e <- response[["error"]]
 
@@ -91,7 +91,7 @@ detect_errors <- function(response, error_call = rlang::caller_env()) {
       paste0(err_msg, collapse = "\n")
     )
 
-    rlang::abort(
+    cli::cli_abort(
       paste0(full_msg, collapse = ""),
       call = error_call
     )

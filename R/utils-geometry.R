@@ -12,11 +12,13 @@
 #' - `MULTIPOLYGON`:  `esriGeometryPolygon`
 #'
 #' @param x an object of class `data.frame`, `sf`, `sfc`, or `sfg`.
+#' @inheritParams rlang::args_error_context
 #' @returns returns a character scalar of the corresponding Esri geometry type
 #' @export
 #' @examples
+#'
 #' determine_esri_geo_type(sf::st_point(c(0, 0)))
-determine_esri_geo_type <- function(x) {
+determine_esri_geo_type <- function(x, call = caller_env()) {
 
   # if `geom` is a data.frame return NULL
   if (inherits(x, "data.frame") && !inherits(x, "sf")) return(NULL)
@@ -30,7 +32,9 @@ determine_esri_geo_type <- function(x) {
     "MULTILINESTRING" = "esriGeometryPolyline",
     "POLYGON" = "esriGeometryPolygon",
     "MULTIPOLYGON" = "esriGeometryPolygon",
-    stop("`", geom_type, "` is not a supported type")
+    cli::cli_abort(
+      paste0("`", geom_type, "` is not a supported type"),
+      call = call)
   )
 }
 
@@ -60,11 +64,10 @@ as_extent <- function(x, crs = sf::st_crs(x)) {
   if (is.na(crs)) {
     crs <- NULL
   } else {
-    crs <- validate_crs(crs)
+    crs <- validate_crs(crs, error_call = call)
   }
 
   bbox <- as.list(sf::st_bbox(x))
   compact(c(bbox, crs))
 
 }
-
