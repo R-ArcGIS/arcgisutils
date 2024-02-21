@@ -279,13 +279,27 @@ as_featureset <- function(x, ...) {
 
 
 #' @export
-as_featureset.sfc <- function(x, crs = sf::st_crs(x), ...) {
+as_featureset.sfc <- function(
+    x,
+    crs = sf::st_crs(x),
+    ...,
+    arg = rlang::caller_arg(x),
+    call = rlang::caller_env()
+) {
 
   # check CRS first
   # TODO have better CRS handling. We prefer having _no_ crs over
   # a wrong one.
   if (is.na(sf::st_crs(x)) && is.na(sf::st_crs(crs))) {
-    warning("CRS missing. Setting to EPSG:4326")
+    cli::cli_warn(
+      c(
+        "{.arg {arg}} is missing a CRS.",
+        "i" = "Setting to {.val EPSG:4326}"
+      ),
+      call = call,
+      arg = arg
+    )
+
     crs <- 4326
   }
   crs_text <- validate_crs(crs)
@@ -310,8 +324,16 @@ as_featureset.sfc <- function(x, crs = sf::st_crs(x), ...) {
 as_featureset.sf <- function(x, crs = sf::st_crs(x), ...) {
 
   # check CRS first
-  if (is.na(sf::st_crs(crs))) {
-    warning("CRS missing. Setting to EPSG:4326")
+  if (is.na(sf::st_crs(x)) && is.na(sf::st_crs(crs))) {
+    cli::cli_warn(
+      c(
+        "{.arg {arg}} is missing a CRS.",
+        "i" = "Setting to {.val EPSG:4326}"
+      ),
+      call = call,
+      arg = arg
+    )
+
     crs <- 4326
   }
 

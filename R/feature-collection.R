@@ -72,6 +72,21 @@ as_layer <- function(
       "{.arg name} must be a scalar character vector.",
       call = call
     )
+  } else if (!rlang::is_scalar_character(title)) {
+    cli::cli_abort(
+      "{.arg title} must be a scalar character vector.",
+      call = call
+    )
+  } else if (!nzchar(name)) {
+    cli::cli_abort(
+      "{.arg name} must not be empty.",
+      call = call
+    )
+  } else if (!nzchar(title)) {
+    cli::cli_abort(
+      "{.arg name} must not be empty.",
+      call = call
+    )
   }
 
   oid_field <- layer_definition[["objectIdField"]]
@@ -140,13 +155,36 @@ as_layer_definition <- function(
     min_scale = 0,
     templates = NULL,
     type_id_field = NULL,
-    types = NULL
+    types = NULL,
+    call = rlang::caller_env()
 ) {
 
-  stopifnot(
-    "`x` must inherit `data.frame` class" = inherits(x, "data.frame"),
-    "`object_id_field` must be a scalar" = identical(length(object_id_field), 1L)
-  )
+  if (!rlang::inherits_any(x, "data.frame")) {
+    cli::cli_abort(
+      "Expected {.cls data.frame} found {.obj_type_friendly {x}}",
+      call = call
+    )
+  } else if (!rlang::is_scalar_character(name)) {
+    cli::cli_abort(
+      "{.arg name} must be a scalar character vector.",
+      call = call
+    )
+  } else if (!rlang::is_scalar_character(object_id_field)) {
+    cli::cli_abort(
+      "{.arg object_id_field} must be a scalar character vector.",
+      call = call
+    )
+  } else if (!nzchar(name)) {
+    cli::cli_abort(
+      "{.arg name} must not be empty.",
+      call = call
+    )
+  } else if (!nzchar(object_id_field)) {
+    cli::cli_abort(
+      "{.arg object_id_field} must not be empty.",
+      call = call
+    )
+  }
 
   geo_type <- determine_esri_geo_type(x)
   # get geo-type. If NULL `Table` else `Feature Layer`
@@ -158,7 +196,10 @@ as_layer_definition <- function(
 
   # check display field
   if (!is.null(display_field) && !(display_field %in% colnames(x))) {
-    stop("`display_field` must be a column in `x`")
+    cli::cli_abort(
+      "{.arg display_field} must be a column in {.arg x}",
+      call = call
+    )
   }
 
   # check OID / create if needed
@@ -222,8 +263,17 @@ as_layer_definition <- function(
 #' @param layers a list of layers as created by `as_layer()`.
 #' @param show_legend default `FALSE`. Logical scalar indicating if this layer
 #'   should be shown in the legend in client applications.
-as_feature_collection <- function(layers = list(), show_legend = TRUE) {
-  stopifnot("`layers` must be a list" = is.list(layers))
+as_feature_collection <- function(
+    layers = list(),
+    show_legend = TRUE,
+    call = rlang::caller_env()
+) {
+  if (!rlang::is_list(layers)) {
+    cli::cli_abort(c(
+      "Invalid {.arg layers} object.",
+      "i" = "expected {.cls list}, found {.obj_type_friendly {layers}}"
+    ), call = call)
+  }
   c(list(layers = layers), showLegend = show_legend)
 }
 
