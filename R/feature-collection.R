@@ -58,16 +58,13 @@ as_layer <- function(
     id = NULL,
     layer_url = NULL,
     legend_url = NULL,
-    popup_info = NULL,
-    call = caller_env()
+    popup_info = NULL
 ) {
 
   stopifnot(
     "`x` must have a data.frame base class" = inherits(x, "data.frame"),
     "`name` must be a scalar" = identical(length(name), 1L)
   )
-
-  check_string(name, call = call)
 
   oid_field <- layer_definition[["objectIdField"]]
   # check that the OID field is present in x if not, create it.
@@ -76,8 +73,7 @@ as_layer <- function(
   if (!oid_field %in% colnames(x)) {
     x[[oid_field]] <- 1:nrow(x)
   } else if (!is.numeric(x[[oid_field]])) {
-    cli::cli_abort("`x` must have a numeric Object ID field",
-                 call = call)
+    stop("`x` must have a numeric Object ID field")
   } else if (!is.integer(x[[oid_field]])) {
     x[[oid_field]] <- as.integer(x[[oid_field]])
   }
@@ -122,7 +118,6 @@ as_layer <- function(
 #'   This is used when the `type_id_field` is populated. NOTE there are no
 #'   helper functions to create type objects. Any type list objects must match the
 #'   json structure when passed to `jsonify::to_json(x, unbox = TRUE)`.
-#' @inheritParams rlang::args_error_context
 #' @export
 #' @rdname layer_json
 as_layer_definition <- function(
@@ -137,8 +132,7 @@ as_layer_definition <- function(
     min_scale = 0,
     templates = NULL,
     type_id_field = NULL,
-    types = NULL,
-    call = caller_env()
+    types = NULL
 ) {
 
   stopifnot(
@@ -146,7 +140,7 @@ as_layer_definition <- function(
     "`object_id_field` must be a scalar" = identical(length(object_id_field), 1L)
   )
 
-  geo_type <- determine_esri_geo_type(x, call = call)
+  geo_type <- determine_esri_geo_type(x)
   # get geo-type. If NULL `Table` else `Feature Layer`
   type <- if (is.null(geo_type)) {
     "Table"
@@ -156,9 +150,7 @@ as_layer_definition <- function(
 
   # check display field
   if (!is.null(display_field) && !(display_field %in% colnames(x))) {
-    cli::cli_abort(
-      "`display_field` must be a column in `x`",
-      call = call)
+    stop("`display_field` must be a column in `x`")
   }
 
   # check OID / create if needed

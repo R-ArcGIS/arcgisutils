@@ -4,12 +4,12 @@
 \alias{detect_errors}
 \title{Detect errors in parsed json response}
 \usage{
-detect_errors(response, error_call = caller_env())
+detect_errors(response, error_call = rlang::caller_env())
 }
 \arguments{
 \item{response}{a \code{\link[httr2:response]{httr2::response}} object.}
 
-\item{error_call}{default \code{\link[=caller_env]{caller_env()}}. The environment from which
+\item{error_call}{default \code{\link[rlang:stack]{rlang::caller_env()}}. The environment from which
 to throw the error from.}
 }
 \value{

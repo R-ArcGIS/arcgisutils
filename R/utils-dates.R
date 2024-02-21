@@ -32,7 +32,7 @@ is_date <- function(x, tz) inherits(x, c("Date", "POSIXt"))
 #' @export
 date_to_ms <- function(x, tz = "UTC") {
   if (!is_date(x)) {
-    cli::cli_abort("`x` must inherit the `Date` or `POSIXt` class")
+    stop("`x` must inherit the `Date` or `POSIXt` class")
   }
   as.numeric(as.POSIXlt(x, tz = tz)) * 1000
 }

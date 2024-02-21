@@ -6,9 +6,9 @@
 \alias{count_features}
 \title{Retrieve metadata}
 \usage{
-fetch_layer_metadata(request, token, error_call = caller_env())
+fetch_layer_metadata(request, token)
 
-count_features(request, token, error_call = caller_env())
+count_features(request, token)
 }
 \arguments{
 \item{request}{an \code{\link[httr2:request]{httr2::request}} object. Should be the \code{base_req}
@@ -16,11 +16,6 @@ object that is created from a provided feature / server url}
 
 \item{token}{scalar string the \code{access_token} e.g. from \code{auth_code()}
 or \code{auth_client()}.}
-
-\item{error_call}{The execution environment of a currently
-running function, e.g. \code{caller_env()}. The function will be
-mentioned in error messages as the source of the error. See the
-\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 }
 \value{
 \itemize{

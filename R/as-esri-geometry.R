@@ -66,8 +66,8 @@
 #' @export
 #' @rdname esri_geometry
 #' @returns a json Esri geometry object
-as_esri_geometry <- function(x, crs = 4326, ..., call = caller_env()) {
-  jsonify::to_json(as_geometry(x, crs, ..., call = call), unbox = TRUE)
+as_esri_geometry <- function(x, crs = 4326, ...) {
+  jsonify::to_json(as_geometry(x, crs, ...), unbox = TRUE)
 }
 
 
@@ -85,8 +85,8 @@ as_esri_geometry <- function(x, crs = 4326, ..., call = caller_env()) {
 
 #' @export
 #' @rdname esri_geometry
-as_esri_features <- function(x, ..., call = caller_env()) {
-  jsonify::to_json(as_features(x, ..., call = call), unbox = TRUE)
+as_esri_features <- function(x, ...) {
+  jsonify::to_json(as_features(x, ...), unbox = TRUE)
 }
 
 
@@ -98,8 +98,8 @@ as_esri_features <- function(x, ..., call = caller_env()) {
 #'
 #' @rdname esri_geometry
 #' @export
-as_esri_featureset <- function(x, ..., call = caller_env()) {
-  jsonify::to_json(as_featureset(x, ..., call = call), unbox = TRUE)
+as_esri_featureset <- function(x, ...) {
+  jsonify::to_json(as_featureset(x, ...), unbox = TRUE)
 }
 
 
@@ -112,9 +112,9 @@ as_geometry <- function(x, crs, ...) {
 }
 
 #' @export
-as_geometry.POINT <- function(x, crs = 4326, ..., call = caller_env()) {
+as_geometry.POINT <- function(x, crs = 4326, ...) {
 
-  crs_text <- validate_crs(crs, error_call = call)
+  crs_text <- validate_crs(crs)
 
   dims <- determine_dims(x)
 
@@ -129,38 +129,38 @@ as_geometry.POINT <- function(x, crs = 4326, ..., call = caller_env()) {
 }
 
 #' @export
-as_geometry.MULTIPOINT <- function(x, crs = 4326, ..., call = caller_env()) {
-  crs_text <- validate_crs(crs, error_call = call)
+as_geometry.MULTIPOINT <- function(x, crs = 4326, ...) {
+  crs_text <- validate_crs(crs)
   geometry <- sfc_multipoint_impl(list(x))[[1]]
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 }
 
 #' @export
-as_geometry.LINESTRING <- function(x, crs = 4326, ..., call = caller_env()) {
-  crs_text <- validate_crs(crs, error_call = call)
+as_geometry.LINESTRING <- function(x, crs = 4326, ...) {
+  crs_text <- validate_crs(crs)
   geometry <- sfc_linestring_impl(list(x))[[1]]
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 }
 
 #' @export
-as_geometry.MULTILINESTRING <- function(x, crs = 4326, ..., call = caller_env()) {
-  crs_text <- validate_crs(crs, error_call = call)
+as_geometry.MULTILINESTRING <- function(x, crs = 4326, ...) {
+  crs_text <- validate_crs(crs)
   geometry <- sfc_multilinestring_impl(list(x))[[1]]
 
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 }
 
 #' @export
-as_geometry.POLYGON <- function(x, crs = 4326, ..., call = caller_env()) {
-  crs_text <- validate_crs(crs, error_call = call)
+as_geometry.POLYGON <- function(x, crs = 4326, ...) {
+  crs_text <- validate_crs(crs)
   geometry <- sfg_polygon_impl(x)
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 
 }
 
 #' @export
-as_geometry.MULTIPOLYGON <- function(x, crs = 4326, ..., call = caller_env()) {
-  crs_text <- validate_crs(crs, error_call = call)
+as_geometry.MULTIPOLYGON <- function(x, crs = 4326, ...) {
+  crs_text <- validate_crs(crs)
   geometry <- sfc_multipolygon_impl(list(x))[[1]]
   res <- c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
   res
@@ -189,9 +189,9 @@ as_features <- function(x, ...) {
 
 
 #' @export
-as_features.sfc <- function(x, ..., call = caller_env()) {
+as_features.sfc <- function(x, ...) {
 
-  geoms <- featureset_geometry(x, call = call)
+  geoms <- featureset_geometry(x)
 
   res <- lapply(
     geoms[[1]],
@@ -202,10 +202,10 @@ as_features.sfc <- function(x, ..., call = caller_env()) {
 }
 
 #' @export
-as_features.sf <- function(x, ..., call = caller_env()) {
+as_features.sf <- function(x, ...) {
 
   geo <- sf::st_geometry(x)
-  geom_list <- featureset_geometry(geo, call = call)
+  geom_list <- featureset_geometry(geo)
   x <- sf::st_drop_geometry(x)
 
   # handle dates
@@ -279,7 +279,7 @@ as_featureset <- function(x, ...) {
 
 
 #' @export
-as_featureset.sfc <- function(x, crs = sf::st_crs(x), ..., call = caller_env()) {
+as_featureset.sfc <- function(x, crs = sf::st_crs(x), ...) {
 
   # check CRS first
   # TODO have better CRS handling. We prefer having _no_ crs over
@@ -288,9 +288,9 @@ as_featureset.sfc <- function(x, crs = sf::st_crs(x), ..., call = caller_env()) 
     warning("CRS missing. Setting to EPSG:4326")
     crs <- 4326
   }
-  crs_text <- validate_crs(crs, error_call = call)
+  crs_text <- validate_crs(crs)
 
-  geoms <- featureset_geometry(x, call = call)
+  geoms <- featureset_geometry(x)
 
   res <- lapply(
     geoms[[1]],
@@ -307,7 +307,7 @@ as_featureset.sfc <- function(x, crs = sf::st_crs(x), ..., call = caller_env()) 
 }
 
 #' @export
-as_featureset.sf <- function(x, crs = sf::st_crs(x), ..., call = caller_env()) {
+as_featureset.sf <- function(x, crs = sf::st_crs(x), ...) {
 
   # check CRS first
   if (is.na(sf::st_crs(crs))) {
@@ -315,10 +315,10 @@ as_featureset.sf <- function(x, crs = sf::st_crs(x), ..., call = caller_env()) {
     crs <- 4326
   }
 
-  crs_text <- validate_crs(crs, error_call = call)
+  crs_text <- validate_crs(crs)
 
   geo <- sf::st_geometry(x)
-  geom_list <- featureset_geometry(geo, call = call)
+  geom_list <- featureset_geometry(geo)
   x <- sf::st_drop_geometry(x)
 
   # handle dates
@@ -393,7 +393,7 @@ as_featureset.data.frame <- function(x, ...) {
 #' @param x an object of class `sfc` or `sf`
 #' @keywords internal
 #' @noRd
-featureset_geometry <- function(x, call = caller_env()) {
+featureset_geometry <- function(x) {
   # extract geometry
   x <- sf::st_geometry(x)
 
@@ -402,13 +402,11 @@ featureset_geometry <- function(x, call = caller_env()) {
 
   # identify geometry type
   # TODO this duplicates the above call..maybe this can be simplified
-  esri_geo_type <- determine_esri_geo_type(x, call = call)
+  esri_geo_type <- determine_esri_geo_type(x)
 
   # error out if not one of the 6 types above
   if (is.null(esri_geo_type)) {
-    cli::cli_abort(
-      paste0("`", geom_type, "` is not a supported Esri geometry type"),
-      call = call)
+    stop("`", geom_type, "` is not a supported Esri geometry type")
   }
 
   # convert geometry

@@ -4,15 +4,10 @@
 \alias{validate_crs}
 \title{Validate CRS object}
 \usage{
-validate_crs(crs, error_call = caller_env())
+validate_crs(crs)
 }
 \arguments{
 \item{crs}{a representation of a coordinate reference system.}
-
-\item{error_call}{The execution environment of a currently
-running function, e.g. \code{caller_env()}. The function will be
-mentioned in error messages as the source of the error. See the
-\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 }
 \value{
 Returns a list of length 1 with an element named \code{spatialReference} which is itself

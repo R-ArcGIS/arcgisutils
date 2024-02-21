@@ -14,8 +14,7 @@ as_layer(
   id = NULL,
   layer_url = NULL,
   legend_url = NULL,
-  popup_info = NULL,
-  call = caller_env()
+  popup_info = NULL
 )
 
 as_layer_definition(
@@ -30,8 +29,7 @@ as_layer_definition(
   min_scale = 0,
   templates = NULL,
   type_id_field = NULL,
-  types = NULL,
-  call = caller_env()
+  types = NULL
 )
 
 as_feature_collection(layers = list(), show_legend = TRUE)
@@ -61,11 +59,6 @@ Used with WMS layers. The URL usually contains a GetLegendGraphic request.}
 \href{https://developers.arcgis.com/documentation/common-data-types/popupinfo.htm}{popupInfo}
 object defining the pop-up window content for the layer. There is no helper for
 popupInfo objects.}
-
-\item{call}{The execution environment of a currently
-running function, e.g. \code{caller_env()}. The function will be
-mentioned in error messages as the source of the error. See the
-\code{call} argument of \code{\link[rlang:abort]{abort()}} for more information.}
 
 \item{object_id_field}{a scalar character vector indicating the name of the
 object ID field in the dataset.}

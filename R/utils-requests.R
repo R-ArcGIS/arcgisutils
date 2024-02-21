@@ -13,7 +13,6 @@
 #'   object that is created from a provided feature / server url
 #' @param token scalar string the `access_token` e.g. from `auth_code()`
 #' or `auth_client()`.
-#' @inheritParams httr2::req_perform
 #' @export
 #' @name requests
 #' @examples
@@ -31,7 +30,7 @@
 #' @returns
 #' - `fetch_layer_metadata()` returns a list object
 #' - `count_features()` returns a scalar integer
-fetch_layer_metadata <- function(request, token, error_call = caller_env()) {
+fetch_layer_metadata <- function(request, token) {
   req_url <- httr2::req_body_form(
     request,
     f = "json",
@@ -39,19 +38,19 @@ fetch_layer_metadata <- function(request, token, error_call = caller_env()) {
   )
 
   resp_string <- httr2::resp_body_string(
-    httr2::req_perform(req_url, error_call = error_call)
+    httr2::req_perform(req_url)
   )
 
   meta <- RcppSimdJson::fparse(resp_string)
 
-  detect_errors(meta, error_call = error_call)
+  detect_errors(meta)
 
   meta
 }
 
 #' @export
 #' @name requests
-count_features <- function(request, token, error_call = caller_env()) {
+count_features <- function(request, token) {
 
   req_url <- httr2::req_body_form(
     httr2::req_url_path_append(request, "query"),
@@ -61,7 +60,7 @@ count_features <- function(request, token, error_call = caller_env()) {
     token = token
   )
 
-  resp <- httr2::req_perform(req_url, error_call = error_call)
+  resp <- httr2::req_perform(req_url)
 
   RcppSimdJson::fparse(
     httr2::resp_body_string(resp),
@@ -78,7 +77,7 @@ count_features <- function(request, token, error_call = caller_env()) {
 #' the contents of the error message are bubbled up.
 #'
 #' @param response a [`httr2::response`] object.
-#' @param error_call default [`caller_env()`]. The environment from which
+#' @param error_call default [`rlang::caller_env()`]. The environment from which
 #'  to throw the error from.
 #' @returns
 #'
@@ -99,7 +98,7 @@ count_features <- function(request, token, error_call = caller_env()) {
 #'
 #'   detect_errors(response)
 #' }
-detect_errors <- function(response, error_call = caller_env()) {
+detect_errors <- function(response, error_call = rlang::caller_env()) {
 
   e <- response[["error"]]
 
@@ -118,7 +117,7 @@ detect_errors <- function(response, error_call = caller_env()) {
       paste0(err_msg, collapse = "\n")
     )
 
-    cli::cli_abort(
+    rlang::abort(
       paste0(full_msg, collapse = ""),
       call = error_call
     )
