@@ -3,11 +3,14 @@
 \name{compact}
 \alias{compact}
 \alias{\%||\%}
+\alias{check_dots_named}
 \title{General utility functions}
 \usage{
 compact(.x)
 
 a \%||\% b
+
+check_dots_named(dots, call = rlang::caller_env())
 }
 \arguments{
 \item{.x}{a list}
@@ -15,6 +18,10 @@ a \%||\% b
 \item{a}{an R object}
 
 \item{b}{an R object}
+
+\item{dots}{a list collected from dots via \code{rlang::list2(...)}}
+
+\item{call}{default \code{rlang::caller_env()}. The caller environment passed to \code{cli::cli_abort()}}
 }
 \value{
 \itemize{
