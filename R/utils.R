@@ -33,8 +33,8 @@ compact <- function(.x) Filter(length, .x)
 
 #' @param dots a list collected from dots via `rlang::list2(...)`
 #' @param call default `rlang::caller_env()`. The caller environment passed to `cli::cli_abort()`
-#' @keywords internal
-#' @noRd
+#' @export
+#' @rdname utilities
 check_dots_named <- function(dots, call = rlang::caller_env()) {
   if (!rlang::is_named2(dots)) {
     cli::cli_abort(
