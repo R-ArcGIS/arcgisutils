@@ -9,7 +9,7 @@
 \alias{as_featureset}
 \title{Create Esri geometry objects}
 \usage{
-as_esri_geometry(x, crs = 4326, ...)
+as_esri_geometry(x, crs = 4326, ..., call = rlang::caller_env())
 
 as_esri_features(x, ..., call = rlang::caller_env())
 
@@ -27,6 +27,20 @@ as_featureset(x, ...)
 \item{crs}{the coordinate reference system of the FeatureSet. Must be interpretable by \code{sf::st_crs()}}
 
 \item{...}{additional arguments passed on to methods.}
+
+\item{call}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
+
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
+
+Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
 }
 \value{
 a json Esri geometry object
