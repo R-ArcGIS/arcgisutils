@@ -14,7 +14,8 @@ as_layer(
   id = NULL,
   layer_url = NULL,
   legend_url = NULL,
-  popup_info = NULL
+  popup_info = NULL,
+  call = rlang::caller_env()
 )
 
 as_layer_definition(
@@ -29,10 +30,15 @@ as_layer_definition(
   min_scale = 0,
   templates = NULL,
   type_id_field = NULL,
-  types = NULL
+  types = NULL,
+  call = rlang::caller_env()
 )
 
-as_feature_collection(layers = list(), show_legend = TRUE)
+as_feature_collection(
+  layers = list(),
+  show_legend = TRUE,
+  call = rlang::caller_env()
+)
 }
 \arguments{
 \item{x}{an object of class \code{data.frame}. This can be an \code{sf} object or \code{tibble} or
@@ -59,6 +65,20 @@ Used with WMS layers. The URL usually contains a GetLegendGraphic request.}
 \href{https://developers.arcgis.com/documentation/common-data-types/popupinfo.htm}{popupInfo}
 object defining the pop-up window content for the layer. There is no helper for
 popupInfo objects.}
+
+\item{call}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
+
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
+
+Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
 
 \item{object_id_field}{a scalar character vector indicating the name of the
 object ID field in the dataset.}

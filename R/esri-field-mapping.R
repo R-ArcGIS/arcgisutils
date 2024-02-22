@@ -45,9 +45,18 @@
 #' @export
 #' @rdname field_mapping
 #' @param .data an object of class `data.frame`.
-infer_esri_type <- function(.data) {
+#' @inheritParams cli::cli_abort
+#' @inheritParams rlang::caller_arg
+infer_esri_type <- function(.data, arg = rlang::caller_arg(.data), call = rlang::caller_env()) {
 
-  if (!inherits(.data, "data.frame")) stop("`.data` must be a data frame like object")
+  if (!inherits(.data, "data.frame")) {
+    cli::cli_abort(
+      "Expected {.cls data.frame} found {.obj_type_friendly {(.data)}}.",
+      call = call,
+      arg = arg
+    )
+  }
+
   if (inherits(.data, "sf")) .data <- sf::st_drop_geometry(.data)
 
   if (nrow(.data) == 0) {
@@ -87,7 +96,7 @@ infer_esri_type <- function(.data) {
 #' @param fields a data.frame containing, at least, the columns `type` and `name`.
 #'  Typically retrieved from the `field` metadata from a `FeatureLayer` or `Table`.
 #'  Also can use the output of `infer_esri_type()`.
-remote_ptype_tbl <- function(fields) {
+remote_ptype_tbl <- function(fields, call = rlang::caller_env()) {
 
   rlang::check_installed("dbplyr")
 
@@ -96,7 +105,7 @@ remote_ptype_tbl <- function(fields) {
 
   dbplyr::lazy_frame(
     as.data.frame(
-      lapply(rlang::set_names(ftype, fname), get_ptype)
+      lapply(rlang::set_names(ftype, fname), get_ptype, call = call)
     )
   )
 
@@ -105,7 +114,7 @@ remote_ptype_tbl <- function(fields) {
 #' @export
 #' @rdname field_mapping
 #' @param field_type a character of a desired Esri field type. See details for more.
-get_ptype <- function(field_type) {
+get_ptype <- function(field_type, call = rlang::caller_env()) {
   res <- switch(
     field_type,
     "esriFieldTypeSmallInteger" = integer(1),
@@ -121,7 +130,13 @@ get_ptype <- function(field_type) {
     "esriFieldTypeGeometry" = numeric(1)
   )
 
-  if (is.null(res)) stop("Column of type `", field_type, "` cannot be mapped")
+  if (is.null(res)) {
+    cli::cli_abort(
+      "Column of type {.var field_type} cannot be mapped to an R vector",
+      call = call
+    )
+  }
+
 
   res
 }
@@ -134,7 +149,7 @@ vec_mapping <- c(
   "factor" = "esriFieldTypeString",
   # date will be manually defined as being Date or POSIX
   "date" = "esriFieldTypeDate",
-  # i think....
+  # FIXME actually should be `blob::blob.`
   "raw" = "esriFieldTypeBlob"
 )
 
@@ -168,59 +183,3 @@ vec_mapping <- c(
 # layer should be snet up because they will be ignored
 # if there are non-matching field names emit a warning and
 # suggest them to use update_fields
-
-
-
-
-
-# #' fields will always take preference over .data
-# #' @details
-# #'
-# #' `fields` must be a data frame with 5 columns `name`, `type`, `alias`, `
-# nullable`, and `editable`
-#
-# add_fields <- function(x, .data = NULL, fields = NULL, token = Sys.getenv("ARCGIS_TOKEN")) {
-#
-#   if (!is.null(.data) && !is.null(fields)) {
-#     warning(
-#       "Both `.data` and `fields` were provided. Using `fields`."
-#     )
-#   }
-#
-#   if (is.null(fields) && !is.null(.data)) fields <- infer_esri_type(.data)
-#
-#   if (is.null(.data) && is.null(fields)) {
-#     stop("`.data` or `fields` must be provided")
-#   }
-#
-#   field_json <- jsonify::to_json(
-#     list(addToDefinition = list(fields = transpose(fields))),
-#     unbox = TRUE
-#   )
-#
-#   # begin making the request
-#   b_url <- x[["url"]]
-#
-#   # https://developers.arcgis.com/rest/services-reference/online/add-to-definition-feature-ayer-.htm
-#   req <-
-#     httr2::request(b_url) |>
-#     httr2::req_url_path_append("addToDefinition")
-#
-#
-#   req <-
-#     httr2::req_url_query(req, token = token) |>
-#     httr2::req_body_json(
-#       list(
-#         addToDefinition = jsn,
-#         async = FALSE
-#       )
-#     )
-#
-#
-#   resp <- httr2::req_perform(req)
-#
-#   (res <- RcppSimdJson::fparse(httr2::resp_body_string(resp)))
-#   invisible(res)
-#
-# }
-

@@ -1,5 +1,3 @@
-
-
 #' Validate CRS object
 #'
 #'
@@ -9,6 +7,8 @@
 #' See [`sf::st_crs()`] for more details on valid representations.
 #'
 #' @param crs a representation of a coordinate reference system.
+#' @inheritParams cli::cli_abort
+#' @inheritParams rlang::caller_arg
 #'
 #' @export
 #' @examples
@@ -36,15 +36,15 @@
 #' is `NA` and another field `wkt` contains the valid wkt.
 #'
 #'
-validate_crs <- function(crs) {
+validate_crs <- function(crs, arg = rlang::caller_arg(crs), call = rlang::caller_env()) {
 
   if (!((inherits(crs, "character") || inherits(crs, "crs") || inherits(crs, "numeric")))) {
-    stop(
-      "Invalid `crs` argument supplied must be a \n  ",
-      "- CRS ID,\n  ",
-      "- well-known text representation,\n  ",
-      "- or a `crs` object see `sf::st_crs()`"
-    )
+    cli::cli_abort(c(
+      "Invalid CRS supplied: {.arg {arg}}",
+      "i" = "must be compatible with {.fn sf::st_crs}",
+      arg = arg,
+      call = call
+    ))
   }
 
   crs <- sf::st_crs(crs)

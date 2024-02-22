@@ -49,6 +49,7 @@
 #'
 #' @param x an object of class `sfg`
 #' @param crs a CRS ID, crs object, or a well-known text representation of CRS
+#' @inheritParams cli::cli_abort
 #' @examples
 #' library(sf)
 #' as_esri_geometry(st_point(c(0, 1, 3, 4)))
@@ -66,8 +67,8 @@
 #' @export
 #' @rdname esri_geometry
 #' @returns a json Esri geometry object
-as_esri_geometry <- function(x, crs = 4326, ...) {
-  unclass(jsonify::to_json(as_geometry(x, crs, ...), unbox = TRUE))
+as_esri_geometry <- function(x, crs = 4326, ..., call = rlang::caller_env()) {
+  unclass(jsonify::to_json(as_geometry(x, crs, ..., call = call), unbox = TRUE))
 }
 
 
@@ -78,15 +79,12 @@ as_esri_geometry <- function(x, crs = 4326, ...) {
 #
 # }
 
-
-
-
 # Esri Features Array -----------------------------------------------------
 
 #' @export
 #' @rdname esri_geometry
-as_esri_features <- function(x, ...) {
-  unclass(jsonify::to_json(as_features(x, ...), unbox = TRUE))
+as_esri_features <- function(x, ..., call = rlang::caller_env()) {
+  unclass(jsonify::to_json(as_features(x, ..., call = call), unbox = TRUE))
 }
 
 
@@ -112,9 +110,9 @@ as_geometry <- function(x, crs, ...) {
 }
 
 #' @export
-as_geometry.POINT <- function(x, crs = 4326, ...) {
+as_geometry.POINT <- function(x, crs = 4326, ..., call = rlang::current_env()) {
 
-  crs_text <- validate_crs(crs)
+  crs_text <- validate_crs(crs, call = call)
 
   dims <- determine_dims(x)
 
@@ -129,38 +127,48 @@ as_geometry.POINT <- function(x, crs = 4326, ...) {
 }
 
 #' @export
-as_geometry.MULTIPOINT <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.MULTIPOINT <- function(x, crs = 4326, ..., call = rlang::current_env()) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfc_multipoint_impl(list(x))[[1]]
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 }
 
 #' @export
-as_geometry.LINESTRING <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.LINESTRING <- function(x, crs = 4326, ..., call = rlang::current_env()) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfc_linestring_impl(list(x))[[1]]
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 }
 
 #' @export
-as_geometry.MULTILINESTRING <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.MULTILINESTRING <- function(
+    x,
+    crs = 4326,
+    ...,
+    call = rlang::current_env()
+) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfc_multilinestring_impl(list(x))[[1]]
 
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 }
 
 #' @export
-as_geometry.POLYGON <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.POLYGON <- function(x, crs = 4326, ..., call = rlang::current_env()) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfg_polygon_impl(x)
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
 
 }
 
 #' @export
-as_geometry.MULTIPOLYGON <- function(x, crs = 4326, ...) {
-  crs_text <- validate_crs(crs)
+as_geometry.MULTIPOLYGON <- function(
+    x,
+    crs = 4326,
+    ...,
+    call = rlang::current_env()
+) {
+  crs_text <- validate_crs(crs, call = call)
   geometry <- sfc_multipolygon_impl(list(x))[[1]]
   res <- c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
   res
@@ -182,16 +190,16 @@ as_geometry.MULTIPOLYGON <- function(x, crs = 4326, ...) {
 
 #' @export
 #' @rdname esri_geometry
-as_features <- function(x, ...) {
+as_features <- function(x, ..., call = rlang::caller_env()) {
   UseMethod("as_features")
 }
 
 
 
 #' @export
-as_features.sfc <- function(x, ...) {
+as_features.sfc <- function(x, ..., call = rlang::caller_env()) {
 
-  geoms <- featureset_geometry(x)
+  geoms <- featureset_geometry(x, call = call)
 
   res <- lapply(
     geoms[[1]],
@@ -205,7 +213,7 @@ as_features.sfc <- function(x, ...) {
 as_features.sf <- function(x, ...) {
 
   geo <- sf::st_geometry(x)
-  geom_list <- featureset_geometry(geo)
+  geom_list <- featureset_geometry(geo, call = call)
   x <- sf::st_drop_geometry(x)
 
   # handle dates
@@ -277,20 +285,35 @@ as_featureset <- function(x, ...) {
 }
 
 
-
+#' @inheritParams cli::cli_abort
+#' @inheritParams rlang::caller_arg
 #' @export
-as_featureset.sfc <- function(x, crs = sf::st_crs(x), ...) {
+as_featureset.sfc <- function(
+    x,
+    crs = sf::st_crs(x),
+    ...,
+    arg = rlang::caller_arg(x),
+    call = rlang::caller_env()
+) {
 
   # check CRS first
   # TODO have better CRS handling. We prefer having _no_ crs over
   # a wrong one.
   if (is.na(sf::st_crs(x)) && is.na(sf::st_crs(crs))) {
-    warning("CRS missing. Setting to EPSG:4326")
+    cli::cli_warn(
+      c(
+        "{.arg {arg}} is missing a CRS.",
+        "i" = "Setting to {.val EPSG:4326}"
+      ),
+      call = call,
+      arg = arg
+    )
+
     crs <- 4326
   }
-  crs_text <- validate_crs(crs)
+  crs_text <- validate_crs(crs, call = call)
 
-  geoms <- featureset_geometry(x)
+  geoms <- featureset_geometry(x, call = call)
 
   res <- lapply(
     geoms[[1]],
@@ -307,18 +330,32 @@ as_featureset.sfc <- function(x, crs = sf::st_crs(x), ...) {
 }
 
 #' @export
-as_featureset.sf <- function(x, crs = sf::st_crs(x), ...) {
+as_featureset.sf <- function(
+    x,
+    crs = sf::st_crs(x),
+    ...,
+    arg = rlang::caller_arg(x),
+    call = rlang::caller_env()
+) {
 
   # check CRS first
-  if (is.na(sf::st_crs(crs))) {
-    warning("CRS missing. Setting to EPSG:4326")
+  if (is.na(sf::st_crs(x)) && is.na(sf::st_crs(crs))) {
+    cli::cli_warn(
+      c(
+        "{.arg {arg}} is missing a CRS.",
+        "i" = "Setting to {.val EPSG:4326}"
+      ),
+      call = call,
+      arg = arg
+    )
+
     crs <- 4326
   }
 
-  crs_text <- validate_crs(crs)
+  crs_text <- validate_crs(crs, call = call)
 
   geo <- sf::st_geometry(x)
-  geom_list <- featureset_geometry(geo)
+  geom_list <- featureset_geometry(geo, call = call)
   x <- sf::st_drop_geometry(x)
 
   # handle dates
@@ -393,7 +430,8 @@ as_featureset.data.frame <- function(x, ...) {
 #' @param x an object of class `sfc` or `sf`
 #' @keywords internal
 #' @noRd
-featureset_geometry <- function(x) {
+featureset_geometry <- function(x, call = rlang::caller_env()) {
+
   # extract geometry
   x <- sf::st_geometry(x)
 
@@ -402,15 +440,17 @@ featureset_geometry <- function(x) {
 
   # identify geometry type
   # TODO this duplicates the above call..maybe this can be simplified
-  esri_geo_type <- determine_esri_geo_type(x)
+  esri_geo_type <- determine_esri_geo_type(x, call = call)
 
   # error out if not one of the 6 types above
   if (is.null(esri_geo_type)) {
-    stop("`", geom_type, "` is not a supported Esri geometry type")
+    cli::cli_abort(
+      "{.val {geom_type}} is not a supported Esri geometry type",
+      call = call
+    )
   }
 
   # convert geometry
-
   geo_conversion_fn <- switch(
     geom_type,
     "POINT" = sfc_point_impl,

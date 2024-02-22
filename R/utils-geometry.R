@@ -12,16 +12,18 @@
 #' - `MULTIPOLYGON`:  `esriGeometryPolygon`
 #'
 #' @param x an object of class `data.frame`, `sf`, `sfc`, or `sfg`.
+#' @inheritParams cli::cli_abort
 #' @returns returns a character scalar of the corresponding Esri geometry type
 #' @export
 #' @examples
 #' determine_esri_geo_type(sf::st_point(c(0, 0)))
-determine_esri_geo_type <- function(x) {
+determine_esri_geo_type <- function(x, call = rlang::caller_env()) {
 
   # if `geom` is a data.frame return NULL
   if (inherits(x, "data.frame") && !inherits(x, "sf")) return(NULL)
 
   geom_type <- as.character(sf::st_geometry_type(x, by_geometry = FALSE))
+
   switch(
     geom_type,
     "POINT" = "esriGeometryPoint",
@@ -30,7 +32,10 @@ determine_esri_geo_type <- function(x) {
     "MULTILINESTRING" = "esriGeometryPolyline",
     "POLYGON" = "esriGeometryPolygon",
     "MULTIPOLYGON" = "esriGeometryPolygon",
-    stop("`", geom_type, "` is not a supported type")
+    cli::cli_abort(
+      "{.val {geom_type}} is not a supported Esri geometry type",
+      call = call
+    )
   )
 }
 
@@ -43,6 +48,7 @@ determine_esri_geo_type <- function(x) {
 #'
 #' @param x an sf or sfc object
 #' @param crs the CRS of the object. Must be parsable by `sf::st_crs()`
+#' @inheritParams cli::cli_abort
 #' @export
 #' @examples
 #' nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
@@ -50,7 +56,7 @@ determine_esri_geo_type <- function(x) {
 #' @returns
 #' An extent json object. Use `jsonify::to_json(x, unbox = TRUE)` to convert
 #' to json.
-as_extent <- function(x, crs = sf::st_crs(x)) {
+as_extent <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
 
   # if a Table (no spatial dimensions) return NULL
   if (inherits(x, "data.frame") && !inherits(x, "sf")) {
@@ -60,7 +66,7 @@ as_extent <- function(x, crs = sf::st_crs(x)) {
   if (is.na(crs)) {
     crs <- NULL
   } else {
-    crs <- validate_crs(crs)
+    crs <- validate_crs(crs, call = call)
   }
 
   bbox <- as.list(sf::st_bbox(x))

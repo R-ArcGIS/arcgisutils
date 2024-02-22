@@ -21,6 +21,7 @@
 #'   variable `ARCGIS_SECRET`.
 #' @param host default `"https://www.arcgis.com"`
 #' @param expiration the duration of the token in minutes.
+#' @inheritParams cli::cli_abort
 #'
 #' @rdname auth
 #' @export
@@ -239,11 +240,11 @@ refresh_token <- function(
   cur_time <- as.numeric(Sys.time())
 
   if (is.null(token[["refresh_token"]])) {
-    stop("`token` has expired and no `refresh_token` available")
+    cli::cli_abort("{.arg token} has expired and no {.field refresh_token} available")
   } else
     # if it has a refresh check to see if refresh hasn't expired
     if ((cur_time + token[["refresh_token_expires_in"]]) < cur_time) {
-      stop("`refresh_token` has gone past its expiry")
+      cli::cli_abort("Token's {.field refresh_token} has expired.")
     }
 
   # should be able to refresh, go ahead.
@@ -267,12 +268,12 @@ validate_or_refresh_token <- function(
     token,
     client = Sys.getenv("ARCGIS_CLIENT"),
     host = arc_host(),
-    refresh_threshold = 0
+    refresh_threshold = 0,
+    call = rlang::caller_env()
 ) {
 
   # validate the object is a token
-  obj_check_token(token)
-
+  obj_check_token(token, call = call)
 
   cur_time <- as.numeric(Sys.time())
   # check if token is expired or expires within threshold

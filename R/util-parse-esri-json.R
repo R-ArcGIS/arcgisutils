@@ -5,6 +5,7 @@
 #'
 #' @param string the raw Esri JSON string.
 #' @param ... additional arguments passed to [`RcppSimdJson::fparse`]
+#' @inheritParams cli::cli_abort
 #'
 #' @examples
 #'
@@ -40,7 +41,7 @@
 #'@export
 #'@returns
 #' A data.frame. If geometry is found, returns an sf object.
-parse_esri_json <- function(string, ...) {
+parse_esri_json <- function(string, ..., call = rlang::caller_env()) {
 
   # parse the string
   # ensure any json nulls are NAs
@@ -60,7 +61,7 @@ parse_esri_json <- function(string, ...) {
   fts_raw <- b_parsed[["features"]]
 
   if (is.null(fts_raw)) {
-    report_errors(b_parsed)
+    report_errors(b_parsed, error_call = call)
     return(data.frame())
   }
 

@@ -11,7 +11,7 @@ fetch_layer_metadata(url, token = NULL, call = rlang::caller_env())
 
 \item{token}{an \code{httr2_token} from one of the provided \code{auth_} functions}
 
-\item{call}{default \code{rlang::caller_env()}. The calling environment passed to \code{detect_errors()}.}
+\item{call}{default \code{\link[rlang:stack]{rlang::caller_env()}}. The calling environment passed to \code{detect_errors()}.}
 }
 \value{
 returns a list object
