@@ -53,7 +53,9 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compact</span><span class="op">(</span><span class="va">.x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">a</span> <span class="op">%||%</span> <span class="va">b</span></span></code></pre></div>
+<span><span class="va">a</span> <span class="op">%||%</span> <span class="va">b</span></span>
+<span></span>
+<span><span class="fu">check_dots_named</span><span class="op">(</span><span class="va">dots</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -68,6 +70,14 @@
 
 <dt>b</dt>
 <dd><p>an R object</p></dd>
+
+
+<dt>dots</dt>
+<dd><p>a list collected from dots via <code>rlang::list2(...)</code></p></dd>
+
+
+<dt>call</dt>
+<dd><p>default <code><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">rlang::caller_env()</a></code>. The caller environment passed to <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code></p></dd>
 
 </dl></div>
     <div class="section level2">
