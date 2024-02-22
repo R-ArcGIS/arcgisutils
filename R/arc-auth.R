@@ -21,6 +21,7 @@
 #'   variable `ARCGIS_SECRET`.
 #' @param host default `"https://www.arcgis.com"`
 #' @param expiration the duration of the token in minutes.
+#' @inheritParams cli::cli_abort
 #'
 #' @rdname auth
 #' @export
@@ -267,11 +268,12 @@ validate_or_refresh_token <- function(
     token,
     client = Sys.getenv("ARCGIS_CLIENT"),
     host = arc_host(),
-    refresh_threshold = 0
+    refresh_threshold = 0,
+    call = rlang::caller_env()
 ) {
 
   # validate the object is a token
-  obj_check_token(token)
+  obj_check_token(token, call = call)
 
   cur_time <- as.numeric(Sys.time())
   # check if token is expired or expires within threshold

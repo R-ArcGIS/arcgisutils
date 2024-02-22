@@ -48,6 +48,7 @@ determine_esri_geo_type <- function(x, call = rlang::caller_env()) {
 #'
 #' @param x an sf or sfc object
 #' @param crs the CRS of the object. Must be parsable by `sf::st_crs()`
+#' @inheritParams cli::cli_abort
 #' @export
 #' @examples
 #' nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
@@ -55,7 +56,7 @@ determine_esri_geo_type <- function(x, call = rlang::caller_env()) {
 #' @returns
 #' An extent json object. Use `jsonify::to_json(x, unbox = TRUE)` to convert
 #' to json.
-as_extent <- function(x, crs = sf::st_crs(x)) {
+as_extent <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
 
   # if a Table (no spatial dimensions) return NULL
   if (inherits(x, "data.frame") && !inherits(x, "sf")) {
@@ -65,7 +66,7 @@ as_extent <- function(x, crs = sf::st_crs(x)) {
   if (is.na(crs)) {
     crs <- NULL
   } else {
-    crs <- validate_crs(crs)
+    crs <- validate_crs(crs, call = call)
   }
 
   bbox <- as.list(sf::st_bbox(x))

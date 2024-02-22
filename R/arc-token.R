@@ -157,7 +157,7 @@ obj_check_token <- function(token, call = rlang::caller_env()) {
 #' @export
 #' @rdname token
 check_token_has_user <- function(token, call = rlang::caller_env()) {
-  obj_check_token(token, call)
+  obj_check_token(token, call = call)
   if (is.null(token[["username"]])) {
     cli::cli_abort(
       c(

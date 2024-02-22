@@ -9,9 +9,9 @@
 \alias{as_featureset}
 \title{Create Esri geometry objects}
 \usage{
-as_esri_geometry(x, crs = 4326, ...)
+as_esri_geometry(x, crs = 4326, ..., call = rlang::caller_env())
 
-as_esri_features(x, ...)
+as_esri_features(x, ..., call = rlang::caller_env())
 
 as_esri_featureset(x, ...)
 

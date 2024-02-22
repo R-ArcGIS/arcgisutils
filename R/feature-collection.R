@@ -118,8 +118,6 @@ as_layer <- function(
 }
 
 
-
-
 #' @param object_id_field a scalar character vector indicating the name of the
 #'   object ID field in the dataset.
 #' @param fields a data.frame describing the fields in `x`. These values are inferred
@@ -187,7 +185,7 @@ as_layer_definition <- function(
     )
   }
 
-  geo_type <- determine_esri_geo_type(x)
+  geo_type <- determine_esri_geo_type(x, call = call)
   # get geo-type. If NULL `Table` else `Feature Layer`
   type <- if (is.null(geo_type)) {
     "Table"

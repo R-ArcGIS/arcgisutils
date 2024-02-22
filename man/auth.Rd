@@ -33,7 +33,8 @@ validate_or_refresh_token(
   token,
   client = Sys.getenv("ARCGIS_CLIENT"),
   host = arc_host(),
-  refresh_threshold = 0
+  refresh_threshold = 0,
+  call = rlang::caller_env()
 )
 }
 \arguments{
@@ -59,6 +60,20 @@ Your password to login. \strong{Do not} hard code this value.}
 threshold (in seconds) the token will be refreshed only if a
 \code{refresh_token} is available. Token refreshing is only possible with
 \code{auth_code()} flow.}
+
+\item{call}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
+
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
+
+Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
 }
 \value{
 an \code{httr2_token}
