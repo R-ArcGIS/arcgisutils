@@ -65,7 +65,8 @@ R objects as items to a portal.</p>
 <span>  id <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  layer_url <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  legend_url <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  popup_info <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  popup_info <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">as_layer_definition</span><span class="op">(</span></span>
@@ -80,10 +81,15 @@ R objects as items to a portal.</p>
 <span>  min_scale <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  templates <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  type_id_field <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  types <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  types <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">as_feature_collection</span><span class="op">(</span>layers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, show_legend <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">as_feature_collection</span><span class="op">(</span></span>
+<span>  layers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  show_legend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -127,6 +133,19 @@ Used with WMS layers. The URL usually contains a GetLegendGraphic request.</p></
 <a href="https://developers.arcgis.com/documentation/common-data-types/popupinfo.htm" class="external-link">popupInfo</a>
 object defining the pop-up window content for the layer. There is no helper for
 popupInfo objects.</p></dd>
+
+
+<dt>call</dt>
+<dd><p>The execution environment of a currently running
+function, e.g. <code>call = caller_env()</code>. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.</p>
+<p>You only need to supply <code>call</code> when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.</p>
+<p>Can also be <code>NULL</code> or a <a href="https://rlang.r-lib.org/reference/topic-defuse.html" class="external-link">defused function call</a> to
+respectively not display any call or hard-code a code to display.</p>
+<p>For more information about error calls, see <a href="https://rlang.r-lib.org/reference/topic-error-call.html" class="external-link">Including function calls in error messages</a>.</p></dd>
 
 
 <dt>object_id_field</dt>
