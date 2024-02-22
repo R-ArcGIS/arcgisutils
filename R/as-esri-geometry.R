@@ -49,7 +49,6 @@
 #'
 #' @param x an object of class `sfg`
 #' @param crs a CRS ID, crs object, or a well-known text representation of CRS
-#' @inheritParams cli::cli_abort
 #' @examples
 #' library(sf)
 #' as_esri_geometry(st_point(c(0, 1, 3, 4)))
@@ -67,8 +66,8 @@
 #' @export
 #' @rdname esri_geometry
 #' @returns a json Esri geometry object
-as_esri_geometry <- function(x, crs = 4326, ..., call = rlang::caller_env()) {
-  unclass(jsonify::to_json(as_geometry(x, crs, ..., call = call), unbox = TRUE))
+as_esri_geometry <- function(x, crs = 4326, ...) {
+  unclass(jsonify::to_json(as_geometry(x, crs, ...), unbox = TRUE))
 }
 
 
