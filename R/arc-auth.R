@@ -175,7 +175,8 @@ auth_user <- function(
     b_req,
     username = username,
     password = password,
-    client = "requestip",
+    client = "referer",
+    referer = host,
     expiration = expiration,
     f = "json"
   )
