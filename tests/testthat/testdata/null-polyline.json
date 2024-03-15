@@ -1,0 +1,216 @@
+{
+ "displayFieldName": "Name",
+ "fieldAliases": {
+  "OBJECTID_1": "OBJECTID_1",
+  "OBJECTID": "OBJECTID",
+  "Status": "Status",
+  "Name": "Name",
+  "Priority": "Priority",
+  "UTProjects_DBO_UCATS_WFRC_RTPComments_Entity": "UTProjects.DBO.UCATS_WFRC_RTPComments.Entity",
+  "STREET": "STREET",
+  "County": "County",
+  "Type": "Type",
+  "Miles": "Miles",
+  "Miles_New": "Miles_New",
+  "Flag": "Flag",
+  "Notes": "Notes",
+  "Surface": "Surface",
+  "TYPE_SOURC": "TYPE_SOURC",
+  "CLASS_SRCE": "CLASS_SRCE",
+  "Tier2Score": "Tier2Score",
+  "T2_LD": "T2_LD",
+  "T2_ExPlan": "T2_ExPlan",
+  "T2_Econ": "T2_Econ",
+  "T2_Barrier": "T2_Barrier",
+  "Top_25": "Top_25",
+  "Comments": "Comments",
+  "Shape_Leng": "Shape_Leng",
+  "StatCommen": "StatCommen",
+  "Shape_Length": "Shape_Length"
+ },
+ "geometryType": "esriGeometryPolyline",
+ "spatialReference": {
+  "wkid": 102100,
+  "latestWkid": 3857
+ },
+ "fields": [
+  {
+   "name": "OBJECTID_1",
+   "type": "esriFieldTypeOID",
+   "alias": "OBJECTID_1"
+  },
+  {
+   "name": "OBJECTID",
+   "type": "esriFieldTypeInteger",
+   "alias": "OBJECTID"
+  },
+  {
+   "name": "Status",
+   "type": "esriFieldTypeString",
+   "alias": "Status",
+   "length": 25
+  },
+  {
+   "name": "Name",
+   "type": "esriFieldTypeString",
+   "alias": "Name",
+   "length": 50
+  },
+  {
+   "name": "Priority",
+   "type": "esriFieldTypeString",
+   "alias": "Priority",
+   "length": 10
+  },
+  {
+   "name": "UTProjects_DBO_UCATS_WFRC_RTPComments_Entity",
+   "type": "esriFieldTypeString",
+   "alias": "UTProjects.DBO.UCATS_WFRC_RTPComments.Entity",
+   "length": 75
+  },
+  {
+   "name": "STREET",
+   "type": "esriFieldTypeString",
+   "alias": "STREET",
+   "length": 30
+  },
+  {
+   "name": "County",
+   "type": "esriFieldTypeString",
+   "alias": "County",
+   "length": 50
+  },
+  {
+   "name": "Type",
+   "type": "esriFieldTypeString",
+   "alias": "Type",
+   "length": 50
+  },
+  {
+   "name": "Miles",
+   "type": "esriFieldTypeDouble",
+   "alias": "Miles"
+  },
+  {
+   "name": "Miles_New",
+   "type": "esriFieldTypeDouble",
+   "alias": "Miles_New"
+  },
+  {
+   "name": "Flag",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "Flag"
+  },
+  {
+   "name": "Notes",
+   "type": "esriFieldTypeString",
+   "alias": "Notes",
+   "length": 200
+  },
+  {
+   "name": "Surface",
+   "type": "esriFieldTypeString",
+   "alias": "Surface",
+   "length": 20
+  },
+  {
+   "name": "TYPE_SOURC",
+   "type": "esriFieldTypeString",
+   "alias": "TYPE_SOURC",
+   "length": 50
+  },
+  {
+   "name": "CLASS_SRCE",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "CLASS_SRCE"
+  },
+  {
+   "name": "Tier2Score",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "Tier2Score"
+  },
+  {
+   "name": "T2_LD",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "T2_LD"
+  },
+  {
+   "name": "T2_ExPlan",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "T2_ExPlan"
+  },
+  {
+   "name": "T2_Econ",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "T2_Econ"
+  },
+  {
+   "name": "T2_Barrier",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "T2_Barrier"
+  },
+  {
+   "name": "Top_25",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "Top_25"
+  },
+  {
+   "name": "Comments",
+   "type": "esriFieldTypeString",
+   "alias": "Comments",
+   "length": 50
+  },
+  {
+   "name": "Shape_Leng",
+   "type": "esriFieldTypeDouble",
+   "alias": "Shape_Leng"
+  },
+  {
+   "name": "StatCommen",
+   "type": "esriFieldTypeSmallInteger",
+   "alias": "StatCommen"
+  },
+  {
+   "name": "Shape_Length",
+   "type": "esriFieldTypeDouble",
+   "alias": "Shape_Length"
+  }
+ ],
+ "features": [
+  {
+   "attributes": {
+    "OBJECTID_1": 705,
+    "OBJECTID": 1481,
+    "Status": "Proposed",
+    "Name": " ",
+    "Priority": " ",
+    "UTProjects_DBO_UCATS_WFRC_RTPComments_Entity": " ",
+    "STREET": " ",
+    "County": " ",
+    "Type": " ",
+    "Miles": 0,
+    "Miles_New": 0,
+    "Flag": 0,
+    "Notes": " ",
+    "Surface": " ",
+    "TYPE_SOURC": " ",
+    "CLASS_SRCE": 0,
+    "Tier2Score": 0,
+    "T2_LD": 0,
+    "T2_ExPlan": 0,
+    "T2_Econ": 0,
+    "T2_Barrier": 0,
+    "Top_25": 0,
+    "Comments": " ",
+    "Shape_Leng": 0,
+    "StatCommen": 4,
+    "Shape_Length": 0
+   },
+   "geometry": {
+    "paths": [
+     
+    ]
+   }
+  }
+ ]
+}

@@ -1,5 +1,9 @@
 # arcgisutils (development version)
 
+- Null geometries are parsed into empty Geometry Collections using `sf::st_geometrycollection()` Fixed [#168](https://github.com/R-ArcGIS/arcgislayers/issues/168)
+- When Esri JSON contains 0 features, `parse_esri_json()` will create an empty `data.frame` with the fields that are returned with the appropriate R type.
+
+
 # arcgisutils 0.2.0
 
 - `parse_esri_json()` will return an empty `data.frame` in the presence of empty results an error. If an error is present, the error is reported
