@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,9 +57,11 @@
 <span>  call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">remote_ptype_tbl</span><span class="op">(</span><span class="va">fields</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">get_ptype</span><span class="op">(</span><span class="va">field_type</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">get_ptype</span><span class="op">(</span><span class="va">field_type</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">ptype_tbl</span><span class="op">(</span><span class="va">fields</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">remote_ptype_tbl</span><span class="op">(</span><span class="va">fields</span>, call <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/stack.html" class="external-link">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -85,14 +87,14 @@ respectively not display any call or hard-code a code to display.</p>
 <p>For more information about error calls, see <a href="https://rlang.r-lib.org/reference/topic-error-call.html" class="external-link">Including function calls in error messages</a>.</p></dd>
 
 
+<dt>field_type</dt>
+<dd><p>a character of a desired Esri field type. See details for more.</p></dd>
+
+
 <dt>fields</dt>
 <dd><p>a data.frame containing, at least, the columns <code>type</code> and <code>name</code>.
 Typically retrieved from the <code>field</code> metadata from a <code>FeatureLayer</code> or <code>Table</code>.
 Also can use the output of <code>infer_esri_type()</code>.</p></dd>
-
-
-<dt>field_type</dt>
-<dd><p>a character of a desired Esri field type. See details for more.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -100,6 +102,8 @@ Also can use the output of <code>infer_esri_type()</code>.</p></dd>
     
 
 <ul><li><p><code>get_pytpe()</code> returns an object of the class of the prototype.</p></li>
+<li><p><code>ptype_tbl()</code> takes a <code>data.frame</code> with columns <code>name</code> and <code>type</code> and creates an empty <code>data.frame</code> with the corresponding columns and R types</p></li>
+<li><p><code>remote_ptype_tbl()</code> provides the results of <code>ptype_tbl()</code> as a lazy data frame from the <code>dbplyr</code> package.</p></li>
 <li><p><code>infer_esri_ptype()</code> returns a <code>data.frame</code> with columns <code>name</code>, <code>type</code>, <code>alias</code>, <code>nullable</code>, and <code>editable</code> columns</p><ul><li><p>This resembles that of the <code>fields</code> returned by a FeatureService</p></li>
 </ul></li>
 </ul></div>
@@ -137,20 +141,10 @@ creates a lazy table proto type intended to be used with <code>dbplyr</code> int
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_ptype</span><span class="op">(</span><span class="st">"esriFieldTypeDouble"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">infer_esri_type</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                      name                type        alias length nullable</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length Sepal.Length esriFieldTypeDouble Sepal.Length     NA     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width   Sepal.Width esriFieldTypeDouble  Sepal.Width     NA     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length Petal.Length esriFieldTypeDouble Petal.Length     NA     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Width   Petal.Width esriFieldTypeDouble  Petal.Width     NA     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Species           Species esriFieldTypeString      Species    255     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              editable</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width      TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Width      TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Species          TRUE</span>
+<span class="r-in"><span><span class="va">inferred</span> <span class="op">&lt;-</span> <span class="fu">infer_esri_type</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ptype_tbl</span><span class="op">(</span><span class="va">inferred</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] Sepal.Length Sepal.Width  Petal.Length Petal.Width  Species     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

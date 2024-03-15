@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,12 @@
       <small>Source: <a href="https://github.com/R-ArcGIS/arcgisutils/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="arcgisutils-development-version">arcgisutils (development version)<a class="anchor" aria-label="anchor" href="#arcgisutils-development-version"></a></h2>
+<ul><li>Null geometries are parsed into empty Geometry Collections using <code><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">sf::st_geometrycollection()</a></code> Fixed <a href="https://github.com/R-ArcGIS/arcgislayers/issues/168" class="external-link">#168</a>
+</li>
+<li>When Esri JSON contains 0 features, <code><a href="../reference/parse_esri_json.html">parse_esri_json()</a></code> will create an empty <code>data.frame</code> with the fields that are returned with the appropriate R type.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="arcgisutils-020">arcgisutils 0.2.0<a class="anchor" aria-label="anchor" href="#arcgisutils-020"></a></h2><p class="text-muted">CRAN release: 2024-02-22</p>
 <ul><li>
