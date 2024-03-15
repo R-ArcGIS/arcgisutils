@@ -34,12 +34,14 @@
 #' @examples
 #'
 #' get_ptype("esriFieldTypeDouble")
-#'
-#' infer_esri_type(iris)
+#' inferred <- infer_esri_type(iris)
+#' ptype_tbl(inferred)
 #'
 #' @returns
 #'
 #' - `get_pytpe()` returns an object of the class of the prototype.
+#' - `ptype_tbl()` takes a `data.frame` with columns `name` and `type` and creates an empty `data.frame` with the corresponding columns and R types
+#' - `remote_ptype_tbl()` provides the results of `ptype_tbl()` as a lazy data frame from the `dbplyr` package.
 #' - `infer_esri_ptype()` returns a `data.frame` with columns `name`, `type`, `alias`, `nullable`, and `editable` columns
 #'   - This resembles that of the `fields` returned by a FeatureService
 #' @export
@@ -93,26 +95,6 @@ infer_esri_type <- function(.data, arg = rlang::caller_arg(.data), call = rlang:
 
 #' @export
 #' @rdname field_mapping
-#' @param fields a data.frame containing, at least, the columns `type` and `name`.
-#'  Typically retrieved from the `field` metadata from a `FeatureLayer` or `Table`.
-#'  Also can use the output of `infer_esri_type()`.
-remote_ptype_tbl <- function(fields, call = rlang::caller_env()) {
-
-  rlang::check_installed("dbplyr")
-
-  ftype <- fields[["type"]]
-  fname <- fields[["name"]]
-
-  dbplyr::lazy_frame(
-    as.data.frame(
-      lapply(rlang::set_names(ftype, fname), get_ptype, call = call)
-    )
-  )
-
-}
-
-#' @export
-#' @rdname field_mapping
 #' @param field_type a character of a desired Esri field type. See details for more.
 get_ptype <- function(field_type, call = rlang::caller_env()) {
   res <- switch(
@@ -141,6 +123,42 @@ get_ptype <- function(field_type, call = rlang::caller_env()) {
   res
 }
 
+#' @export
+#' @rdname field_mapping
+ptype_tbl <- function(fields, call = rlang::caller_env()) {
+  ftype <- fields[["type"]]
+  fname <- fields[["name"]]
+
+  tbl <- as.data.frame(
+    lapply(
+      rlang::set_names(ftype, fname),
+      get_ptype,
+      call = call
+    )
+  )
+
+  # select no rows from it
+  tbl[0,]
+}
+
+
+#' @export
+#' @rdname field_mapping
+#' @param fields a data.frame containing, at least, the columns `type` and `name`.
+#'  Typically retrieved from the `field` metadata from a `FeatureLayer` or `Table`.
+#'  Also can use the output of `infer_esri_type()`.
+remote_ptype_tbl <- function(fields, call = rlang::caller_env()) {
+
+  rlang::check_installed("dbplyr")
+
+  ftype <- fields[["type"]]
+  fname <- fields[["name"]]
+
+  dbplyr::lazy_frame(
+    ptype_tbl(fields, call = call)
+  )
+}
+
 
 vec_mapping <- c(
   "double" = "esriFieldTypeDouble",
@@ -152,8 +170,6 @@ vec_mapping <- c(
   # FIXME actually should be `blob::blob.`
   "raw" = "esriFieldTypeBlob"
 )
-
-
 
 
 

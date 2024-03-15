@@ -62,7 +62,9 @@ parse_esri_json <- function(string, ..., call = rlang::caller_env()) {
 
   if (is.null(fts_raw)) {
     report_errors(b_parsed, error_call = call)
-    return(data.frame())
+
+    # return an empty data.frame with the appropriate fields
+    return(ptype_tbl(b_parsed[["fields"]]))
   }
 
   # if this is a logical vector of length one we need to abort
@@ -81,6 +83,7 @@ parse_esri_json <- function(string, ..., call = rlang::caller_env()) {
     # field position might not match must grab by name
     date_cols <- b_parsed[[c("fields", "name")]][are_dates]
 
+    # handle dates if present
     if (length(are_dates) > 0) {
       for (col in date_cols) {
         fields[[col]] <- from_esri_date(fields[[col]])
@@ -108,7 +111,12 @@ parse_esri_json <- function(string, ..., call = rlang::caller_env()) {
     esriGeometryPoint = "POINT",
     esriGeometryMultipoint = "MULTIPOINT",
     esriGeometryPolyline = identify_class("LINESTRING", list_ele_class),
-    esriGeometryPolygon = identify_class("POLYGON", list_ele_class)
+    esriGeometryPolygon = identify_class("POLYGON", list_ele_class),
+    # Error if unknown geometryType
+    cli::cli_abort(
+      "Unsupported geometry type {.val {b_parsed[[\"geometryType\"]]}}",
+      call = call
+    )
   )
 
   # TODO what about xyz and xyzm?
@@ -120,9 +128,14 @@ parse_esri_json <- function(string, ..., call = rlang::caller_env()) {
       geo_raw[[i]] <- rlang::eval_bare(
         rlang::parse_expr(paste0("sf::st_", tolower(sfg_class), "()"))
       )
+    } else if (is.null(geo_raw[[i]][[1]])) {
+      # use empty geometry collection to represent NULL geometry
+      geo_raw[[i]] <- sf::st_geometrycollection()
+      next
     } else if (sfg_class == "POINT") {
       geo_raw[[i]] <- unlist(geo_raw[[i]])
     } else if (sfg_class %in% c("MULTILINESTRING", "MULTIPOINT")) {
+
       # weird edge case where we get a single matrix instead of a list
       # of matrix we need to put it into a list
       if (sfg_class == "MULTILINESTRING" && is.matrix(geo_raw[[i]])) {
@@ -130,22 +143,33 @@ parse_esri_json <- function(string, ..., call = rlang::caller_env()) {
       }
 
       geo_raw[[i]] <- geo_raw[[i]][[1]]
+
     } else if (sfg_class == "MULTIPOLYGON") {
+
+      # remove spatial reference field from multipolygon
       geo_raw[[i]][["spatialReference"]] <- NULL
+
     }
+
+    # add class to geometry in place
     class(geo_raw[[i]]) <- obj_classes
   }
 
+  # extract spatial reference
   sr <- b_parsed[["spatialReference"]]
 
+  # find the provided spatial reference
   crs_raw <- if (!all(is.na(sr))) {
     sr[["latestWkid"]] %||% sr[["wkid"]]
   } else {
     NA
   }
 
+  # create an sf object
   sf::st_sf(
-    fields, geometry = sf::st_sfc(geo_raw, crs = sf::st_crs(crs_raw))
+    fields,
+    # create an sfc object
+    geometry = sf::st_sfc(geo_raw, crs = sf::st_crs(crs_raw))
   )
 
 }

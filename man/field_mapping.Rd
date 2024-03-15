@@ -2,8 +2,9 @@
 % Please edit documentation in R/esri-field-mapping.R
 \name{infer_esri_type}
 \alias{infer_esri_type}
-\alias{remote_ptype_tbl}
 \alias{get_ptype}
+\alias{ptype_tbl}
+\alias{remote_ptype_tbl}
 \title{Esri field type mapping}
 \usage{
 infer_esri_type(
@@ -12,9 +13,11 @@ infer_esri_type(
   call = rlang::caller_env()
 )
 
-remote_ptype_tbl(fields, call = rlang::caller_env())
-
 get_ptype(field_type, call = rlang::caller_env())
+
+ptype_tbl(fields, call = rlang::caller_env())
+
+remote_ptype_tbl(fields, call = rlang::caller_env())
 }
 \arguments{
 \item{.data}{an object of class \code{data.frame}.}
@@ -35,15 +38,17 @@ respectively not display any call or hard-code a code to display.
 
 For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
 
+\item{field_type}{a character of a desired Esri field type. See details for more.}
+
 \item{fields}{a data.frame containing, at least, the columns \code{type} and \code{name}.
 Typically retrieved from the \code{field} metadata from a \code{FeatureLayer} or \code{Table}.
 Also can use the output of \code{infer_esri_type()}.}
-
-\item{field_type}{a character of a desired Esri field type. See details for more.}
 }
 \value{
 \itemize{
 \item \code{get_pytpe()} returns an object of the class of the prototype.
+\item \code{ptype_tbl()} takes a \code{data.frame} with columns \code{name} and \code{type} and creates an empty \code{data.frame} with the corresponding columns and R types
+\item \code{remote_ptype_tbl()} provides the results of \code{ptype_tbl()} as a lazy data frame from the \code{dbplyr} package.
 \item \code{infer_esri_ptype()} returns a \code{data.frame} with columns \code{name}, \code{type}, \code{alias}, \code{nullable}, and \code{editable} columns
 \itemize{
 \item This resembles that of the \code{fields} returned by a FeatureService
@@ -88,7 +93,7 @@ R types are mapped as
 \examples{
 
 get_ptype("esriFieldTypeDouble")
-
-infer_esri_type(iris)
+inferred <- infer_esri_type(iris)
+ptype_tbl(inferred)
 
 }
