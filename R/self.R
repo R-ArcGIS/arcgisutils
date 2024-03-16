@@ -12,7 +12,7 @@
 #'
 #' The response includes user and appinfo properties, and the variations in responses are primarily related to these two properties. As the names indicate, the user property includes information about the user making the call, and the appinfo property includes information pertaining to the app that made the call.
 #'
-#' @return
+#' @returns
 #'
 #' A named list.
 #'
@@ -21,7 +21,7 @@
 #' @examples
 #' self <- arc_self_meta()
 #' names(self)
-arc_self_meta <- function(token = arc_token(), call = rlang::current_call()) {
+arc_self_meta <- function(token = arc_token(), error_call = rlang::current_call()) {
 
   burl <- file.path(
     # use the host from a token if set, otherwise default
@@ -32,7 +32,7 @@ arc_self_meta <- function(token = arc_token(), call = rlang::current_call()) {
 
   b_req <- arc_base_req(burl, token)
   req <- httr2::req_body_form(b_req, f = "json")
-  resp <- httr2::req_perform(req, error_call = call)
+  resp <- httr2::req_perform(req, error_call = error_call)
 
   res <- RcppSimdJson::fparse(
     httr2::resp_body_string(resp)
