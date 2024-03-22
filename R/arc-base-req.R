@@ -11,9 +11,47 @@
 #' @export
 #' @examples
 #' arc_base_req("https://arcgis.com")
-arc_base_req <- function(url, token = NULL, error_call = rlang::caller_env()) {
+arc_base_req <- function(
+    url,
+    token = NULL,
+    path = NULL,
+    query = NULL,
+    error_call = rlang::caller_env()
+) {
   # set the user agent
   req <- arc_agent(httr2::request(url))
+
+  # handle path if provided
+  if (!is.null(path)) {
+
+    # check path is a character vector
+    if (!rlang::is_bare_character(path)) {
+      cli::cli_abort(
+        "{.arg path} must be a character vector",
+        call = error_call
+      )
+    }
+
+    # add path to the url
+    req <- httr2::req_url_path_append(
+      req,
+      rlang::inject(!!path)
+    )
+
+  }
+
+  # append a query as well
+  if (!is.null(query)) {
+
+    if (!rlang::is_named2(query)) {
+      cli::cli_abort(
+        "{.arg query} must be a named list",
+        call = error_call
+      )
+    }
+
+    req <- httr2::req_url_query(req, !!!query)
+  }
 
   # if token is not missing, check it
   if (!is.null(token)) {

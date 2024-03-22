@@ -1,5 +1,6 @@
 # arcgisutils (development version)
 
+- `arc_base_req()` gains two new arguments `path` and `query` which allows you to add query parameters and paths to the generated base request
 - `arc_self_meta()` is a new function to provide access to the [`/self`](https://developers.arcgis.com/rest/users-groups-and-items/portal-self.htm) endpoint. Closes [#32](https://github.com/R-ArcGIS/arcgisutils/issues/32)
 - Null geometries are parsed into empty Geometry Collections using `sf::st_geometrycollection()` Fixed [#168](https://github.com/R-ArcGIS/arcgislayers/issues/168)
 - When Esri JSON contains 0 features, `parse_esri_json()` will create an empty `data.frame` with the fields that are returned with the appropriate R type.
