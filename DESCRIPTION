@@ -33,6 +33,9 @@ Imports:
     utils
 Suggests: 
     arcgisbinding,
+    collapse (>= 2.0.0),
+    data.table,
+    dplyr,
     testthat (>= 3.0.0)
 LinkingTo: 
     Rcpp
