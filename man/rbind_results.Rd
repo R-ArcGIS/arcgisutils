@@ -30,5 +30,6 @@ were \code{NULL}.
 \examples{
 
 x <- head(iris)
-rbind_results(list(x, NULL, x))
+res <- rbind_results(list(x, NULL, x))
+attr(res, "null_elements")
 }

@@ -19,7 +19,8 @@
 #' @examples
 #'
 #' x <- head(iris)
-#' rbind_results(list(x, NULL, x))
+#' res <- rbind_results(list(x, NULL, x))
+#' attr(res, "null_elements")
 rbind_results <- function(x, call = rlang::current_env()) {
 
   # use for loop for side effects
