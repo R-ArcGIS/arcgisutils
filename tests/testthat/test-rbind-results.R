@@ -14,7 +14,7 @@ test_that("rbind mixed results", {
   nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"))
   items <- list(as.data.frame(nc), nc)
 
-  res <- rbind_results(x)
+  res <- rbind_results(items)
   expect_true(rlang::inherits_only(res, "data.frame"))
 })
 
