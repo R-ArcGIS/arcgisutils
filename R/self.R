@@ -23,6 +23,8 @@
 #' names(self)
 arc_self_meta <- function(token = arc_token(), error_call = rlang::current_call()) {
 
+  obj_check_token(token)
+
   burl <- file.path(
     # use the host from a token if set, otherwise default
     token[["arcgis_host"]] %||% arc_host(),

@@ -39,23 +39,12 @@ auth_code <- function(
     host = arc_host()
 ) {
 
-  token_url <- paste(
-    host,
-    "sharing",
-    "rest",
-    "oauth2",
-    "token",
-    sep = "/"
-  )
+  check_string(client, allow_empty = FALSE)
+  check_string(host, allow_empty = FALSE)
 
-  auth_url <- paste(
-    host,
-    "sharing",
-    "rest",
-    "oauth2",
-    "authorize",
-    sep = "/"
-  )
+  token_url <- paste(host, "sharing", "rest", "oauth2", "token", sep = "/")
+
+  auth_url <- paste(host, "sharing", "rest", "oauth2", "authorize", sep = "/")
 
 
   client <- httr2::oauth_client(
@@ -97,10 +86,18 @@ auth_code <- function(
 # Client auth -------------------------------------------------------------
 #' @export
 #' @rdname auth
-auth_client <- function(client = Sys.getenv("ARCGIS_CLIENT"),
-                        secret = Sys.getenv("ARCGIS_SECRET"),
-                        host = arc_host(),
-                        expiration = 120) {
+auth_client <- function(
+    client = Sys.getenv("ARCGIS_CLIENT"),
+    secret = Sys.getenv("ARCGIS_SECRET"),
+    host = arc_host(),
+    expiration = 120
+) {
+
+  check_string(client, allow_empty = FALSE)
+  check_string(secret, allow_empty = FALSE)
+  check_string(host, allow_empty = FALSE)
+  check_number_whole(expiration, min = 5, max = 20160)
+
   # https://developers.arcgis.com/documentation/mapping-apis-and-services/security/application-credentials/
   token_url <- paste(
     host,
@@ -164,6 +161,11 @@ auth_user <- function(
     expiration = 60
 ) {
 
+  check_string(username, allow_empty = FALSE)
+  check_string(password, allow_empty = FALSE)
+  check_string(host, allow_empty = FALSE)
+  check_number_whole(expiration, min = 5, max = 20160)
+
   if (expiration > 21600) {
     cli::cli_abort("{.arg expiration} cannot be more than 15 days (21600)")
   }
@@ -221,6 +223,7 @@ refresh_token <- function(
 
   # validate the object is a token
   obj_check_token(token)
+  check_string(client, allow_empty = FALSE)
 
   # extract host from token
   host <- token[["arcgis_host"]]
@@ -275,6 +278,9 @@ validate_or_refresh_token <- function(
 
   # validate the object is a token
   obj_check_token(token, call = call)
+  check_string(client, allow_empty = FALSE)
+  check_string(host, allow_empty = FALSE)
+  check_number_whole(refresh_threshold, min = 0, max = 3600)
 
   cur_time <- as.numeric(Sys.time())
   # check if token is expired or expires within threshold
@@ -303,7 +309,7 @@ validate_or_refresh_token <- function(
 #' A scalar character, `"https://www.arcgis.com"` by default.
 arc_host <- function() {
   host <- Sys.getenv("ARCGIS_HOST")
-
+  check_string(host, allow_empty = TRUE)
   if (host == "") {
     host <- "https://www.arcgis.com"
   }
