@@ -36,6 +36,7 @@ reference:
 - title: Utilities
   contents:
   - compact
+  - rbind_results
 - title: Requests
   contents:
   - fetch_layer_metadata
