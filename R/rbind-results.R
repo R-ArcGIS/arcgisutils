@@ -16,6 +16,10 @@
 #' @param x a list where each element is a `data.frame` or `NULL`.
 #' @export
 #' @returns see details.
+#' @examples
+#'
+#' x <- head(iris)
+#' rbind_results(list(x, NULL, x))
 rbind_results <- function(x, call = rlang::current_env()) {
 
   # use for loop for side effects
@@ -59,6 +63,7 @@ rbind_results <- function(x, call = rlang::current_env()) {
   x
 }
 
+#'
 inherits_or_null <- function(x, class) {
   if (is.null(x)) {
     return(TRUE)
@@ -66,4 +71,4 @@ inherits_or_null <- function(x, class) {
     rlang::inherits_any(x, class)
   }
 }
-rbind_results(x)
+
