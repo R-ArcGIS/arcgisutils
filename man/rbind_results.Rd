@@ -8,6 +8,20 @@ rbind_results(x, call = rlang::current_env())
 }
 \arguments{
 \item{x}{a list where each element is a \code{data.frame} or \code{NULL}.}
+
+\item{call}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
+
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
+
+Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
 }
 \value{
 see details.
@@ -16,7 +30,7 @@ see details.
 A general function that takes a list of \code{data.frame}s and returns a single
 and combines them into a single object. It will use the fastest method
 available. In order this is \code{\link[collapse:rowbind]{collapse::rowbind()}}, \code{\link[data.table:rbindlist]{data.table::rbindlist()}},
-\code{\link[dplry:bind_rows]{dplry::bind_rows()}}, then \code{do.call(rbind.data.frame, x)}.
+\code{\link[dplyr:bind_rows]{dplyr::bind_rows()}}, then \code{do.call(rbind.data.frame, x)}.
 }
 \details{
 If all items in the list are \code{data.frame}s, then the result will be a \code{data.frame}.

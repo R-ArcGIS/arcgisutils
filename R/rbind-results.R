@@ -3,7 +3,7 @@
 #' A general function that takes a list of `data.frame`s and returns a single
 #' and combines them into a single object. It will use the fastest method
 #' available. In order this is [`collapse::rowbind()`], [`data.table::rbindlist()`],
-#' [`dplry::bind_rows()`], then `do.call(rbind.data.frame, x)`.
+#' [`dplyr::bind_rows()`], then `do.call(rbind.data.frame, x)`.
 #'
 #' If all items in the list are `data.frame`s, then the result will be a `data.frame`.
 #' If all elements are an `sf` object, then the result will be an `sf` object.
@@ -16,6 +16,7 @@
 #' @param x a list where each element is a `data.frame` or `NULL`.
 #' @export
 #' @returns see details.
+#' @inheritParams parse_esri_json
 #' @examples
 #'
 #' x <- head(iris)
