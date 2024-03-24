@@ -19,8 +19,11 @@
 #' @inheritParams arc_base_req
 #' @export
 #' @examples
+#' \donttest {
+#' set_arc_token(auth_code())
 #' self <- arc_self_meta()
 #' names(self)
+#' }
 arc_self_meta <- function(token = arc_token(), error_call = rlang::current_call()) {
 
   obj_check_token(token)
