@@ -17,7 +17,7 @@ reference:
 - title: Authorization
   contents:
   - auth_code
-  - arc_selc_meta
+  - arc_self_meta
 - title: Geometry
   contents:
   - determine_dims
