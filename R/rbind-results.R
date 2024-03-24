@@ -40,9 +40,9 @@ rbind_results <- function(x, call = rlang::current_env()) {
   } else if (rlang::is_installed("data.table")) {
     x <- data.table::rbindlist(x)
     data.table::setDF(x)
-  } else if (rlang::is_installed("dplyr")) {
+  } else if (rlang::is_installed("vctrs")) {
     # vctrs::vec_rbind() doesn't handle NULL
-    x <- dplyr::bind_rows(x)
+    x <- vctrs::list_unchop(x, error_call = call)
   } else {
     x <- do.call(rbind.data.frame, x)
   }
