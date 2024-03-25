@@ -19,7 +19,7 @@
 #' @inheritParams arc_base_req
 #' @export
 #' @examples
-#' \donttest {
+#' \dontrun{
 #' set_arc_token(auth_code())
 #' self <- arc_self_meta()
 #' names(self)

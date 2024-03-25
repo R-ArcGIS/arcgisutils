@@ -28,6 +28,9 @@ The Portal Self response can vary based on whether it's called by a user, an app
 The response includes user and appinfo properties, and the variations in responses are primarily related to these two properties. As the names indicate, the user property includes information about the user making the call, and the appinfo property includes information pertaining to the app that made the call.
 }
 \examples{
+\dontrun{
+set_arc_token(auth_code())
 self <- arc_self_meta()
 names(self)
+}
 }

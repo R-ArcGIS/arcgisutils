@@ -111,7 +111,7 @@ set_arc_token <- function(token, ...) {
 #' @rdname token
 #' @export
 unset_arc_token <- function(token = NULL) {
-  check_character(token)
+  check_character(token, allow_null = TRUE)
   if (is.null(token)) {
     token <- "ARCGIS_TOKEN"
     rlang::env_unbind(token_env, token)
