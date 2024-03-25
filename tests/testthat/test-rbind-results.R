@@ -38,5 +38,8 @@ test_that("rbind NULL & list(NULL)", {
   expect_identical(res, data.frame())
 })
 
+test_that("rbind errors on non-df objects", {
+  expect_error(rbind_results(list(iris, NULL, "a")))
+})
 
 
