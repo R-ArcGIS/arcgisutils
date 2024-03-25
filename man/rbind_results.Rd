@@ -4,7 +4,7 @@
 \alias{rbind_results}
 \title{Combine multiple data.frames}
 \usage{
-rbind_results(x, call = rlang::current_env())
+rbind_results(x, call = rlang::current_env(), .ptype = data.frame())
 }
 \arguments{
 \item{x}{a list where each element is a \code{data.frame} or \code{NULL}.}
@@ -22,6 +22,8 @@ Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
 respectively not display any call or hard-code a code to display.
 
 For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
+
+\item{.ptype}{currently unused. Reserved for a future release.}
 }
 \value{
 see details.
@@ -30,7 +32,7 @@ see details.
 A general function that takes a list of \code{data.frame}s and returns a single
 and combines them into a single object. It will use the fastest method
 available. In order this is \code{\link[collapse:rowbind]{collapse::rowbind()}}, \code{\link[data.table:rbindlist]{data.table::rbindlist()}},
-\code{\link[dplyr:bind_rows]{dplyr::bind_rows()}}, then \code{do.call(rbind.data.frame, x)}.
+\code{\link[vctrs:vec_chop]{vctrs::list_unchop()}}, then \code{do.call(rbind.data.frame, x)}.
 }
 \details{
 If all items in the list are \code{data.frame}s, then the result will be a \code{data.frame}.

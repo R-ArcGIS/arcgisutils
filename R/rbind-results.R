@@ -3,7 +3,7 @@
 #' A general function that takes a list of `data.frame`s and returns a single
 #' and combines them into a single object. It will use the fastest method
 #' available. In order this is [`collapse::rowbind()`], [`data.table::rbindlist()`],
-#' [`dplyr::bind_rows()`], then `do.call(rbind.data.frame, x)`.
+#' [`vctrs::list_unchop()`], then `do.call(rbind.data.frame, x)`.
 #'
 #' If all items in the list are `data.frame`s, then the result will be a `data.frame`.
 #' If all elements are an `sf` object, then the result will be an `sf` object.
@@ -14,6 +14,7 @@
 #' were `NULL`.
 #'
 #' @param x a list where each element is a `data.frame` or `NULL`.
+#' @param .ptype currently unused. Reserved for a future release.
 #' @export
 #' @returns see details.
 #' @inheritParams parse_esri_json
@@ -22,11 +23,20 @@
 #' x <- head(iris)
 #' res <- rbind_results(list(x, NULL, x))
 #' attr(res, "null_elements")
-rbind_results <- function(x, call = rlang::current_env()) {
+rbind_results <- function(
+    x,
+    call = rlang::current_env(),
+    .ptype = data.frame()
+) {
 
   # use for loop for side effects
   # check that each element is a data.frame
-  for (item in x) check_data_frame(item, allow_null = TRUE)
+  for (item in x) check_data_frame(
+    item,
+    allow_null = TRUE,
+    call = call,
+    arg = rlang::caller_arg(x)
+  )
 
   # check if all results are sf, if so, we must return sf
   return_sf <- all(vapply(x, inherits_or_null, logical(1), class = "sf"))
@@ -65,7 +75,11 @@ rbind_results <- function(x, call = rlang::current_env()) {
   x
 }
 
+#' Check if an object is NULL or inherits a class
 #'
+#' Uses [`rlang::inherits_any()`] for the class check.
+#' @keywords internal
+#' @noRd
 inherits_or_null <- function(x, class) {
   if (is.null(x)) {
     return(TRUE)
