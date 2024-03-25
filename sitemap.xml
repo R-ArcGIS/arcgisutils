@@ -25,6 +25,9 @@
     <loc>/reference/arc_host.html</loc>
   </url>
   <url>
+    <loc>/reference/arc_self_meta.html</loc>
+  </url>
+  <url>
     <loc>/reference/as_extent.html</loc>
   </url>
   <url>
@@ -59,6 +62,9 @@
   </url>
   <url>
     <loc>/reference/parse_esri_json.html</loc>
+  </url>
+  <url>
+    <loc>/reference/rbind_results.html</loc>
   </url>
   <url>
     <loc>/reference/token.html</loc>
