@@ -50,7 +50,6 @@
 #' @inheritParams cli::cli_abort
 #' @inheritParams rlang::caller_arg
 infer_esri_type <- function(.data, arg = rlang::caller_arg(.data), call = rlang::caller_env()) {
-
   if (!inherits(.data, "data.frame")) {
     cli::cli_abort(
       "Expected {.cls data.frame} found {.obj_type_friendly {(.data)}}.",
@@ -89,27 +88,25 @@ infer_esri_type <- function(.data, arg = rlang::caller_arg(.data), call = rlang:
     nullable = TRUE,
     editable = TRUE
   )
-
 }
 
 
 #' @export
 #' @rdname field_mapping
 #' @param field_type a character of a desired Esri field type. See details for more.
-get_ptype <- function(field_type, call = rlang::caller_env()) {
-  res <- switch(
-    field_type,
-    "esriFieldTypeSmallInteger" = integer(1),
-    "esriFieldTypeSingle" = double(1),
-    "esriFieldTypeGUID" = integer(1),
-    "esriFieldTypeGlobalID" = character(1),
-    "esriFieldTypeOID" = integer(1),
-    "esriFieldTypeInteger" = integer(1),
-    "esriFieldTypeBigInteger" = double(1),
-    "esriFieldTypeDouble" = double(1),
-    "esriFieldTypeString" = character(1),
-    "esriFieldTypeDate" = Sys.Date(),
-    "esriFieldTypeGeometry" = numeric(1)
+get_ptype <- function(field_type, n = 1, call = rlang::caller_env()) {
+  res <- switch(field_type,
+    "esriFieldTypeSmallInteger" = integer(n),
+    "esriFieldTypeSingle" = double(n),
+    "esriFieldTypeGUID" = integer(n),
+    "esriFieldTypeGlobalID" = character(n),
+    "esriFieldTypeOID" = integer(n),
+    "esriFieldTypeInteger" = integer(n),
+    "esriFieldTypeBigInteger" = double(n),
+    "esriFieldTypeDouble" = double(n),
+    "esriFieldTypeString" = character(n),
+    "esriFieldTypeDate" = rep(Sys.Date(), n),
+    "esriFieldTypeGeometry" = numeric(n)
   )
 
   if (is.null(res)) {
@@ -125,7 +122,7 @@ get_ptype <- function(field_type, call = rlang::caller_env()) {
 
 #' @export
 #' @rdname field_mapping
-ptype_tbl <- function(fields, call = rlang::caller_env()) {
+ptype_tbl <- function(fields, n = 0, call = rlang::caller_env()) {
   ftype <- fields[["type"]]
   fname <- fields[["name"]]
 
@@ -133,12 +130,13 @@ ptype_tbl <- function(fields, call = rlang::caller_env()) {
     lapply(
       rlang::set_names(ftype, fname),
       get_ptype,
+      n = n,
       call = call
     )
   )
 
   # select no rows from it
-  tbl[0,]
+  tbl
 }
 
 
@@ -148,7 +146,6 @@ ptype_tbl <- function(fields, call = rlang::caller_env()) {
 #'  Typically retrieved from the `field` metadata from a `FeatureLayer` or `Table`.
 #'  Also can use the output of `infer_esri_type()`.
 remote_ptype_tbl <- function(fields, call = rlang::caller_env()) {
-
   rlang::check_installed("dbplyr")
 
   ftype <- fields[["type"]]
