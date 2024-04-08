@@ -1,5 +1,6 @@
 # arcgisutils (development version)
 
+- `catch_error()` is a new function which parses a string and catches the error as an object. This is useful when processing multiple responses at once. 
 - `rbind_results()` is a new helper function that combines a list of results as efficiently as possible.
 - `arc_base_req()` gains two new arguments `path` and `query` which allows you to add query parameters and paths to the generated base request
 - `arc_self_meta()` is a new function to provide access to the [`/self`](https://developers.arcgis.com/rest/users-groups-and-items/portal-self.htm) endpoint. Closes [#32](https://github.com/R-ArcGIS/arcgisutils/issues/32)

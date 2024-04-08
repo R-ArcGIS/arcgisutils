@@ -23,7 +23,6 @@
 #' head(names(meta))
 #' @returns returns a list object
 fetch_layer_metadata <- function(url, token = NULL, call = rlang::caller_env()) {
-
   req <- arc_base_req(url, token, error_call = call)
 
   # add f=json to the url for querying
@@ -51,33 +50,32 @@ fetch_layer_metadata <- function(url, token = NULL, call = rlang::caller_env()) 
 #' This function checks for the existence of an error. If an error is found,
 #' the contents of the error message are bubbled up.
 #'
-#' @param response a [`httr2::response`] object.
+#' @param response for `detect_errors()`, a list typically from `RcppSimdJson::fparse(httr2::resp_body_string(resp))`. For `catch_error()`, the string from `httr2::resp_body_string(resp)`.
 #' @param error_call default [`rlang::caller_env()`]. The environment from which
 #'  to throw the error from.
 #' @returns
 #'
 #' Nothing. Used for it's side effect. If an error code is encountered in the
 #' response an error is thrown with the error code and the error message.
+#' @details
 #' @export
 #' @family requests
 #' @examples
 #' \dontrun{
-#'   response <- list(
-#'     error = list(
-#'       code = 400L,
-#'       message = "Unable to generate token.",
-#'       details = "Invalid username or password."
-#'     )
+#' response <- list(
+#'   error = list(
+#'     code = 400L,
+#'     message = "Unable to generate token.",
+#'     details = "Invalid username or password."
 #'   )
+#' )
 #'
-#'   detect_errors(response)
+#' detect_errors(response)
 #' }
 detect_errors <- function(response, error_call = rlang::caller_env()) {
-
   e <- response[["error"]]
 
   if (!is.null(e)) {
-
     err_msg <- strwrap(
       paste0("  Error ", e$messageCode, ": ", e$message),
       prefix = "    ",
@@ -123,6 +121,14 @@ report_errors <- function(response, error_call = rlang::caller_env()) {
   }
 }
 
+#' @rdname detect_errors
+catch_error <- function(response, error_call = rlang::caller_env()) {
+  json_response <- RcppSimdJson::fparse(string)
+  rlang::catch_cnd(
+    report_errors(json_response, error_call = error_call)
+  )
+}
+
 #' Set user-agent for arcgisutils
 #'
 #' Override the default user-agent set by httr2 to indicate that a request
@@ -138,6 +144,3 @@ arc_agent <- function(req) {
   ver <- utils::packageVersion("arcgisutils")
   httr2::req_user_agent(req, paste0("arcgisutils v", ver))
 }
-
-
-

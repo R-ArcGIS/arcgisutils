@@ -2,9 +2,12 @@
 % Please edit documentation in R/utils-requests.R
 \name{detect_errors}
 \alias{detect_errors}
+\alias{catch_error}
 \title{Detect errors in parsed json response}
 \usage{
 detect_errors(response, error_call = rlang::caller_env())
+
+catch_error(response, error_call = rlang::caller_env())
 }
 \arguments{
 \item{response}{a \code{\link[httr2:response]{httr2::response}} object.}
@@ -24,15 +27,15 @@ the contents of the error message are bubbled up.
 }
 \examples{
 \dontrun{
-  response <- list(
-    error = list(
-      code = 400L,
-      message = "Unable to generate token.",
-      details = "Invalid username or password."
-    )
+response <- list(
+  error = list(
+    code = 400L,
+    message = "Unable to generate token.",
+    details = "Invalid username or password."
   )
+)
 
-  detect_errors(response)
+detect_errors(response)
 }
 }
 \concept{requests}

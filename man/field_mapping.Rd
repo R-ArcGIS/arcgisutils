@@ -13,9 +13,9 @@ infer_esri_type(
   call = rlang::caller_env()
 )
 
-get_ptype(field_type, call = rlang::caller_env())
+get_ptype(field_type, n = 1, call = rlang::caller_env())
 
-ptype_tbl(fields, call = rlang::caller_env())
+ptype_tbl(fields, n = 0, call = rlang::caller_env())
 
 remote_ptype_tbl(fields, call = rlang::caller_env())
 }
