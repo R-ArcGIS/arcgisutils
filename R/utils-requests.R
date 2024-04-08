@@ -122,6 +122,7 @@ report_errors <- function(response, error_call = rlang::caller_env()) {
 }
 
 #' @rdname detect_errors
+#' @export
 catch_error <- function(response, error_call = rlang::caller_env()) {
   rlang::catch_cnd(
     report_errors(RcppSimdJson::fparse(string), error_call = error_call)
