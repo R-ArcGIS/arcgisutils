@@ -68,7 +68,7 @@ the contents of the error message are bubbled up.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>response</dt>
-<dd><p>a <code><a href="https://httr2.r-lib.org/reference/response.html" class="external-link">httr2::response</a></code> object.</p></dd>
+<dd><p>for <code>detect_errors()</code>, a list typically from <code>RcppSimdJson::fparse(httr2::resp_body_string(resp))</code>. For <code>catch_error()</code>, the string from <code>httr2::resp_body_string(resp)</code>.</p></dd>
 
 
 <dt>error_call</dt>
