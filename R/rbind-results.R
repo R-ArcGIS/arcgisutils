@@ -26,17 +26,17 @@
 rbind_results <- function(
     x,
     call = rlang::current_env(),
-    .ptype = data.frame()
-) {
-
+    .ptype = data.frame()) {
   # use for loop for side effects
   # check that each element is a data.frame
-  for (item in x) check_data_frame(
-    item,
-    allow_null = TRUE,
-    call = call,
-    arg = rlang::caller_arg(x)
-  )
+  for (item in x) {
+    check_data_frame(
+      item,
+      allow_null = TRUE,
+      call = call,
+      arg = rlang::caller_arg(x)
+    )
+  }
 
   # check if all results are sf, if so, we must return sf
   return_sf <- all(vapply(x, inherits_or_null, logical(1), class = "sf"))
@@ -48,7 +48,7 @@ rbind_results <- function(
   if (all(missing_elements)) {
     # return empty data.frame() if all missing
     # FIXME should we take a ptype here? to
-    return(data.frame())
+    return(structure(data.frame(), null_elements = are_missing))
   }
 
   if (rlang::is_installed("collapse", version = "2.0.0")) {
@@ -87,4 +87,3 @@ inherits_or_null <- function(x, class) {
     rlang::inherits_any(x, class)
   }
 }
-
