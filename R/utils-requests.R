@@ -73,33 +73,42 @@ fetch_layer_metadata <- function(url, token = NULL, call = rlang::caller_env()) 
 #' detect_errors(response)
 #' }
 detect_errors <- function(response, error_call = rlang::caller_env()) {
-  e <- response[["error"]]
+  e_msg <- capture_message(response)
 
-  if (!is.null(e)) {
-    err_msg <- strwrap(
-      paste0("  Error ", e$messageCode, ": ", e$message),
-      prefix = "    ",
-      initial = ""
-    )
-
-    full_msg <- c(
-      "Status code: ",
-      response[["error"]][["code"]],
-      "\n",
-      paste0(err_msg, collapse = "\n")
-    )
-
-    rlang::abort(
-      paste0(full_msg, collapse = ""),
-      call = error_call
-    )
+  if (is.null(e_msg)) {
+    return(invisible(NULL))
   }
+
+  rlang::abort(
+    e_msg,
+    call = error_call
+  )
 }
 
 #' @keywords internal
 #' @noRd
 report_errors <- function(response, error_call = rlang::caller_env()) {
-  e <- response[["error"]]
+  e_msg <- capture_message(response)
+
+  if (is.null(e_msg)) {
+    return(invisible(NULL))
+  }
+
+  rlang::warn(
+    e_msg,
+    call = error_call
+  )
+}
+
+#' Capture the message from a parsed error JSON object
+#' This will print the error status code, message and details if present
+#' The JSON must have already been parsed. It might make more sense to
+#' try and parse the JSON in a safe way—e.g. use tryCatch
+#' @keywords internal
+#' @noRd
+capture_message <- function(error) {
+  e <- error[["error"]]
+
   if (!is.null(e)) {
     err_msg <- strwrap(
       paste0("  Error", e$messageCode, ": ", e$message),
@@ -109,21 +118,28 @@ report_errors <- function(response, error_call = rlang::caller_env()) {
 
     full_msg <- c(
       "Status code: ",
-      response[["error"]][["code"]],
+      e[["code"]],
       "\n",
       paste0(err_msg, collapse = "\n")
     )
 
-    rlang::warn(
-      paste0(full_msg, collapse = ""),
-      call = error_call
-    )
+    c(paste0(full_msg, collapse = ""), "i" = e$details)
+  } else {
+    invisible(NULL)
   }
 }
 
+#' Catch error will parse the json for you
+#' This is so that it can be done safely
+#'
 #' @rdname detect_errors
 #' @export
 catch_error <- function(response, error_call = rlang::caller_env()) {
+  if (rlang::is_empty(response)) {
+    return(invisible(NULL))
+  }
+  check_string(response, allow_null = TRUE, allow_na = FALSE, call = error_call)
+
   rlang::catch_cnd(
     report_errors(RcppSimdJson::fparse(response), error_call = error_call)
   )
