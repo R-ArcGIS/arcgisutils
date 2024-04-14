@@ -49,10 +49,6 @@ sfg_multipolygon_impl <- function(mply) {
     .Call(`_arcgisutils_sfg_multipolygon_impl`, mply)
 }
 
-sfc_multipolygon_impl <- function(mply) {
-    .Call(`_arcgisutils_sfc_multipolygon_impl`, mply)
-}
-
 transpose_impl <- function(x, names_template) {
     .Call(`_arcgisutils_transpose_impl`, x, names_template)
 }

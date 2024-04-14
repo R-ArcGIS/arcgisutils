@@ -142,17 +142,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// sfc_multipolygon_impl
-List sfc_multipolygon_impl(List mply);
-RcppExport SEXP _arcgisutils_sfc_multipolygon_impl(SEXP mplySEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type mply(mplySEXP);
-    rcpp_result_gen = Rcpp::wrap(sfc_multipolygon_impl(mply));
-    return rcpp_result_gen;
-END_RCPP
-}
 // transpose_impl
 SEXP transpose_impl(SEXP x, SEXP names_template);
 RcppExport SEXP _arcgisutils_transpose_impl(SEXP xSEXP, SEXP names_templateSEXP) {
@@ -179,7 +168,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_arcgisutils_sfc_polygon_impl", (DL_FUNC) &_arcgisutils_sfc_polygon_impl, 1},
     {"_arcgisutils_sfg_multipolygon_inner_impl", (DL_FUNC) &_arcgisutils_sfg_multipolygon_inner_impl, 1},
     {"_arcgisutils_sfg_multipolygon_impl", (DL_FUNC) &_arcgisutils_sfg_multipolygon_impl, 1},
-    {"_arcgisutils_sfc_multipolygon_impl", (DL_FUNC) &_arcgisutils_sfc_multipolygon_impl, 1},
     {"_arcgisutils_transpose_impl", (DL_FUNC) &_arcgisutils_transpose_impl, 2},
     {NULL, NULL, 0}
 };

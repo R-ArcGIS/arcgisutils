@@ -111,13 +111,11 @@ as_geometry <- function(x, crs, ...) {
 
 #' @export
 as_geometry.POINT <- function(x, crs = 4326, ..., call = rlang::current_env()) {
-
   crs_text <- validate_crs(crs, call = call)
 
   dims <- determine_dims(x)
 
-  geometry <- switch(
-    dims,
+  geometry <- switch(dims,
     "xy" = sfc_point_xy(list(x))[[1]],
     "xyz" = sfc_point_xyz(list(x))[[1]],
     "xyzm" = sfc_point_xyzm(list(x))[[1]],
@@ -145,8 +143,7 @@ as_geometry.MULTILINESTRING <- function(
     x,
     crs = 4326,
     ...,
-    call = rlang::current_env()
-) {
+    call = rlang::current_env()) {
   crs_text <- validate_crs(crs, call = call)
   geometry <- sfc_multilinestring_impl(list(x))[[1]]
 
@@ -158,7 +155,6 @@ as_geometry.POLYGON <- function(x, crs = 4326, ..., call = rlang::current_env())
   crs_text <- validate_crs(crs, call = call)
   geometry <- sfg_polygon_impl(x)
   c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
-
 }
 
 #' @export
@@ -166,10 +162,9 @@ as_geometry.MULTIPOLYGON <- function(
     x,
     crs = 4326,
     ...,
-    call = rlang::current_env()
-) {
+    call = rlang::current_env()) {
   crs_text <- validate_crs(crs, call = call)
-  geometry <- sfc_multipolygon_impl(list(x))[[1]]
+  geometry <- sfg_polygon_impl(unlist(x, recursive = FALSE))
   res <- c(hasZ = has_z(x), hasM = has_m(x), geometry, crs_text)
   res
 }
@@ -198,7 +193,6 @@ as_features <- function(x, ..., call = rlang::caller_env()) {
 
 #' @export
 as_features.sfc <- function(x, ..., call = rlang::caller_env()) {
-
   geoms <- featureset_geometry(x, call = call)
 
   res <- lapply(
@@ -211,7 +205,6 @@ as_features.sfc <- function(x, ..., call = rlang::caller_env()) {
 
 #' @export
 as_features.sf <- function(x, ...) {
-
   geo <- sf::st_geometry(x)
   geom_list <- featureset_geometry(geo, call = call)
   x <- sf::st_drop_geometry(x)
@@ -243,7 +236,6 @@ as_features.sf <- function(x, ...) {
       transpose(x),
       SIMPLIFY = FALSE
     )
-
   }
 
   rows
@@ -251,7 +243,6 @@ as_features.sf <- function(x, ...) {
 
 #' @export
 as_features.data.frame <- function(x, ...) {
-
   # handle dates
   are_dates <- which(vapply(x, is_date, logical(1)))
   for (col in are_dates) {
@@ -272,7 +263,6 @@ as_features.data.frame <- function(x, ...) {
   rows <- lapply(fields, function(.x) list(attributes = .x))
 
   rows
-
 }
 
 
@@ -293,9 +283,7 @@ as_featureset.sfc <- function(
     crs = sf::st_crs(x),
     ...,
     arg = rlang::caller_arg(x),
-    call = rlang::caller_env()
-) {
-
+    call = rlang::caller_env()) {
   # check CRS first
   # TODO have better CRS handling. We prefer having _no_ crs over
   # a wrong one.
@@ -335,9 +323,7 @@ as_featureset.sf <- function(
     crs = sf::st_crs(x),
     ...,
     arg = rlang::caller_arg(x),
-    call = rlang::caller_env()
-) {
-
+    call = rlang::caller_env()) {
   # check CRS first
   if (is.na(sf::st_crs(x)) && is.na(sf::st_crs(crs))) {
     cli::cli_warn(
@@ -387,7 +373,6 @@ as_featureset.sf <- function(
       fields,
       SIMPLIFY = FALSE
     )
-
   }
 
   c(
@@ -401,7 +386,6 @@ as_featureset.sf <- function(
 
 #' @export
 as_featureset.data.frame <- function(x, ...) {
-
   # handle dates
   are_dates <- which(vapply(x, is_date, logical(1)))
   for (col in are_dates) {
@@ -417,7 +401,6 @@ as_featureset.data.frame <- function(x, ...) {
   fields <- transpose(x)
   rows <- lapply(fields, function(.x) list(attributes = .x))
   c(list(features = rows))
-
 }
 
 
@@ -431,7 +414,6 @@ as_featureset.data.frame <- function(x, ...) {
 #' @keywords internal
 #' @noRd
 featureset_geometry <- function(x, call = rlang::caller_env()) {
-
   # extract geometry
   x <- sf::st_geometry(x)
 
@@ -451,8 +433,7 @@ featureset_geometry <- function(x, call = rlang::caller_env()) {
   }
 
   # convert geometry
-  geo_conversion_fn <- switch(
-    geom_type,
+  geo_conversion_fn <- switch(geom_type,
     "POINT" = sfc_point_impl,
     "MULTIPOINT" = sfc_multipoint_impl,
     "LINESTRING" = sfc_linestring_impl,
@@ -462,7 +443,6 @@ featureset_geometry <- function(x, call = rlang::caller_env()) {
   )
 
   rlang::set_names(list(geo_conversion_fn(x)), esri_geo_type)
-
 }
 
 
@@ -500,4 +480,6 @@ featureset_geometry <- function(x, call = rlang::caller_env()) {
 
 # sfg object conversion ---------------------------------------------------
 
-
+sfc_multipolygon_impl <- function(x) {
+  sfc_polygon_impl(unlist(x, recursive = FALSE))
+}
