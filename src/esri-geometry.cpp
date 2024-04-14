@@ -282,21 +282,21 @@ List sfg_multipolygon_impl(List mply) {
 }
 
 
-// [[Rcpp::export]]
-List sfc_multipolygon_impl(List mply) {
+// // [[Rcpp::export]]
+// List sfc_multipolygon_impl(List mply) {
 
-  int n = mply.length();
+//   int n = mply.length();
 
-  // preallocate result list
-  // each MULTIPOLYGON feature
-  List res(n);
+//   // preallocate result list
+//   // each MULTIPOLYGON feature
+//   List res(n);
 
-  for (int i = 0; i < n; i++) {
-    List mpoly = mply[i];
-    res[i] = sfg_multipolygon_impl(mpoly);
-  }
+//   for (int i = 0; i < n; i++) {
+//     List mpoly = mply[i];
+//     res[i] = sfg_multipolygon_impl(mpoly);
+//   }
 
-  return res;
+//   return res;
 
-}
+// }
 

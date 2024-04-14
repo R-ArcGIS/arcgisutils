@@ -57,7 +57,6 @@ fetch_layer_metadata <- function(url, token = NULL, call = rlang::caller_env()) 
 #'
 #' Nothing. Used for it's side effect. If an error code is encountered in the
 #' response an error is thrown with the error code and the error message.
-#' @details
 #' @export
 #' @family requests
 #' @examples

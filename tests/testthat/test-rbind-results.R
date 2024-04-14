@@ -24,22 +24,19 @@ test_that("rbind data.frames", {
 })
 
 test_that("rbind NULL & list(NULL)", {
-
   # should return empty df
   res <- rbind_results(NULL)
-  expect_identical(res, data.frame())
+  expect_identical(res, structure(data.frame(), null_elements = integer()))
 
   # one null
   res <- rbind_results(list(NULL))
-  expect_identical(res, data.frame())
+  expect_identical(res, structure(data.frame(), null_elements = 1L))
 
   # multiple
   res <- rbind_results(list(NULL, NULL))
-  expect_identical(res, data.frame())
+  expect_identical(res, structure(data.frame(), null_elements = 1:2))
 })
 
 test_that("rbind errors on non-df objects", {
   expect_error(rbind_results(list(iris, NULL, "a")))
 })
-
-
