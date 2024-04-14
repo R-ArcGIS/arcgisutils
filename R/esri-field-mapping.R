@@ -122,6 +122,7 @@ get_ptype <- function(field_type, n = 1, call = rlang::caller_env()) {
 
 #' @export
 #' @rdname field_mapping
+#' @param n the number of rows to create in the prototype table
 ptype_tbl <- function(fields, n = 0, call = rlang::caller_env()) {
   ftype <- fields[["type"]]
   fname <- fields[["name"]]
