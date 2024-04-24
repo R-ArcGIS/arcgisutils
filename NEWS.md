@@ -1,5 +1,6 @@
 # arcgisutils (development version)
 
+- `auth_key()` is added to support authorization with an API key for ArcGIS Developers accounts
 - `catch_error()` is a new function which parses a string and catches the error as an object. This is useful when processing multiple responses at once. 
 - `rbind_results()` is a new helper function that combines a list of results as efficiently as possible.
 - `arc_base_req()` gains two new arguments `path` and `query` which allows you to add query parameters and paths to the generated base request

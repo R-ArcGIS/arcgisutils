@@ -448,9 +448,6 @@ featureset_geometry <- function(x, call = rlang::caller_env()) {
 
 
 
-
-
-
 #| Notes -------------------------------------------------------------------
 #|
 #| There are 3 representations of data that we need to concern ourselves with.
