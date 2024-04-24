@@ -5,6 +5,7 @@
 \alias{auth_client}
 \alias{auth_binding}
 \alias{auth_user}
+\alias{auth_key}
 \alias{refresh_token}
 \alias{validate_or_refresh_token}
 \title{Authorization}
@@ -26,6 +27,8 @@ auth_user(
   host = arc_host(),
   expiration = 60
 )
+
+auth_key(api_key = Sys.getenv("ARCGIS_API_KEY"), host = arc_host())
 
 refresh_token(token, client = Sys.getenv("ARCGIS_CLIENT"), host = arc_host())
 
@@ -91,11 +94,11 @@ ArcGIS Online and Enterprise Portals utilize OAuth2 authorization via their REST
 }
 }
 \examples{
-
 \dontrun{
-  auth_code()
-  auth_client()
-  auth_user()
-  auth_binding()
+auth_code()
+auth_client()
+auth_user()
+auth_key()
+auth_binding()
 }
 }

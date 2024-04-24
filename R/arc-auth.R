@@ -1,4 +1,3 @@
-
 # Code flow ---------------------------------------------------------------
 
 
@@ -26,19 +25,17 @@
 #' @rdname auth
 #' @export
 #' @examples
-#'
 #' \dontrun{
-#'   auth_code()
-#'   auth_client()
-#'   auth_user()
-#'   auth_binding()
+#' auth_code()
+#' auth_client()
+#' auth_user()
+#' auth_key()
+#' auth_binding()
 #' }
 #' @returns an `httr2_token`
 auth_code <- function(
     client = Sys.getenv("ARCGIS_CLIENT"),
-    host = arc_host()
-) {
-
+    host = arc_host()) {
   check_string(client, allow_empty = FALSE)
   check_string(host, allow_empty = FALSE)
 
@@ -78,10 +75,8 @@ auth_code <- function(
   )
 
   # add host to the token
-  res[["arcgis_host"]]  <- host
+  res[["arcgis_host"]] <- host
   res
-
-
 }
 # Client auth -------------------------------------------------------------
 #' @export
@@ -90,9 +85,7 @@ auth_client <- function(
     client = Sys.getenv("ARCGIS_CLIENT"),
     secret = Sys.getenv("ARCGIS_SECRET"),
     host = arc_host(),
-    expiration = 120
-) {
-
+    expiration = 120) {
   check_string(client, allow_empty = FALSE)
   check_string(secret, allow_empty = FALSE)
   check_string(host, allow_empty = FALSE)
@@ -121,7 +114,7 @@ auth_client <- function(
   )
 
   # add host to the token
-  res[["arcgis_host"]]  <- host
+  res[["arcgis_host"]] <- host
   res
 }
 
@@ -158,9 +151,7 @@ auth_user <- function(
     username = Sys.getenv("ARCGIS_USER"),
     password = Sys.getenv("ARCGIS_PASSWORD"),
     host = arc_host(),
-    expiration = 60
-) {
-
+    expiration = 60) {
   check_string(username, allow_empty = FALSE)
   check_string(password, allow_empty = FALSE)
   check_string(host, allow_empty = FALSE)
@@ -205,10 +196,27 @@ auth_user <- function(
     username = username,
     arcgis_host = host,
   )
-
 }
 
 
+
+# API Key ----------------------------------------------------------------
+
+#' @export
+#' @rdname auth
+auth_key <- function(api_key = Sys.getenv("ARCGIS_API_KEY"), host = arc_host()) {
+  check_string(
+    api_key,
+    allow_empty = FALSE,
+    allow_na = FALSE,
+    allow_null = FALSE
+  )
+
+  httr2::oauth_token(
+    api_key,
+    arcgis_host = host
+  )
+}
 
 # refreshment mmm tasty --------------------------------------------------------
 
@@ -218,9 +226,7 @@ auth_user <- function(
 refresh_token <- function(
     token,
     client = Sys.getenv("ARCGIS_CLIENT"),
-    host = arc_host()
-) {
-
+    host = arc_host()) {
   # validate the object is a token
   obj_check_token(token)
   check_string(client, allow_empty = FALSE)
@@ -246,10 +252,10 @@ refresh_token <- function(
   if (is.null(token[["refresh_token"]])) {
     cli::cli_abort("{.arg token} has expired and no {.field refresh_token} available")
   } else
-    # if it has a refresh check to see if refresh hasn't expired
-    if ((cur_time + token[["refresh_token_expires_in"]]) < cur_time) {
-      cli::cli_abort("Token's {.field refresh_token} has expired.")
-    }
+  # if it has a refresh check to see if refresh hasn't expired
+  if ((cur_time + token[["refresh_token_expires_in"]]) < cur_time) {
+    cli::cli_abort("Token's {.field refresh_token} has expired.")
+  }
 
   # should be able to refresh, go ahead.
   res <- httr2::oauth_flow_refresh(cln, token[["refresh_token"]])
@@ -259,7 +265,6 @@ refresh_token <- function(
   # a refresh token
   res[["arcgis_host"]] <- host
   res
-
 }
 
 #' @rdname auth
@@ -273,9 +278,7 @@ validate_or_refresh_token <- function(
     client = Sys.getenv("ARCGIS_CLIENT"),
     host = arc_host(),
     refresh_threshold = 0,
-    call = rlang::caller_env()
-) {
-
+    call = rlang::caller_env()) {
   # validate the object is a token
   obj_check_token(token, call = call)
   check_string(client, allow_empty = FALSE)
@@ -292,7 +295,6 @@ validate_or_refresh_token <- function(
     # if not return token
     token
   }
-
 }
 
 #' Determines Portal Host
@@ -316,5 +318,3 @@ arc_host <- function() {
 
   host
 }
-
-
