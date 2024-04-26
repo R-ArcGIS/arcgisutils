@@ -52,7 +52,8 @@ rbind_results <- function(
   }
 
   if (rlang::is_installed("collapse", version = "2.0.0")) {
-    x <- collapse::rowbind(x)
+    # ensure that a data.frame is always returned via return = 2L
+    x <- collapse::rowbind(x, return = 2L)
   } else if (rlang::is_installed("data.table")) {
     x <- data.table::rbindlist(x)
     data.table::setDF(x)
