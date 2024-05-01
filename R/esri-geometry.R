@@ -4,6 +4,7 @@
 #' @param crs an object of class `crs`.
 #' @param call an environment or call object as such as created with `rlang::caller_env()`.
 #' @examples
+#' library(sf)
 #' # POINT
 #' # create sfg points
 #' xy <- st_point(c(1, 2))

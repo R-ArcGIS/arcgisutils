@@ -78,21 +78,21 @@ as_features_sfc <- function(x, crs = NULL, call = rlang::caller_env()) {
   # switch based on dimensions
   if (three_dim) {
     switch(sfc_class,
-      "sfc_POINT" = sfc_point_features_3d_list(x, sr),
-      "sfc_MULTIPOINT" = sfc_multipoint_features_3d_list(x, sr),
-      "sfc_LINESTRING" = sfc_linestring_features_3d_list(x, sr),
-      "sfc_MULTILINESTRING" = sfc_multilinestring_features_3d_list(x, sr),
-      "sfc_POLYGON" = sfc_polygon_features_3d_list(x, sr),
-      "sfc_MULTIPOLYGON" = sfc_multipolygon_features_3d_list(x, sr),
+      "sfc_POINT" = sfc_point_features_3d_list(x, crs),
+      "sfc_MULTIPOINT" = sfc_multipoint_features_3d_list(x, crs),
+      "sfc_LINESTRING" = sfc_linestring_features_3d_list(x, crs),
+      "sfc_MULTILINESTRING" = sfc_multilinestring_features_3d_list(x, crs),
+      "sfc_POLYGON" = sfc_polygon_features_3d_list(x, crs),
+      "sfc_MULTIPOLYGON" = sfc_multipolygon_features_3d_list(x, crs),
     )
   } else {
     switch(sfc_class,
-      "sfc_POINT" = sfc_point_features_2d_list(x, sr),
-      "sfc_MULTIPOINT" = sfc_multipoint_features_2d_list(x, sr),
-      "sfc_LINESTRING" = sfc_linestring_features_2d_list(x, sr),
-      "sfc_MULTILINESTRING" = sfc_multilinestring_features_2d_list(x, sr),
-      "sfc_POLYGON" = sfc_polygon_features_2d_list(x, sr),
-      "sfc_MULTIPOLYGON" = sfc_multipolygon_features_2d_list(x, sr),
+      "sfc_POINT" = sfc_point_features_2d_list(x, crs),
+      "sfc_MULTIPOINT" = sfc_multipoint_features_2d_list(x, crs),
+      "sfc_LINESTRING" = sfc_linestring_features_2d_list(x, crs),
+      "sfc_MULTILINESTRING" = sfc_multilinestring_features_2d_list(x, crs),
+      "sfc_POLYGON" = sfc_polygon_features_2d_list(x, crs),
+      "sfc_MULTIPOLYGON" = sfc_multipolygon_features_2d_list(x, crs),
     )
   }
 }

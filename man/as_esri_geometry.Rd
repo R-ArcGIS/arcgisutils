@@ -17,6 +17,7 @@ as_esri_geometry(x, crs = NULL, call = rlang::caller_env())
 Create Esri JSON Geometry Objects
 }
 \examples{
+library(sf)
 # POINT
 # create sfg points
 xy <- st_point(c(1, 2))

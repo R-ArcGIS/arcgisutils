@@ -44,8 +44,3 @@ check_dots_named <- function(dots, call = rlang::caller_env()) {
   }
   invisible(dots)
 }
-
-#' @keywords internal
-transpose <- function(.l, .names = NULL) {
-  transpose_impl(.l, .names)
-}

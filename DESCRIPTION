@@ -25,7 +25,6 @@ Imports:
     cli,
     dbplyr,
     httr2 (>= 1.0.0),
-    jsonify,
     RcppSimdJson,
     rlang,
     sf,

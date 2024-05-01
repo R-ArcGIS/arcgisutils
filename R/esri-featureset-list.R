@@ -26,7 +26,7 @@ as_featureset <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
   )
 }
 
-as_eatureset_sfc <- function(x, crs = NULL, call = rlang::caller_env()) {
+as_featureset_sfc <- function(x, crs = NULL, call = rlang::caller_env()) {
   # TODO handle CRS
   sr <- crs %||% list()
 
