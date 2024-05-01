@@ -6,7 +6,7 @@
 #'
 #' A `featureCollection` defines a layer of features that will be stored on a web map.
 #' It consists of an array of `layer`s. The `layer` contains the features
-#' (attributes and geometries) as a `featureSet` (see [as_featureset()]) and
+#' (attributes and geometries) as a `featureSet` (see [as_esri_featureset()]) and
 #' additional metadata which is stored in the `layerDefinition`object. The
 #' `layerDefinition` most importantly documents the fields in the object, the object ID,
 #' and additional metadata such as name, title, and display scale.
@@ -60,9 +60,7 @@ as_layer <- function(
     layer_url = NULL,
     legend_url = NULL,
     popup_info = NULL,
-    call = rlang::caller_env()
-) {
-
+    call = rlang::caller_env()) {
   if (!rlang::inherits_any(x, "data.frame")) {
     cli::cli_abort(
       "Expected {.cls data.frame} found {.obj_type_friendly {x}}",
@@ -114,7 +112,6 @@ as_layer <- function(
       popupInfo = popup_info
     )
   )
-
 }
 
 
@@ -155,9 +152,7 @@ as_layer_definition <- function(
     templates = NULL,
     type_id_field = NULL,
     types = NULL,
-    call = rlang::caller_env()
-) {
-
+    call = rlang::caller_env()) {
   if (!rlang::inherits_any(x, "data.frame")) {
     cli::cli_abort(
       "Expected {.cls data.frame} found {.obj_type_friendly {x}}",
@@ -213,7 +208,6 @@ as_layer_definition <- function(
     )
 
     fields <- rbind(oid_fields, fields)
-
   } else {
     oid_position <- which(object_id_field %in% fields[["name"]])
     fields[["type"]][oid_position] <- "esriFieldTypeOID"
@@ -251,12 +245,10 @@ as_layer_definition <- function(
   )
 
   compact(layer_def_body)
-
 }
 
 
 #' @export
-#' @seealso [as_featureset()]
 #' @rdname layer_json
 #'
 #' @param layers a list of layers as created by `as_layer()`.
@@ -265,8 +257,7 @@ as_layer_definition <- function(
 as_feature_collection <- function(
     layers = list(),
     show_legend = TRUE,
-    call = rlang::caller_env()
-) {
+    call = rlang::caller_env()) {
   if (!rlang::is_list(layers)) {
     cli::cli_abort(c(
       "Invalid {.arg layers} object.",
@@ -275,4 +266,3 @@ as_feature_collection <- function(
   }
   c(list(layers = layers), showLegend = show_legend)
 }
-

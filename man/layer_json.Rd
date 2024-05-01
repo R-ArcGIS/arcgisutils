@@ -129,7 +129,7 @@ R objects as items to a portal.
 \details{
 A \code{featureCollection} defines a layer of features that will be stored on a web map.
 It consists of an array of \code{layer}s. The \code{layer} contains the features
-(attributes and geometries) as a \code{featureSet} (see \code{\link[=as_featureset]{as_featureset()}}) and
+(attributes and geometries) as a \code{featureSet} (see \code{\link[=as_esri_featureset]{as_esri_featureset()}}) and
 additional metadata which is stored in the \code{layerDefinition}object. The
 \code{layerDefinition} most importantly documents the fields in the object, the object ID,
 and additional metadata such as name, title, and display scale.
@@ -145,7 +145,4 @@ Additional documentation for these json object:
 ld <- as_layer_definition(iris, "iris", "objectID")
 l <- as_layer(iris, "iris name", "Iris Title")
 fc <- as_feature_collection(layers = list(l))
-}
-\seealso{
-\code{\link[=as_featureset]{as_featureset()}}
 }
