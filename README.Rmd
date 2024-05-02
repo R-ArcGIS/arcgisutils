@@ -1,5 +1,6 @@
 ---
 output: github_document
+format: gfm
 ---
 
 <!-- badges: start -->
@@ -18,19 +19,23 @@ knitr::opts_chunk$set(
 
 # arcgisutils
 
+arcgisutils is designed as the backbone of the [`{arcgis}`](https://github.com/r-arcgis/arcgis) meta-package.
 
 arcgisutils is a developer oriented package that provides the basic functions to build R packages that work with ArcGIS Location Services. It provides functionality for authorization, Esri JSON construction and parsing, as well as other utilities pertaining to geometry and Esri type conversions.
 
 ## Installation
 
-You can install the development version of arcgisutils from [GitHub](https://github.com/) with:
+Install arcgisutils from CRAN.
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("R-ArcGIS/arcgisutils")
+install.packages("arcgisutils", repos = "https://r-arcgis.r-universe.dev")
 ```
 
-arcgisutils is designed as the backbone of the package [`{arcgislayers}`](https://github.com/r-arcgis/arcgislayers) and other planned location services packages. 
+Or, you can install the development version of arcgisutils [r-universe](https://r-arcgis.r-universe.dev/) with:
+
+``` r
+install.packages("arcgisutils", repos = "https://r-arcgis.r-universe.dev")
+```
 
 ### Authorization 
 
@@ -68,7 +73,7 @@ The function `arc_base_req()` is used to create a standardized `httr2` request o
 ```{r}
 host <- arc_host() # use arcgis.com by default
 
-arc_base_req(host) 
+arc_base_req(host)
 ```
 
 ### Esri JSON

@@ -3,10 +3,13 @@
 
 [![R-CMD-check](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/arcgisutils)](https://CRAN.R-project.org/package=arcgisutils)
+status](https://www.r-pkg.org/badges/version/arcgisutils.png)](https://CRAN.R-project.org/package=arcgisutils)
 <!-- badges: end -->
 
 # arcgisutils
+
+arcgisutils is designed as the backbone of the
+[`{arcgis}`](https://github.com/r-arcgis/arcgis) meta-package.
 
 arcgisutils is a developer oriented package that provides the basic
 functions to build R packages that work with ArcGIS Location Services.
@@ -16,17 +19,18 @@ conversions.
 
 ## Installation
 
-You can install the development version of arcgisutils from
-[GitHub](https://github.com/) with:
+Install arcgisutils from CRAN.
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("R-ArcGIS/arcgisutils")
+install.packages("arcgisutils", repos = "https://r-arcgis.r-universe.dev")
 ```
 
-arcgisutils is designed as the backbone of the package
-[`{arcgislayers}`](https://github.com/r-arcgis/arcgislayers) and other
-planned location services packages.
+Or, you can install the development version of arcgisutils
+[r-universe](https://r-arcgis.r-universe.dev/) with:
+
+``` r
+install.packages("arcgisutils", repos = "https://r-arcgis.r-universe.dev")
+```
 
 ### Authorization
 
@@ -41,6 +45,11 @@ minimal example:
 
 ``` r
 library(arcgisutils)
+#> 
+#> Attaching package: 'arcgisutils'
+#> The following object is masked from 'package:base':
+#> 
+#>     %||%
 
 tkn <- auth_client()
 
@@ -50,7 +59,7 @@ arc_token()
 #> <httr2_token>
 #> token_type: bearer
 #> access_token: <REDACTED>
-#> expires_at: 2024-02-23 10:56:42
+#> expires_at: 2024-05-02 14:22:45
 #> arcgis_host: https://www.arcgis.com
 ```
 
@@ -69,7 +78,7 @@ arc_token("A")
 #> <httr2_token>
 #> token_type: bearer
 #> access_token: <REDACTED>
-#> expires_at: 2024-02-23 10:56:42
+#> expires_at: 2024-05-02 14:22:45
 #> arcgis_host: https://www.arcgis.com
 ```
 
@@ -81,12 +90,12 @@ request object. It handles authorization tokens and sets a user agent.
 ``` r
 host <- arc_host() # use arcgis.com by default
 
-arc_base_req(host) 
+arc_base_req(host)
 #> <httr2_request>
 #> GET https://www.arcgis.com
 #> Body: empty
 #> Options:
-#> • useragent: 'arcgisutils v0.2.0'
+#> • useragent: 'arcgisutils v0.2.0.9002'
 ```
 
 ### Esri JSON
@@ -99,18 +108,15 @@ convert to json, it is recommended to use
 
 ``` r
 library(sf)
-#> Warning: package 'sf' was built under R version 4.3.1
 #> Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE
 
 nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
 nc_json <- as_featureset(nc)
 
 str(nc_json, 1)
-#> List of 5
+#> List of 3
 #>  $ geometryType    : chr "esriGeometryPolygon"
 #>  $ spatialReference:List of 1
-#>  $ hasZ            : logi FALSE
-#>  $ hasM            : logi FALSE
 #>  $ features        :List of 100
 ```
 

@@ -1,5 +1,5 @@
 ## usethis namespace: start
-#' @importFrom Rcpp sourceCpp
 #' @useDynLib arcgisutils, .registration = TRUE
+#' @keywords internal
 ## usethis namespace: end
 NULL

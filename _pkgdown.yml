@@ -26,6 +26,8 @@ reference:
 - title: JSON
   contents:
   - as_esri_geometry
+  - as_features
+  - as_featureset
   - as_layer
   - as_extent
   - parse_esri_json
