@@ -28,6 +28,9 @@
     <loc>/reference/arc_self_meta.html</loc>
   </url>
   <url>
+    <loc>/reference/as_esri_geometry.html</loc>
+  </url>
+  <url>
     <loc>/reference/as_extent.html</loc>
   </url>
   <url>
@@ -46,7 +49,10 @@
     <loc>/reference/determine_esri_geo_type.html</loc>
   </url>
   <url>
-    <loc>/reference/esri_geometry.html</loc>
+    <loc>/reference/features.html</loc>
+  </url>
+  <url>
+    <loc>/reference/featureset.html</loc>
   </url>
   <url>
     <loc>/reference/fetch_layer_metadata.html</loc>

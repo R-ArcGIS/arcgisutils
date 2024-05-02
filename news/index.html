@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,17 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="arcgisutils-development-version">arcgisutils (development version)<a class="anchor" aria-label="anchor" href="#arcgisutils-development-version"></a></h2>
+<ul><li>All geometry conversion functions: <code><a href="../reference/as_esri_geometry.html">as_esri_geometry()</a></code>, <code><a href="../reference/features.html">as_esri_features()</a></code>, <code><a href="../reference/featureset.html">as_esri_featureset()</a></code>, <code><a href="../reference/features.html">as_features()</a></code> and <code><a href="../reference/featureset.html">as_featureset()</a></code> have been rewritten from the ground up using Rust and extendr.
 <ul><li>
+<code>arcgisutils</code> now requires Rust to build from source</li>
+<li>
+<code>jsonify</code> is moved to Suggests</li>
+<li>
+<code>as_geometry()</code> is no longer exported</li>
+<li>
+<code>...</code> argument is removed</li>
+</ul></li>
+<li>
 <code><a href="../reference/auth.html">auth_key()</a></code> is added to support authorization with an API key for ArcGIS Developers accounts</li>
 <li>
 <code><a href="../reference/detect_errors.html">catch_error()</a></code> is a new function which parses a string and catches the error as an object. This is useful when processing multiple responses at once.</li>

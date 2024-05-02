@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,22 +64,29 @@
 <div class="section level1">
 <div class="page-header"><h1 id="arcgisutils">arcgisutils<a class="anchor" aria-label="anchor" href="#arcgisutils"></a>
 </h1></div>
+<p>arcgisutils is designed as the backbone of the <a href="https://github.com/r-arcgis/arcgis" class="external-link"><code>{arcgis}</code></a> meta-package.</p>
 <p>arcgisutils is a developer oriented package that provides the basic functions to build R packages that work with ArcGIS Location Services. It provides functionality for authorization, Esri JSON construction and parsing, as well as other utilities pertaining to geometry and Esri type conversions.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of arcgisutils from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>Install arcgisutils from CRAN.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"R-ArcGIS/arcgisutils"</span><span class="op">)</span></span></code></pre></div>
-<p>arcgisutils is designed as the backbone of the package <a href="https://github.com/r-arcgis/arcgislayers" class="external-link"><code>{arcgislayers}</code></a> and other planned location services packages.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"arcgisutils"</span>, repos <span class="op">=</span> <span class="st">"https://r-arcgis.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
+<p>Or, you can install the development version of arcgisutils <a href="https://r-arcgis.r-universe.dev/" class="external-link">r-universe</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"arcgisutils"</span>, repos <span class="op">=</span> <span class="st">"https://r-arcgis.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="authorization">Authorization<a class="anchor" aria-label="anchor" href="#authorization"></a>
 </h3>
 <p>Authorization tokens are provided through the functions <code><a href="reference/auth.html">auth_code()</a></code>, <code><a href="reference/auth.html">auth_client()</a></code>, <code><a href="reference/auth.html">auth_user()</a></code>, and <code><a href="reference/auth.html">auth_binding()</a></code>. Additional token validation functions are provided via <code><a href="reference/auth.html">refresh_token()</a></code> and <code><a href="reference/auth.html">validate_or_refresh_token()</a></code>.</p>
 <p>Tokens are managed in a session based cache using <code><a href="reference/token.html">set_arc_token()</a></code> and <code><a href="reference/token.html">unset_arc_token()</a></code>. They are fetched using <code><a href="reference/token.html">arc_token()</a></code>. Here is a minimal example:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-ArcGIS/arcgisutils" class="external-link">arcgisutils</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'arcgisutils'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     %||%</span></span>
 <span></span>
 <span><span class="va">tkn</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auth.html">auth_client</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -89,58 +96,55 @@
 <span><span class="co">#&gt; &lt;httr2_token&gt;</span></span>
 <span><span class="co">#&gt; token_type: bearer</span></span>
 <span><span class="co">#&gt; access_token: &lt;REDACTED&gt;</span></span>
-<span><span class="co">#&gt; expires_at: 2024-02-23 10:56:42</span></span>
+<span><span class="co">#&gt; expires_at: 2024-05-02 14:22:45</span></span>
 <span><span class="co">#&gt; arcgis_host: https://www.arcgis.com</span></span></code></pre></div>
 <p>Alternatively, tokens can be set based on a key-value pair.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/token.html">set_arc_token</a></span><span class="op">(</span><span class="st">"A"</span> <span class="op">=</span> <span class="va">tkn</span>, <span class="st">"B"</span> <span class="op">=</span> <span class="va">tkn</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ✔ Named tokens set: `A` and `B`</span></span>
 <span><span class="co">#&gt; ℹ Access named tokens with `arc_token("name")`</span></span></code></pre></div>
 <p>And fetched based on their name via</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/token.html">arc_token</a></span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;httr2_token&gt;</span></span>
 <span><span class="co">#&gt; token_type: bearer</span></span>
 <span><span class="co">#&gt; access_token: &lt;REDACTED&gt;</span></span>
-<span><span class="co">#&gt; expires_at: 2024-02-23 10:56:42</span></span>
+<span><span class="co">#&gt; expires_at: 2024-05-02 14:22:45</span></span>
 <span><span class="co">#&gt; arcgis_host: https://www.arcgis.com</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="standardized-requests">Standardized Requests<a class="anchor" aria-label="anchor" href="#standardized-requests"></a>
 </h3>
 <p>The function <code><a href="reference/arc_base_req.html">arc_base_req()</a></code> is used to create a standardized <code>httr2</code> request object. It handles authorization tokens and sets a user agent.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">host</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/arc_host.html">arc_host</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># use arcgis.com by default</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/arc_base_req.html">arc_base_req</a></span><span class="op">(</span><span class="va">host</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="reference/arc_base_req.html">arc_base_req</a></span><span class="op">(</span><span class="va">host</span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;httr2_request&gt;</span></span>
 <span><span class="co">#&gt; GET https://www.arcgis.com</span></span>
 <span><span class="co">#&gt; Body: empty</span></span>
 <span><span class="co">#&gt; Options:</span></span>
-<span><span class="co">#&gt; • useragent: 'arcgisutils v0.2.0'</span></span></code></pre></div>
+<span><span class="co">#&gt; • useragent: 'arcgisutils v0.2.0.9002'</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="esri-json">Esri JSON<a class="anchor" aria-label="anchor" href="#esri-json"></a>
 </h3>
 <p>There are also a number of utility functions for creating and parsing Esri JSON. For example we can create a list that represent an Esri <code>FeatureSet</code> using <code>as_featurset()</code> directly from an <code>sf</code> object. To convert to json, it is recommended to use <code>jsonify::to_json(x, unbox = TRUE)</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: package 'sf' was built under R version 4.3.1</span></span>
 <span><span class="co">#&gt; Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE</span></span>
 <span></span>
 <span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">nc_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/esri_geometry.html">as_featureset</a></span><span class="op">(</span><span class="va">nc</span><span class="op">)</span></span>
+<span><span class="va">nc_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/featureset.html">as_featureset</a></span><span class="op">(</span><span class="va">nc</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">nc_json</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 5</span></span>
+<span><span class="co">#&gt; List of 3</span></span>
 <span><span class="co">#&gt;  $ geometryType    : chr "esriGeometryPolygon"</span></span>
 <span><span class="co">#&gt;  $ spatialReference:List of 1</span></span>
-<span><span class="co">#&gt;  $ hasZ            : logi FALSE</span></span>
-<span><span class="co">#&gt;  $ hasM            : logi FALSE</span></span>
 <span><span class="co">#&gt;  $ features        :List of 100</span></span></code></pre></div>
 <p>Alternatively, you can use the set of functions with the <code>_esri_</code> infix to directly create the json. See the <a href="https://r.esri.com/arcgisutils/reference/esri_geometry.html" class="external-link">Esri geometry reference page</a> for more on how the conversion functions work.</p>
 <p>Additionally, sf’s <code>crs</code> object can be converted to a <a href="https://developers.arcgis.com/documentation/common-data-types/geometry-objects.htm#GUID-DFF0E738-5A42-40BC-A811-ACCB5814BABC" class="external-link"><code>spatialReference</code></a> JSON object using <code><a href="reference/validate_crs.html">validate_crs()</a></code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/validate_crs.html">validate_crs</a></span><span class="op">(</span><span class="fl">27700</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $spatialReference</span></span>
 <span><span class="co">#&gt; $spatialReference$wkid</span></span>
@@ -186,7 +190,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://CRAN.R-project.org/package=arcgisutils" class="external-link"><img src="https://www.r-pkg.org/badges/version/arcgisutils" alt="CRAN status"></a></li>
+<li><a href="https://CRAN.R-project.org/package=arcgisutils" class="external-link"><img src="https://www.r-pkg.org/badges/version/arcgisutils.png" alt="CRAN status"></a></li>
 </ul>
 </div>
 

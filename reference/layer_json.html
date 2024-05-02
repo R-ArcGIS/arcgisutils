@@ -14,7 +14,7 @@ R objects as items to a portal."><!-- mathjax --><script src="https://cdnjs.clou
     
     <a class="navbar-brand me-2" href="../index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -222,7 +222,7 @@ The results can be converted to json using <code>jsonify::to_json(x, unbox = TRU
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>A <code>featureCollection</code> defines a layer of features that will be stored on a web map.
 It consists of an array of <code>layer</code>s. The <code>layer</code> contains the features
-(attributes and geometries) as a <code>featureSet</code> (see <code><a href="esri_geometry.html">as_featureset()</a></code>) and
+(attributes and geometries) as a <code>featureSet</code> (see <code><a href="featureset.html">as_esri_featureset()</a></code>) and
 additional metadata which is stored in the <code>layerDefinition</code>object. The
 <code>layerDefinition</code> most importantly documents the fields in the object, the object ID,
 and additional metadata such as name, title, and display scale.</p>
@@ -230,10 +230,6 @@ and additional metadata such as name, title, and display scale.</p>
 <li><p><a href="https://developers.arcgis.com/documentation/common-data-types/layerdefinition.htm" class="external-link"><code>layerDefinition</code></a></p></li>
 <li><p><a href="https://developers.arcgis.com/documentation/common-data-types/featurecollection.htm" class="external-link"><code>featureCollection</code></a></p></li>
 </ul></div>
-    <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="esri_geometry.html">as_featureset()</a></code></p></div>
-    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
