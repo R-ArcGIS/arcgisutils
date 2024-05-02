@@ -1,4 +1,5 @@
 test_that("date handling is correct", {
+  skip_if_not_installed("jsonify")
   # create sf object
   x <- sf::st_sf(
     data.frame(today = as.POSIXct("2001-01-01", tz = "UTC")),
@@ -18,5 +19,3 @@ test_that("date handling is correct", {
 
   expect_identical(parsed$today, x$today)
 })
-
-# pak::pak("r-arcgis/arcgisutils")

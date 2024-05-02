@@ -1,3 +1,5 @@
+#' @export
+#' @rdname featureset
 as_esri_featureset <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
   # class check
   valid_sfg_classes <- c(

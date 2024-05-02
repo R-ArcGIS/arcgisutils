@@ -1,5 +1,11 @@
 # arcgisutils (development version)
 
+
+- All geometry conversion functions: `as_esri_geometry()`, `as_esri_features()`, `as_esri_featureset()`, `as_features()` and `as_featureset()` have been rewritten from the ground up using Rust and extendr. 
+  - `arcgisutils` now requires Rust to build from source
+  - `jsonify` is moved to Suggests
+  - `as_geometry()` is no longer exported
+  - `...` argument is removed
 - `auth_key()` is added to support authorization with an API key for ArcGIS Developers accounts
 - `catch_error()` is a new function which parses a string and catches the error as an object. This is useful when processing multiple responses at once. 
 - `rbind_results()` is a new helper function that combines a list of results as efficiently as possible.

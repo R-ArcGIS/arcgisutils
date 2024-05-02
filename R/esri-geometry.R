@@ -1,8 +1,14 @@
 #' Create Esri JSON Geometry Objects
 #'
+#' `as_esri_geometry()` converts an `sfg` object to a EsriJSON Geometry object as a string.
+#'
+#' See [`as_featureset()`] and [`as_features()`] for converting `sfc` and `sf` objects into EsriJSON.
+#'
 #' @param x an object of class `sfg`. Must be one of  `"POINT"`, `"MULTIPOINT"`, `"LINESTRING"`, `"MULTILINESTRING"`, `"POLYGON"`, or `"MULTIPOLYGON"`.
-#' @param crs an object of class `crs`.
-#' @param call an environment or call object as such as created with `rlang::caller_env()`.
+#' @param crs the coordinate reference system. It must be interpretable by [`sf::st_crs()`].
+#' @inheritParams cli::cli_abort
+#' @returns a scalar string
+#' @references [API Reference](https://developers.arcgis.com/documentation/common-data-types/geometry-objects.htm)
 #' @examples
 #' library(sf)
 #' # POINT
@@ -73,6 +79,7 @@
 #' as_esri_geometry(st_multipolygon(list(xyz, xyz)))
 #' as_esri_geometry(st_multipolygon(list(xym, xym)))
 #' as_esri_geometry(st_multipolygon(list(xyzm, xyzm)))
+#' @export
 as_esri_geometry <- function(x, crs = NULL, call = rlang::caller_env()) {
   sr <- validate_crs(crs)[[1]] %||% list()
 

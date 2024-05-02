@@ -1,3 +1,74 @@
+#' Create Esri FeatureSet Objects
+#'
+#' These functions create an Esri FeatureSet object. A FeatureSet contains an inner array
+#' of features as well as additional metadata about the the collection such as the
+#' geometry type, spatial reference, and object ID field.
+#'
+#' @inheritParams as_esri_features
+#' @export
+#' @rdname featureset
+#' @references [API Reference](https://developers.arcgis.com/documentation/common-data-types/featureset-object.htm)
+#' @examples
+#'
+#' library(sf)
+#' # POINT
+#' # create sfg points
+#' xy <- st_sfc(st_point(c(1, 2)))
+#' xyz <- st_sfc(st_point(c(1, 2, 3)))
+#' xym <- st_sfc(st_point(c(1, 2, 3), dim = "XYM"))
+#'
+#' as_esri_featureset(xy)
+#' as_esri_featureset(xyz)
+#' as_esri_featureset(xym)
+#'
+#' # MULTIPOINT
+#' # vector to create matrix points
+#' set.seed(0)
+#' x <- rnorm(12)
+#'
+#' xy <- st_sfc(st_multipoint(matrix(x, ncol = 2)))
+#' xyz <- st_sfc(st_multipoint(matrix(x, ncol = 3)))
+#' xym <- st_sfc(st_multipoint(matrix(x, ncol = 3), dim = "XYM"))
+#'
+#' as_esri_featureset(xy)
+#' as_esri_featureset(xyz)
+#' as_esri_featureset(xym)
+#'
+#' # LINESTRING
+#' xy <- st_sfc(st_linestring(matrix(x, ncol = 2)))
+#' xyz <- st_sfc(st_linestring(matrix(x, ncol = 3)))
+#' xym <- st_sfc(st_linestring(matrix(x, ncol = 3), dim = "XYM"))
+#'
+#' as_esri_featureset(xy)
+#' as_esri_featureset(xyz)
+#' as_esri_featureset(xym)
+#'
+#' # MULTILINESTRING
+#' as_esri_featureset(st_sfc(st_multilinestring(list(xy, xy))))
+#' as_esri_featureset(st_sfc(st_multilinestring(list(xyz, xyz))))
+#' as_esri_featureset(st_sfc(st_multilinestring(list(xym, xym))))
+#'
+#' # POLYGON
+#' coords <- rbind(
+#'   c(0, 0, 0, 1),
+#'   c(0, 1, 0, 1),
+#'   c(1, 1, 1, 1),
+#'   c(1, 0, 1, 1),
+#'   c(0, 0, 0, 1)
+#' )
+#'
+#' xy <- st_sfc(st_polygon(list(coords[, 1:2])))
+#' xyz <- st_sfc(st_polygon(list(coords[, 1:3])))
+#' xym <- st_sfc(st_polygon(list(coords[, 1:3]), dim = "XYM"))
+#'
+#' as_esri_featureset(xy)
+#' as_esri_featureset(xyz)
+#' as_esri_featureset(xym)
+#'
+#' # MULTIPOLYGON
+#' as_esri_featureset(st_sfc(st_multipolygon(list(xy[[1]], xy[[1]]))))
+#' as_esri_featureset(st_sfc(st_multipolygon(list(xyz[[1]], xyz[[1]]))))
+#' as_esri_featureset(st_sfc(st_multipolygon(list(xym[[1]], xym[[1]]))))
 as_featureset <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
   # class check
   valid_sfg_classes <- c(

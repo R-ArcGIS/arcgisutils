@@ -9,12 +9,30 @@ as_esri_geometry(x, crs = NULL, call = rlang::caller_env())
 \arguments{
 \item{x}{an object of class \code{sfg}. Must be one of  \code{"POINT"}, \code{"MULTIPOINT"}, \code{"LINESTRING"}, \code{"MULTILINESTRING"}, \code{"POLYGON"}, or \code{"MULTIPOLYGON"}.}
 
-\item{crs}{an object of class \code{crs}.}
+\item{crs}{the coordinate reference system. It must be interpretable by \code{\link[sf:st_crs]{sf::st_crs()}}.}
 
-\item{call}{an environment or call object as such as created with \code{rlang::caller_env()}.}
+\item{call}{The execution environment of a currently running
+function, e.g. \code{call = caller_env()}. The corresponding function
+call is retrieved and mentioned in error messages as the source
+of the error.
+
+You only need to supply \code{call} when throwing a condition from a
+helper function which wouldn't be relevant to mention in the
+message.
+
+Can also be \code{NULL} or a \link[rlang:topic-defuse]{defused function call} to
+respectively not display any call or hard-code a code to display.
+
+For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
+}
+\value{
+a scalar string
 }
 \description{
-Create Esri JSON Geometry Objects
+\code{as_esri_geometry()} converts an \code{sfg} object to a EsriJSON Geometry object as a string.
+}
+\details{
+See \code{\link[=as_featureset]{as_featureset()}} and \code{\link[=as_features]{as_features()}} for converting \code{sfc} and \code{sf} objects into EsriJSON.
 }
 \examples{
 library(sf)
@@ -86,4 +104,7 @@ as_esri_geometry(st_multipolygon(list(xy, xy)))
 as_esri_geometry(st_multipolygon(list(xyz, xyz)))
 as_esri_geometry(st_multipolygon(list(xym, xym)))
 as_esri_geometry(st_multipolygon(list(xyzm, xyzm)))
+}
+\references{
+\href{https://developers.arcgis.com/documentation/common-data-types/geometry-objects.htm}{API Reference}
 }

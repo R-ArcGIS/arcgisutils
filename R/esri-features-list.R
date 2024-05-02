@@ -1,11 +1,80 @@
-# xy <- st_sfc(st_point(c(1, 2)))
-# xyz <- st_sfc(st_point(c(1, 2, 3)))
-# xym <- st_sfc(st_point(c(1, 2, 3), dim = "XYM"))
-
-# sfc_point_features_2d(xy, list())
-# sfc_point_features_3d(xyz, list())
-# sfc_point_features_3d(xym, list())
-# NOTE 4D features cannot be supported
+#' Create Esri Features
+#'
+#' These functions create an array of Esri Feature objects.
+#' Each feature consists of a geometry and attribute field.
+#' The result of `as_esri_features()` is a JSON array of Features whereas
+#' `as_features()` is a list that represents the same JSON array. Using
+#' `jsonify::to_json(as_features(x), unbox = TRUE)` will result in the same
+#' JSON array.
+#'
+#' @references [API Reference](https://developers.arcgis.com/documentation/common-data-types/feature-object.htm)
+#' @export
+#' @rdname features
+#' @param x an object of class `sf`, `data.frame`, or `sfc`.
+#' @inheritParams as_esri_geometry
+#' @inheritParams cli::cli_abort
+#' @returns Either a scalar string or a named list.
+#' @examples
+#'
+#' library(sf)
+#' # POINT
+#' # create sfg points
+#' xy <- st_sfc(st_point(c(1, 2)))
+#' xyz <- st_sfc(st_point(c(1, 2, 3)))
+#' xym <- st_sfc(st_point(c(1, 2, 3), dim = "XYM"))
+#'
+#' as_esri_features(xy)
+#' as_esri_features(xyz)
+#' as_esri_features(xym)
+#'
+#' # MULTIPOINT
+#' # vector to create matrix points
+#' set.seed(0)
+#' x <- rnorm(12)
+#'
+#' xy <- st_sfc(st_multipoint(matrix(x, ncol = 2)))
+#' xyz <- st_sfc(st_multipoint(matrix(x, ncol = 3)))
+#' xym <- st_sfc(st_multipoint(matrix(x, ncol = 3), dim = "XYM"))
+#'
+#' as_esri_features(xy)
+#' as_esri_features(xyz)
+#' as_esri_features(xym)
+#'
+#' # LINESTRING
+#' xy <- st_sfc(st_linestring(matrix(x, ncol = 2)))
+#' xyz <- st_sfc(st_linestring(matrix(x, ncol = 3)))
+#' xym <- st_sfc(st_linestring(matrix(x, ncol = 3), dim = "XYM"))
+#'
+#' as_esri_features(xy)
+#' as_esri_features(xyz)
+#' as_esri_features(xym)
+#'
+#' # MULTILINESTRING
+#' as_esri_features(st_sfc(st_multilinestring(list(xy, xy))))
+#' as_esri_features(st_sfc(st_multilinestring(list(xyz, xyz))))
+#' as_esri_features(st_sfc(st_multilinestring(list(xym, xym))))
+#'
+#' # POLYGON
+#' coords <- rbind(
+#'   c(0, 0, 0, 1),
+#'   c(0, 1, 0, 1),
+#'   c(1, 1, 1, 1),
+#'   c(1, 0, 1, 1),
+#'   c(0, 0, 0, 1)
+#' )
+#'
+#' xy <- st_sfc(st_polygon(list(coords[, 1:2])))
+#' xyz <- st_sfc(st_polygon(list(coords[, 1:3])))
+#' xym <- st_sfc(st_polygon(list(coords[, 1:3]), dim = "XYM"))
+#'
+#' as_esri_features(xy)
+#' as_esri_features(xyz)
+#' as_esri_features(xym)
+#'
+#' # MULTIPOLYGON
+#' as_esri_features(st_sfc(st_multipolygon(list(xy[[1]], xy[[1]]))))
+#' as_esri_features(st_sfc(st_multipolygon(list(xyz[[1]], xyz[[1]]))))
+#' as_esri_features(st_sfc(st_multipolygon(list(xym[[1]], xym[[1]]))))
 as_features <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
   # class check
   valid_sfg_classes <- c(
@@ -33,7 +102,6 @@ as_features <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
     "sfc" = as_features_sfc(x, sr, call = call)
   )
 }
-
 
 as_features_sfc <- function(x, crs = NULL, call = rlang::caller_env()) {
   # class check

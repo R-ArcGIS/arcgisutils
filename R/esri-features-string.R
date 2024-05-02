@@ -1,11 +1,5 @@
-# xy <- st_sfc(st_point(c(1, 2)))
-# xyz <- st_sfc(st_point(c(1, 2, 3)))
-# xym <- st_sfc(st_point(c(1, 2, 3), dim = "XYM"))
-
-# sfc_point_features_2d(xy, list())
-# sfc_point_features_3d(xyz, list())
-# sfc_point_features_3d(xym, list())
-# NOTE 4D features cannot be supported
+#' @rdname features
+#' @export
 as_esri_features <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
   # class check
   valid_sfg_classes <- c(
