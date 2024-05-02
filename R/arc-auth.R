@@ -202,6 +202,7 @@ auth_user <- function(
 
 # API Key ----------------------------------------------------------------
 
+#' @param api_key default `Sys.getenv("ARCGIS_API_KEY")`. A character scalar of an ArcGIS Developer API key.
 #' @export
 #' @rdname auth
 auth_key <- function(api_key = Sys.getenv("ARCGIS_API_KEY"), host = arc_host()) {
