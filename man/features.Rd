@@ -75,9 +75,9 @@ as_esri_features(xyz)
 as_esri_features(xym)
 
 # MULTILINESTRING
-as_esri_features(st_sfc(st_multilinestring(list(xy, xy))))
-as_esri_features(st_sfc(st_multilinestring(list(xyz, xyz))))
-as_esri_features(st_sfc(st_multilinestring(list(xym, xym))))
+as_esri_features(st_sfc(st_multilinestring(list(xy[[1]], xy[[1]]))))
+as_esri_features(st_sfc(st_multilinestring(list(xyz[[1]], xyz[[1]]))))
+as_esri_features(st_sfc(st_multilinestring(list(xym[[1]], xym[[1]]))))
 
 # POLYGON
 coords <- rbind(

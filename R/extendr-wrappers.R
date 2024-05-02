@@ -6,7 +6,6 @@
 # This file was created with the following call:
 #   .Call("wrap__make_arcgisutils_wrappers", use_symbols = TRUE, package_name = "arcgisutils")
 
-#' @docType package
 #' @usage NULL
 #' @useDynLib arcgisutils, .registration = TRUE
 NULL

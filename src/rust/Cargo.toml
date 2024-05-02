@@ -13,3 +13,5 @@ extendr-api = {version = '0.6.0', features = ["serde"] }
 serde_esri = { version = "*" , git = "https://github.com/josiahparry/serde_esri", branch = "geom"}
 serde_json = "1.0.108"
 
+[patch.crates-io]
+extendr-api = { git = "https://github.com/extendr/extendr"}
