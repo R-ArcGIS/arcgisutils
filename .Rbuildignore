@@ -11,3 +11,5 @@
 ^CRAN-SUBMISSION$
 ^src/\.cargo$
 ^src/rust/vendor$
+^src/vendor$
+^README\.*$

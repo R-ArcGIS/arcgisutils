@@ -29,7 +29,7 @@ $(STATLIB):
 	fi
 
 C_clean:
-	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS)
+	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS) $(TARGET_DIR) $(VENDOR_DIR)
 
 clean:
-		rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS) rust/target
+		rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS) $(TARGET_DIR) $(VENDOR_DIR)
