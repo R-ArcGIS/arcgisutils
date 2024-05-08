@@ -1,3 +1,6 @@
+# TODO none of this is required if it isn't on CRAN
+# what environment variable can we check?
+
 # this is where the vendored dependencies go as a zip file
 out_path <- "src/rust/vendor.tar.xz"
 
