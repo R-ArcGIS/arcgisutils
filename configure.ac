@@ -51,7 +51,7 @@ echo "Rust is installed, Cargo is found, and Rscript is found."
 echo "Running tools/get-deps.R script..."
 
 # Execute the get-deps.R script
-if ! $RSCRIPT tools/get-deps.R; then
+if ! $RSCRIPT ./tools/get-deps.R; then
     echo "Error: Failed to execute tools/get-deps.R."
     exit 1
 fi
