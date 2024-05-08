@@ -52,3 +52,27 @@ jobs:
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+
+  linux:
+    # needs: [prepare, source]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    name: Build R-${{ matrix.r }} for Linux
+    strategy:
+      fail-fast: false
+      matrix:
+        r: [ 'devel' ]
+    container:
+      image: ghcr.io/r-universe-org/base-image:${{ matrix.r }}
+    steps:
+      - name: Download source package
+        uses: actions/download-artifact@v4
+        with:
+          name: package-source
+          path: .
+      - name: "Build and check binaries"
+        uses: r-universe-org/actions/linux-check@v4
+        id: build
+        timeout-minutes: 60
+        env:
+          GITHUB_PAT: ${{secrets.GITHUB_TOKEN}}
