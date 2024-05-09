@@ -1,12 +1,31 @@
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 2 notes
+
+Suggests or Enhances not in mainstream repositories:
+  arcgisbinding
+
+Size of tarball: 6021580 bytes
+
+- The tarball is 6mb because **Rust dependencies** are vendored within `src/rust/vendor.tar.xz` which is 5.9mb. The final installation size on Mac OS is 1.3mb.
+- `{arcgisbinding}` is a Suggested package which is not available from a standard CRAN repository but installatino instructions are referenced in the DESCRIPTION's Description.
 
 
-* In accordance with the CRAN policy (below), Rust dependencies are downloaded as part of the `configure` process. The downloaded `vendor.tar.xz`'s checksum is matched to that in `tools/vendor.md5`
+## Test Environments 
 
-> "If the sources are too large, it is acceptable to download them as part of installation, but do ensure that the download is of a fixed version rather than the latest."
+Local: 
+    - Platform: aarch64-apple-darwin20
+    - Running under: macOS Sonoma 14.4.1
 
-* 
+GitHub Actions: 
 
-* This is a new release.
+- {os: macos-latest,   r: 'release'}
+- {os: windows-latest, r: 'release'}
+- {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+- {os: ubuntu-latest,   r: 'release'}
+- {os: ubuntu-latest,   r: 'oldrel-1'}
+- {os: ubuntu-latest,   r: 'oldrel-2'}
+
+## Resubmission
+
+This is a resubmission per suggestion of Uwe Ligges who indicated that the inclusion of Rust dependencies was not clearly indicated. 
