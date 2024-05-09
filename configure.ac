@@ -34,6 +34,7 @@ if ! command -v cargo &> /dev/null; then
     exit 1
 fi
 
+AC_OUTPUT
 # Check for Rscript
 # if test -z "$R_HOME"; then
 #     echo "----------------------- [R_HOME NOT SET]------------------------"
