@@ -35,33 +35,33 @@ if ! command -v cargo &> /dev/null; then
 fi
 
 # Check for Rscript
-if test -z "$R_HOME"; then
-    echo "----------------------- [R_HOME NOT SET]------------------------"
-    echo "The 'R_HOME' environment variable is not set. Please make sure R"
-    echo "is installed and set the R_HOME environment variable."
-    echo "-------------------------------------------------------------------"
-    echo ""
-    exit 1
-fi
+# if test -z "$R_HOME"; then
+#     echo "----------------------- [R_HOME NOT SET]------------------------"
+#     echo "The 'R_HOME' environment variable is not set. Please make sure R"
+#     echo "is installed and set the R_HOME environment variable."
+#     echo "-------------------------------------------------------------------"
+#     echo ""
+#     exit 1
+# fi
 
-RSCRIPT="${R_HOME}/bin/Rscript"
+# RSCRIPT="${R_HOME}/bin/Rscript"
 
-# Check if Rscript is executable
-if ! test -x "$RSCRIPT"; then
-    echo "----------------------- [RSCRIPT NOT EXECUTABLE]------------------------"
-    echo "The 'Rscript' executable is not found or not executable. Please make sure R"
-    echo "is installed correctly and 'Rscript' is executable."
-    echo "--------------------------------------------------------------------------"
-    echo ""
-    exit 1
-fi
+# # Check if Rscript is executable
+# if ! test -x "$RSCRIPT"; then
+#     echo "----------------------- [RSCRIPT NOT EXECUTABLE]------------------------"
+#     echo "The 'Rscript' executable is not found or not executable. Please make sure R"
+#     echo "is installed correctly and 'Rscript' is executable."
+#     echo "--------------------------------------------------------------------------"
+#     echo ""
+#     exit 1
+# fi
 
 # Output status
-echo "Rust is installed, Cargo is found, R_HOME is set, and Rscript is found."
-echo "Running tools/get-deps.R script..."
+# echo "Rust is installed, Cargo is found, R_HOME is set, and Rscript is found."
+# echo "Running tools/get-deps.R script..."
 
-# Execute the get-deps.R script
-if ! "$RSCRIPT" ./tools/get-deps.R; then
-    echo "Error: Failed to execute tools/get-deps.R."
-    exit 1
-fi
+# # Execute the get-deps.R script
+# if ! "$RSCRIPT" ./tools/get-deps.R; then
+#     echo "Error: Failed to execute tools/get-deps.R."
+#     exit 1
+# fi

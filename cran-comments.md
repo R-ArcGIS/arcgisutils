@@ -2,7 +2,11 @@
 
 0 errors | 0 warnings | 1 note
 
-* C_clean and clean were not being called for Debian build resulting in NOTE for src/vendor/chrono/CITATION
-    - This should be removed now via `rm -Rf $(VENDOR_DIR)` in the Makevars 
-* The install size is < 2mb however the vendored dependencies are ~18mb making the source larger than the installation size.
+
+* In accordance with the CRAN policy (below), Rust dependencies are downloaded as part of the `configure` process. The downloaded `vendor.tar.xz`'s checksum is matched to that in `tools/vendor.md5`
+
+> "If the sources are too large, it is acceptable to download them as part of installation, but do ensure that the download is of a fixed version rather than the latest."
+
+* 
+
 * This is a new release.
