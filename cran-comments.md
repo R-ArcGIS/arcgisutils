@@ -26,6 +26,21 @@ GitHub Actions:
 - {os: ubuntu-latest,   r: 'oldrel-1'}
 - {os: ubuntu-latest,   r: 'oldrel-2'}
 
+R-Universe: 
+Run: https://github.com/r-universe/r-arcgis/actions/runs/9020316809
+
+Linux r-devel
+Windows r-devel
+Windows r-release
+Windows r-oldrel
+MacOS r-release
+MacOS r-oldrel
+
+
 ## Resubmission
 
-This is a resubmission per suggestion of Uwe Ligges who indicated that the inclusion of Rust dependencies was not clearly indicated. 
+This is a resubmission. AC_OUTPUT was added to configure.ac to suppress the 
+warning 
+Result: WARNING
+     Output from running autoreconf:
+     /usr/share/autoconf/autoconf/trailer.m4:4: warning: AC_OUTPUT was never used
