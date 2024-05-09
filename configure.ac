@@ -1,4 +1,3 @@
-# Initialize autoconf
 AC_INIT
 
 # Export PATH to include Cargo binary directory
