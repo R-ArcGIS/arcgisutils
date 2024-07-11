@@ -1,7 +1,8 @@
 # arcgisutils (development version)
 
-# arcgisutils 0.3.0
+- addresses a bug where integers were encoded as floats. This caused a problem for using `update_features()` and specifying the OID field
 
+# arcgisutils 0.3.0
 
 - All geometry conversion functions: `as_esri_geometry()`, `as_esri_features()`, `as_esri_featureset()`, `as_features()` and `as_featureset()` have been rewritten from the ground up using Rust and extendr. 
   - `arcgisutils` now requires Rust to build from source

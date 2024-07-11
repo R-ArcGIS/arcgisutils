@@ -1,21 +1,25 @@
 
+# arcgisutils <img src="man/figures/logo.svg" align="right" height="139" alt="" />
+
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/arcgisutils.png)](https://CRAN.R-project.org/package=arcgisutils)
+status](https://www.r-pkg.org/badges/version/arcgisutils)](https://CRAN.R-project.org/package=arcgisutils)
 <!-- badges: end -->
-
-# arcgisutils
 
 arcgisutils is designed as the backbone of the
 [`{arcgis}`](https://github.com/r-arcgis/arcgis) meta-package.
 
 arcgisutils is a developer oriented package that provides the basic
 functions to build R packages that work with ArcGIS Location Services.
-It provides functionality for authorization, Esri JSON construction and
-parsing, as well as other utilities pertaining to geometry and Esri type
-conversions.
+It provides functionality for:
+
+- authorization,
+- Esri JSON construction and parsing,
+- structuring ArcGIS REST API requests,
+- Esri type conversions,
+- among other utilities
 
 ## Installation
 
@@ -50,6 +54,9 @@ library(arcgisutils)
 #> The following object is masked from 'package:base':
 #> 
 #>     %||%
+```
+
+``` r
 
 tkn <- auth_client()
 
@@ -59,7 +66,7 @@ arc_token()
 #> <httr2_token>
 #> token_type: bearer
 #> access_token: <REDACTED>
-#> expires_at: 2024-05-02 14:22:45
+#> expires_at: 2024-07-11 09:40:56
 #> arcgis_host: https://www.arcgis.com
 ```
 
@@ -78,7 +85,7 @@ arc_token("A")
 #> <httr2_token>
 #> token_type: bearer
 #> access_token: <REDACTED>
-#> expires_at: 2024-05-02 14:22:45
+#> expires_at: 2024-07-11 09:40:56
 #> arcgis_host: https://www.arcgis.com
 ```
 
@@ -95,7 +102,7 @@ arc_base_req(host)
 #> GET https://www.arcgis.com
 #> Body: empty
 #> Options:
-#> • useragent: 'arcgisutils v0.2.0.9002'
+#> • useragent: 'arcgisutils v0.3.0'
 ```
 
 ### Esri JSON
@@ -109,6 +116,9 @@ convert to json, it is recommended to use
 ``` r
 library(sf)
 #> Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE
+```
+
+``` r
 
 nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
 nc_json <- as_featureset(nc)

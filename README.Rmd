@@ -2,6 +2,7 @@
 output: github_document
 format: gfm
 ---
+# arcgisutils <img src="man/figures/logo.svg" align="right" height="139" alt="" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml)
@@ -17,11 +18,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-# arcgisutils
 
 arcgisutils is designed as the backbone of the [`{arcgis}`](https://github.com/r-arcgis/arcgis) meta-package.
 
-arcgisutils is a developer oriented package that provides the basic functions to build R packages that work with ArcGIS Location Services. It provides functionality for authorization, Esri JSON construction and parsing, as well as other utilities pertaining to geometry and Esri type conversions.
+arcgisutils is a developer oriented package that provides the basic functions to build R packages that work with ArcGIS Location Services. It provides functionality for:
+
+- authorization, 
+- Esri JSON construction and parsing, 
+- structuring ArcGIS REST API requests,
+- Esri type conversions,
+- among other utilities
 
 ## Installation
 
