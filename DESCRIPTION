@@ -16,7 +16,7 @@ Description: Developer oriented utility functions designed to be used as
     geometry and Esri type conversions. To support 'ArcGIS Pro' users,
     authorization can be done via 'arcgisbinding'. Installation
     instructions for 'arcgisbinding' can be found at
-    <https://r.esri.com/r-bridge-site/arcgisbinding/installing-arcgisbinding.html>.
+    <https://r.esri.com/r-bridge-site/docs/installation.html>.
 License: Apache License (>= 2)
 URL: https://github.com/R-ArcGIS/arcgisutils,
     https://r.esri.com/arcgisutils/
