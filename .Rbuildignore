@@ -14,3 +14,4 @@
 ^src/rust/vendor$
 ^src/vendor$
 ^README\.*$
+^\.vscode$
