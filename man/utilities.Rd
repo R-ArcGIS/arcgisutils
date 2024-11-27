@@ -4,6 +4,7 @@
 \alias{compact}
 \alias{\%||\%}
 \alias{check_dots_named}
+\alias{data_frame}
 \title{General utility functions}
 \usage{
 compact(.x)
@@ -11,6 +12,8 @@ compact(.x)
 a \%||\% b
 
 check_dots_named(dots, call = rlang::caller_env())
+
+data_frame(x, call = rlang::caller_call())
 }
 \arguments{
 \item{.x}{a list}
@@ -21,7 +24,9 @@ check_dots_named(dots, call = rlang::caller_env())
 
 \item{dots}{a list collected from dots via \code{rlang::list2(...)}}
 
-\item{call}{default \code{rlang::caller_env()}. The caller environment passed to \code{cli::cli_abort()}}
+\item{call}{default \code{\link[rlang:stack]{rlang::caller_call()}}.}
+
+\item{x}{a data.frame}
 }
 \value{
 \itemize{
