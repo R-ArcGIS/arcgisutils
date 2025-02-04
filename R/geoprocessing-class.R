@@ -3,7 +3,7 @@
 #' @rawNamespace if (getRversion() < "4.3.0") importFrom("S7", "@")
 NULL
 
-#' Geoprocess Job Status
+#' Geoprocessing Job Status
 #'
 #' Represents the status of a geoprocessing job.
 #'
@@ -14,8 +14,8 @@ NULL
 #' @export
 #' @family geoprocessing
 #' @return an object of class `gp_job_status`
-class_job_status <- S7::new_class(
-  "gp_job_status",
+arc_job_status <- S7::new_class(
+  "arc_job_status",
   package = "arcgisutils",
   properties = list(status = S7::class_character),
   validator = function(self) {
@@ -48,16 +48,18 @@ class_job_status <- S7::new_class(
 #'
 #' ArcGIS endpoints make extensive use of form encoded data for the body
 #' of http requests. Form requests require that each element has a name
-#' and is encoded as a single string.
+#' and is encoded as a single string—often as json.
 #'
-#' The `esri_form_params` class provides validation of form body parameters.
-#' It uses a named list internally to store the parameters.
+#' The `arc_form_params` class provides validation of form body parameters
+#' ensuring that each element is a scalar string. It uses a named list
+#' internally to store the parameters.
 #'
 #' @export
 #' @family geoprocessing
-#' @return an object of class `esri_form_params`
-class_form_params <- S7::new_class(
-  "esri_form_params",
+#' @return an object of class `arc_form_params`
+#' @param params a named list with scalar character elements
+arc_form_params <- S7::new_class(
+  "arc_form_params",
   package = "arcgisutils",
   properties = list(params = S7::class_list),
   validator = function(self) {
@@ -73,84 +75,46 @@ class_form_params <- S7::new_class(
   }
 )
 
-# used for active bindings to check the job status
-.job_status <- function() {
-  # if there is a NULL job ID we abort
-  if (is.null(self$id)) {
-    cli::cli_abort(
-      c("There is no job ID present.", ">" = " Have you started the job with `x$start()`?")
-    )
-  }
-
-  # check the status
-  resp <- arc_base_req(
-    self$base_url,
-    token = private$token,
-    path = c("jobs", self$id),
-    query = c(f = "json")
-  ) |>
-    httr2::req_error(is_error = function(e) FALSE) |>
-    httr2::req_perform() |>
-    httr2::resp_body_string()
-
-  # read the string
-  res <- RcppSimdJson::fparse(resp)
-
-  detect_errors(res)
-
-  class_job_status(res[["jobStatus"]])
-}
-# used for active bindings
-.job_results <- function() {
-  # if there is a NULL job ID we abort
-  if (is.null(self$id)) {
-    cli::cli_abort(
-      c("There is no job ID present.", ">" = " Have you started the job with `x$start()`?")
-    )
-  }
-
-  # check the status
-  resp <- arc_base_req(
-    self$base_url,
-    token = private$token,
-    path = c("jobs", self$id, "results"),
-    query = c(f = "json")
-  ) |>
-    httr2::req_error(is_error = function(e) FALSE) |>
-    httr2::req_perform() |>
-    httr2::resp_body_string()
-
-  # read the string
-  res <- RcppSimdJson::fparse(resp)
-  detect_errors(res)
-
-  data_frame(res)
-}
-
-
-#' @title Create a Geoprocessing Job
+#' @title Create a Geoprocessing Service Job
 #'
 #' @description
-#' The `gp_job` class is used to interact with Geoprocessing Services in
+#' The `arc_gp_job` class is used to interact with Geoprocessing Services in
 #' ArcGIS Online and Enterprise.
 #'
 #' @details
 #'
-#' The `gp_job` uses S7 classes for the job request parameters and job status
-#' via [class_form_params()] and [class_job_status()] respectively. Importantly,
-#' `class_form_params()` ensures that parameters provided to a geoprocessing
-#' service are all character scalars.
+#' The `arc_gp_job` uses S7 classes for the job request parameters and job status
+#' via [arc_form_params()] and [arc_job_status()] respectively. Importantly,
+#' [arc_form_params()] ensures that parameters provided to a geoprocessing
+#' service are all character scalars as required by the form body.
 #'
+#' @importFrom R6 R6Class
 #' @export
 #' @returns
-#' An object of class `gp_job`.
+#' An object of class `arc_gp_job`.
 #' @family geoprocessing
-gp_job <- R6::R6Class(
-  "gp_job",
+#' @rdname gp_job
+#' @examples
+#' url <- paste0(
+#'   "https://logistics.arcgis.com/arcgis/",
+#'   "rest/services/World/ServiceAreas/",
+#'   "GPServer/GenerateServiceAreas"
+#' )
+#' job <- new_gp_job(url, list(f = "json"))
+#' job
+#'
+#' # extract params S7 class
+#' params <- job$params
+#' params
+#'
+#' # view underlying list
+#' params@params
+arc_gp_job <- R6::R6Class(
+  "arc_gp_job",
   #' @field base_url the URL of the job service (without `/submitJob`)
   #' @field id the ID of the started job. `NULL` `self$start()` has not been called.
-  #' @field params returns an S7 object of class `esri_form_params` (see [`class_form_params()`]) the list can be accessed via `self$params@params`.
-  #' @field status returns the status of the geoprocessing job as an S7 object of class `gp_job_status` (see [class_job_status()]) by querying the `/jobs/{job-id}` endpoint.
+  #' @field params returns an S7 object of class `arc_form_params` (see [`arc_form_params()`]) the list can be accessed via `self$params@params`.
+  #' @field status returns the status of the geoprocessing job as an S7 object of class `gp_job_status` (see [arc_job_status()]) by querying the `/jobs/{job-id}` endpoint.
   #' @field results returns the current results of the job by querying the `/jobs/{job-id}/results` endpoint.
   public = list(
     base_url = NULL,
@@ -161,7 +125,7 @@ gp_job <- R6::R6Class(
     initialize = function(base_url, params = list(), token = arc_token()) {
       # use S7 to validate the form parameters
       self$base_url <- base_url
-      private$.params <- class_form_params(params)
+      private$.params <- arc_form_params(params)
       private$token <- token
       self
     },
@@ -199,14 +163,39 @@ gp_job <- R6::R6Class(
       # check for errors
       detect_errors(res)
 
-      self$status <- class_job_status(status = res$jobStatus)
+      self$status <- arc_job_status(status = res$jobStatus)
       self$id <- res$jobId
       self
     }
   ),
   private = list(
     .params = NULL,
-    .status = .job_status,
+    .status = function() {
+      # if there is a NULL job ID we abort
+      if (is.null(self$id)) {
+        cli::cli_abort(
+          c("There is no job ID present.", ">" = " Have you started the job with `x$start()`?")
+        )
+      }
+
+      # check the status
+      resp <- arc_base_req(
+        self$base_url,
+        token = private$token,
+        path = c("jobs", self$id),
+        query = c(f = "json")
+      ) |>
+        httr2::req_error(is_error = function(e) FALSE) |>
+        httr2::req_perform() |>
+        httr2::resp_body_string()
+
+      # read the string
+      res <- RcppSimdJson::fparse(resp)
+
+      detect_errors(res)
+
+      arc_job_status(res[["jobStatus"]])
+    },
     token = NULL
   ),
   active = list(
@@ -214,7 +203,35 @@ gp_job <- R6::R6Class(
       private$.params
     },
     status = function() private$.status(),
-    results = .job_results
+    results = function() {
+      # if there is a NULL job ID we abort
+      if (is.null(self$id)) {
+        cli::cli_abort(
+          c("There is no job ID present.", ">" = " Have you started the job with `x$start()`?")
+        )
+      }
+
+      # check the status
+      resp <- arc_base_req(
+        self$base_url,
+        token = private$token,
+        path = c("jobs", self$id, "results"),
+        query = c(f = "json")
+      ) |>
+        httr2::req_error(is_error = function(e) FALSE) |>
+        httr2::req_perform() |>
+        httr2::resp_body_string()
+
+      # read the string
+      res <- RcppSimdJson::fparse(resp)
+      detect_errors(res)
+
+      if (!is.null(res) && is.data.frame(res)) {
+        return(data_frame(res))
+      } else {
+        res
+      }
+    }
   ),
   lock_class = TRUE
 )
@@ -222,31 +239,28 @@ gp_job <- R6::R6Class(
 
 #' @export
 #' @rdname gp_job
+#' @param base_url the URL of the job service (without `/submitJob`)
+#' @param params a named list where each element is a scalar character
+#' @param token default [arc_token()]. The token to be used with the job.
 new_gp_job <- function(base_url, params = list(), token = arc_token()) {
   check_string(base_url)
   if (!rlang::is_null(token)) {
     obj_check_token(token)
   }
-  gp_job$new(base_url, params, token)
+  arc_gp_job$new(base_url, params, token)
 }
 
 #' @export
-print.gp_job <- function(x, ...) {
+print.arc_gp_job <- function(x, ...) {
+  x
   contents <- c(
     sprintf("<%s>", class(x)[1]),
     sprintf("Job ID: %s", x$id %||% "not initiated"),
     sprintf("Status: %s", x$.status %||% "not started"),
-    sprintf("Resource: %s", tail(strsplit(x$base_url, "/")[[1]], 1)),
+    sprintf("Resource: /%s", utils::tail(strsplit(x$base_url, "/")[[1]], 1)),
     "Params:",
-    cli::cli_fmt(cli::cli_ul(names(compact(x$params@params)) %||% "empty"))
+    cli::cli_fmt(cli::cli_ul(names(compact(x$params@params))))
   )
   cat(contents, sep = "\n")
   invisible(x)
 }
-
-
-
-
-
-
-

@@ -31,6 +31,9 @@ reference:
   - as_layer
   - as_extent
   - parse_esri_json
+- title: Geoprocessing Services
+  contents:
+  - has_concept("geoprocessing")
 - title: Types
   contents:
   - infer_esri_type
