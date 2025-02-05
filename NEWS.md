@@ -1,5 +1,10 @@
 # arcgisutils (development version)
 
+- Addresses a bug where NA values were being returned incorrectly <https://github.com/R-ArcGIS/arcgisutils/issues/56>
+- Addresses a bug when row-binding inconsistent columns with collaps <https://github.com/R-ArcGIS/arcgisutils/issues/54>
+
+# arcgisutils 0.3.1
+
 - addresses a bug where integers were encoded as floats. This caused a problem for using `update_features()` and specifying the OID field
 
 # arcgisutils 0.3.0
