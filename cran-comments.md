@@ -1,6 +1,6 @@
 ## R CMD check results
 
-This release addresses WARN and NOTEs in current CRAN checks. 
+This is a maintenance update to publish small bug fixes. 
 
 0 errors | 0 warnings | 2 notes
 
@@ -14,10 +14,6 @@ Size of tarball: 6021580 bytes
 
 
 ## Test Environments 
-
-Local: 
-    - Platform: aarch64-apple-darwin20
-    - Running under: macOS Sonoma 14.4.1
 
 GitHub Actions: 
 
