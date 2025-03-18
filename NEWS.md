@@ -1,7 +1,7 @@
-# arcgisutils (development version)
+# arcgisutils 0.3.2
 
 - Addresses a bug where NA values were being returned incorrectly <https://github.com/R-ArcGIS/arcgisutils/issues/56>
-- Addresses a bug when row-binding inconsistent columns with collaps <https://github.com/R-ArcGIS/arcgisutils/issues/54>
+- Addresses a bug when row-binding inconsistent columns with collapse <https://github.com/R-ArcGIS/arcgisutils/issues/54>
 
 # arcgisutils 0.3.1
 
