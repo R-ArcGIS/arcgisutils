@@ -13,9 +13,9 @@
 #'
 #' Additional documentation for these json object:
 #'
-#' - [`layer`](https://developers.arcgis.com/documentation/common-data-types/layer.htm)
-#' - [`layerDefinition`](https://developers.arcgis.com/documentation/common-data-types/layerdefinition.htm)
-#' - [`featureCollection`](https://developers.arcgis.com/documentation/common-data-types/featurecollection.htm)
+#' - [`layer`](https://developers.arcgis.com/rest/services-reference/enterprise/layer/)
+#' - [`layerDefinition`](https://developers.arcgis.com/web-map-specification/objects/layerDefinition/)
+#' - [`featureCollection`](https://developers.arcgis.com/web-map-specification/objects/featureCollection/)
 #'
 #' @export
 #' @rdname layer_json
@@ -33,7 +33,7 @@
 #' @param legend_url default `NULL`. A string URL to a legend graphic for the layer.
 #'   Used with WMS layers. The URL usually contains a GetLegendGraphic request.
 #' @param popup_info default `NULL`. A list that can be converted into a
-#'   [popupInfo](https://developers.arcgis.com/documentation/common-data-types/popupinfo.htm)
+#'   [popupInfo](https://developers.arcgis.com/web-map-specification/objects/popupInfo/)
 #'   object defining the pop-up window content for the layer. There is no helper for
 #'   popupInfo objects.
 #' @inheritParams cli::cli_abort
@@ -47,20 +47,21 @@
 #' l <- as_layer(iris, "iris name", "Iris Title")
 #' fc <- as_feature_collection(layers = list(l))
 as_layer <- function(
+  x,
+  name,
+  title,
+  layer_definition = as_layer_definition(
     x,
     name,
-    title,
-    layer_definition = as_layer_definition(
-      x,
-      name,
-      "object_id",
-      infer_esri_type(x)
-    ),
-    id = NULL,
-    layer_url = NULL,
-    legend_url = NULL,
-    popup_info = NULL,
-    call = rlang::caller_env()) {
+    "object_id",
+    infer_esri_type(x)
+  ),
+  id = NULL,
+  layer_url = NULL,
+  legend_url = NULL,
+  popup_info = NULL,
+  call = rlang::caller_env()
+) {
   if (!rlang::inherits_any(x, "data.frame")) {
     cli::cli_abort(
       "Expected {.cls data.frame} found {.obj_type_friendly {x}}",
@@ -140,19 +141,20 @@ as_layer <- function(
 #' @export
 #' @rdname layer_json
 as_layer_definition <- function(
-    x,
-    name,
-    object_id_field,
-    fields = infer_esri_type(x),
-    display_field = NULL,
-    drawing_info = NULL,
-    has_attachments = FALSE,
-    max_scale = 0,
-    min_scale = 0,
-    templates = NULL,
-    type_id_field = NULL,
-    types = NULL,
-    call = rlang::caller_env()) {
+  x,
+  name,
+  object_id_field,
+  fields = infer_esri_type(x),
+  display_field = NULL,
+  drawing_info = NULL,
+  has_attachments = FALSE,
+  max_scale = 0,
+  min_scale = 0,
+  templates = NULL,
+  type_id_field = NULL,
+  types = NULL,
+  call = rlang::caller_env()
+) {
   if (!rlang::inherits_any(x, "data.frame")) {
     cli::cli_abort(
       "Expected {.cls data.frame} found {.obj_type_friendly {x}}",
@@ -218,8 +220,6 @@ as_layer_definition <- function(
     fields[["length"]][oid_position] <- NA
   }
 
-
-
   layer_def_body <- list(
     name = name,
     displayField = display_field,
@@ -255,14 +255,18 @@ as_layer_definition <- function(
 #' @param show_legend default `FALSE`. Logical scalar indicating if this layer
 #'   should be shown in the legend in client applications.
 as_feature_collection <- function(
-    layers = list(),
-    show_legend = TRUE,
-    call = rlang::caller_env()) {
+  layers = list(),
+  show_legend = TRUE,
+  call = rlang::caller_env()
+) {
   if (!rlang::is_list(layers)) {
-    cli::cli_abort(c(
-      "Invalid {.arg layers} object.",
-      "i" = "expected {.cls list}, found {.obj_type_friendly {layers}}"
-    ), call = call)
+    cli::cli_abort(
+      c(
+        "Invalid {.arg layers} object.",
+        "i" = "expected {.cls list}, found {.obj_type_friendly {layers}}"
+      ),
+      call = call
+    )
   }
   c(list(layers = layers), showLegend = show_legend)
 }

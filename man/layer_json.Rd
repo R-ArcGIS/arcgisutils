@@ -62,7 +62,7 @@ there is an associated feature service that allows for queries.}
 Used with WMS layers. The URL usually contains a GetLegendGraphic request.}
 
 \item{popup_info}{default \code{NULL}. A list that can be converted into a
-\href{https://developers.arcgis.com/documentation/common-data-types/popupinfo.htm}{popupInfo}
+\href{https://developers.arcgis.com/web-map-specification/objects/popupInfo/}{popupInfo}
 object defining the pop-up window content for the layer. There is no helper for
 popupInfo objects.}
 
@@ -136,9 +136,9 @@ and additional metadata such as name, title, and display scale.
 
 Additional documentation for these json object:
 \itemize{
-\item \href{https://developers.arcgis.com/documentation/common-data-types/layer.htm}{\code{layer}}
-\item \href{https://developers.arcgis.com/documentation/common-data-types/layerdefinition.htm}{\code{layerDefinition}}
-\item \href{https://developers.arcgis.com/documentation/common-data-types/featurecollection.htm}{\code{featureCollection}}
+\item \href{https://developers.arcgis.com/rest/services-reference/enterprise/layer/}{\code{layer}}
+\item \href{https://developers.arcgis.com/web-map-specification/objects/layerDefinition/}{\code{layerDefinition}}
+\item \href{https://developers.arcgis.com/web-map-specification/objects/featureCollection/}{\code{featureCollection}}
 }
 }
 \examples{

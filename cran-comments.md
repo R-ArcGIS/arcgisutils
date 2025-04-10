@@ -1,6 +1,6 @@
 ## R CMD check results
 
-This is a maintainance release to prevent archival. 
+This is a maintainance release to prevent archival. Moved URLs have been fixed.
 
 0 errors | 0 warnings | 0 notes
 

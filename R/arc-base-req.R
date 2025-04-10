@@ -13,19 +13,19 @@
 #' @export
 #' @examples
 #' arc_base_req("https://arcgis.com")
+#' @returns an `httr2_request` with the `X-Esri-Authorization` header and `User-Agent` set.
 arc_base_req <- function(
-    url,
-    token = NULL,
-    path = NULL,
-    query = NULL,
-    error_call = rlang::caller_env()
+  url,
+  token = NULL,
+  path = NULL,
+  query = NULL,
+  error_call = rlang::caller_env()
 ) {
   # set the user agent
   req <- arc_agent(httr2::request(url))
 
   # handle path if provided
   if (!is.null(path)) {
-
     # check path is a character vector
     if (!rlang::is_bare_character(path)) {
       cli::cli_abort(
@@ -39,12 +39,10 @@ arc_base_req <- function(
       req,
       rlang::inject(!!path)
     )
-
   }
 
   # append a query as well
   if (!is.null(query)) {
-
     if (!rlang::is_named2(query)) {
       cli::cli_abort(
         "{.arg query} must be a named list",
@@ -57,7 +55,6 @@ arc_base_req <- function(
 
   # if token is not missing, check it
   if (!is.null(token)) {
-
     # ensure that the token is an httr2_token
     obj_check_token(token, error_call)
 
@@ -70,4 +67,3 @@ arc_base_req <- function(
 
   req
 }
-
