@@ -24,12 +24,12 @@ arc_url_parse <- function(url, base_url = NULL) {
   # Parse URL into components
   httr2_url <- httr2::url_parse(url = url, base_url = base_url)
 
-  path <- unclass(httr2_url)[["path"]]
-
-  # Extract the service or content type from URL path
-  type <- arc_url_type(path)
+  # Extract the service or content type from URL
+  type <- arc_url_type(url)
 
   # Extract trailing layer number from URL path
+  path <- unclass(httr2_url)[["path"]]
+
   has_layer <- grepl(
     "(?<=(FeatureServer|MapServer)/)[0-9]+/?$",
     path,
@@ -42,7 +42,7 @@ arc_url_parse <- function(url, base_url = NULL) {
   }
 
   c(
-    httr2_url,
+    unclass(httr2_url),
     list(
       url = httr2::url_build(httr2_url),
       type = type,
