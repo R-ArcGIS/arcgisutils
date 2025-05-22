@@ -44,3 +44,34 @@ check_dots_named <- function(dots, call = rlang::caller_env()) {
   }
   invisible(dots)
 }
+
+#' Extract matching patterns from a string
+#' Adapted from `stringstatic::str_extract`
+#' <https://github.com/rossellhayes/stringstatic/blob/main/R/str_extract.R>
+#' @noRd
+str_extract <- function(string, pattern) {
+  if (length(string) == 0 || length(pattern) == 0) {
+    return(character(0))
+  }
+
+  is_fixed <- inherits(pattern, "stringr_fixed")
+  result <- Map(
+    function(string, pattern) {
+      if (is.na(string) || is.na(pattern)) return(NA_character_)
+      regmatches(
+        x = string,
+        m = regexpr(
+          pattern = pattern,
+          text = string,
+          perl = !is_fixed,
+          fixed = is_fixed
+        )
+      )
+    },
+    string,
+    pattern,
+    USE.NAMES = FALSE
+  )
+  result[lengths(result) == 0] <- NA_character_
+  unlist(result)
+}
