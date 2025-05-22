@@ -28,17 +28,12 @@ arc_url_parse <- function(url, base_url = NULL) {
   type <- arc_url_type(url)
 
   # Extract trailing layer number from URL path
-  path <- unclass(httr2_url)[["path"]]
-
-  has_layer <- grepl(
-    "(?<=(FeatureServer|MapServer)/)[0-9]+/?$",
-    path,
-    perl = TRUE
-  )
-
   layer <- NULL
-  if (has_layer) {
-    layer <- str_extract(path, "(?<=/)([0-9]+(?=/)|[0-9]+$)")
+  if (has_arc_url_layer(httr2_url[["path"]])) {
+    layer <- str_extract(
+      httr2_url[["path"]],
+      "(?<=/)([0-9]+(?=/)|[0-9]+$)"
+    )
   }
 
   c(
@@ -49,6 +44,24 @@ arc_url_parse <- function(url, base_url = NULL) {
       layer = layer
     )
   )
+}
+
+#' Does the path have a layer at the end?
+#' @noRd
+has_arc_url_layer <- function(
+  url,
+  services = c("FeatureServer", "MapServer"),
+  layer = NULL
+) {
+  layer <- layer %||% "[0-9]+"
+  pattern <- paste0(
+    "(?<=(",
+    paste0(services, collapse = "|"),
+    ")/)",
+    layer,
+    "/?$"
+  )
+  grepl(pattern, url, perl = TRUE)
 }
 
 #' Vector of valid ArcGIS service types
