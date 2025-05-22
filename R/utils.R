@@ -44,3 +44,10 @@ check_dots_named <- function(dots, call = rlang::caller_env()) {
   }
   invisible(dots)
 }
+
+#' Extract matching patterns from a string
+#' @noRd
+str_extract <- function(string, pattern) {
+  matches <- regexpr(pattern, string, perl = TRUE)
+  regmatches(string, matches)
+}
