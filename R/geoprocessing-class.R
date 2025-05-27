@@ -122,11 +122,13 @@ arc_gp_job <- R6::R6Class(
     id = NULL,
     #' @param base_url the URL of the job service (without `/submitJob`)
     #' @param params a named list where each element is a scalar character
+    #' @param result_fn Default `NULL`. An optional function to apply to the results JSON. By default parses results using `RcppSimdJson::fparse()`.
     #' @param token default [arc_token()]. The token to be used with the job.
     #' @param error_call default `rlang::caller_call()` the calling environment.
     initialize = function(
       base_url,
       params = list(),
+      result_fn = NULL,
       token = arc_token(),
       error_call = rlang::caller_call()
     ) {
@@ -134,6 +136,13 @@ arc_gp_job <- R6::R6Class(
       if (!is_url(base_url)) {
         cli::cli_abort("{.arg base_url} is not a valid URL.", call = error_call)
       }
+
+      # set th
+      if (!rlang::is_null(result_fn)) {
+        check_function(result_fn)
+        private$.result_fn <- result_fn
+      }
+
       self$base_url <- base_url
       private$.params <- arc_form_params(params)
       private$token <- token
@@ -209,6 +218,7 @@ arc_gp_job <- R6::R6Class(
 
       arc_job_status(res[["jobStatus"]])
     },
+    .result_fn = NULL,
     token = NULL
   ),
   active = list(
@@ -237,6 +247,12 @@ arc_gp_job <- R6::R6Class(
         httr2::req_error(is_error = function(e) FALSE) |>
         httr2::req_perform() |>
         httr2::resp_body_string()
+
+      # optional .fn arg which is used to parse the results
+      # of the geoprocessing body
+      if (!rlang::is_null(private$.result_fn)) {
+        return(private$.result_fn(resp))
+      }
 
       # read the string
       res <- RcppSimdJson::fparse(resp)

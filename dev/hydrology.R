@@ -27,6 +27,7 @@ trace_downstream <- function(
   trace_downstream_job$new(
     "https://hydro.arcgis.com/arcgis/rest/services/Tools/Hydrology/GPServer/TraceDownstream",
     params,
+    \(.x) .x,
     token
   )
 }
@@ -42,3 +43,8 @@ job$status
 
 job$results
 job$results
+
+ls(envir = job[[".__enclos_env__"]])
+ls(envir = job[[".__enclos_env__"]]$private)
+
+yyjsonr::read_json_str(job$results)[["value"]] |> str()

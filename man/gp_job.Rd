@@ -87,6 +87,7 @@ Other geoprocessing:
 \if{html}{\out{<div class="r">}}\preformatted{arc_gp_job$new(
   base_url,
   params = list(),
+  result_fn = NULL,
   token = arc_token(),
   error_call = rlang::caller_call()
 )}\if{html}{\out{</div>}}
@@ -98,6 +99,8 @@ Other geoprocessing:
 \item{\code{base_url}}{the URL of the job service (without \verb{/submitJob})}
 
 \item{\code{params}}{a named list where each element is a scalar character}
+
+\item{\code{result_fn}}{Default \code{NULL}. An optional function to apply to the results JSON. By default parses results using \code{RcppSimdJson::fparse()}.}
 
 \item{\code{token}}{default \code{\link[=arc_token]{arc_token()}}. The token to be used with the job.}
 
