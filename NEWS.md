@@ -1,3 +1,8 @@
+# arcgisutils (development version)
+
+- Adds Geoprocessing support via new S7 classes:
+  - `arc_gp_job`, `arc_job_status`, and `arc_form_params`
+
 # arcgisutils 0.3.2
 
 - Addresses a bug where NA values were being returned incorrectly <https://github.com/R-ArcGIS/arcgisutils/issues/56>

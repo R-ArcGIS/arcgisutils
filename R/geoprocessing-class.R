@@ -109,6 +109,7 @@ arc_form_params <- S7::new_class(
 #'
 #' # view underlying list
 #' params@params
+#'
 arc_gp_job <- R6::R6Class(
   "arc_gp_job",
   #' @field base_url the URL of the job service (without `/submitJob`)
@@ -122,6 +123,7 @@ arc_gp_job <- R6::R6Class(
     #' @param base_url the URL of the job service (without `/submitJob`)
     #' @param params a named list where each element is a scalar character
     #' @param token default [arc_token()]. The token to be used with the job.
+    #' @param error_call default `rlang::caller_call()` the calling environment.
     initialize = function(
       base_url,
       params = list(),

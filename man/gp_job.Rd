@@ -42,6 +42,7 @@ params
 
 # view underlying list
 params@params
+
 }
 \seealso{
 Other geoprocessing: 
@@ -83,7 +84,12 @@ Other geoprocessing:
 \if{latex}{\out{\hypertarget{method-arc_gp_job-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{arc_gp_job$new(base_url, params = list(), token = arc_token())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{arc_gp_job$new(
+  base_url,
+  params = list(),
+  token = arc_token(),
+  error_call = rlang::caller_call()
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -94,6 +100,8 @@ Other geoprocessing:
 \item{\code{params}}{a named list where each element is a scalar character}
 
 \item{\code{token}}{default \code{\link[=arc_token]{arc_token()}}. The token to be used with the job.}
+
+\item{\code{error_call}}{default \code{rlang::caller_call()} the calling environment.}
 }
 \if{html}{\out{</div>}}
 }

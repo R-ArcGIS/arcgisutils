@@ -4,7 +4,7 @@
 \alias{arc_form_params}
 \title{Form request parameters}
 \usage{
-arc_form_params(params = class_missing)
+arc_form_params(params = list())
 }
 \arguments{
 \item{params}{a named list with scalar character elements}

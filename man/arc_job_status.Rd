@@ -4,7 +4,7 @@
 \alias{arc_job_status}
 \title{Geoprocessing Job Status}
 \usage{
-arc_job_status(status = class_missing)
+arc_job_status(status = character(0))
 }
 \arguments{
 \item{status}{a scalar character. Must be one of \code{"esriJobSubmitted"},
