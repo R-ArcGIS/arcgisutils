@@ -2,6 +2,7 @@
 
 - Adds Geoprocessing support via new S7 classes:
   - `arc_gp_job`, `arc_job_status`, and `arc_form_params`
+- Adds S7 and R6 as dependencies
 
 # arcgisutils 0.3.2
 
