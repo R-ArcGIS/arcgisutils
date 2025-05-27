@@ -1,3 +1,10 @@
+# arcgisutils (development version)
+
+- Adds Geoprocessing support via new S7 classes:
+  - `arc_gp_job`, `arc_job_status`, and `arc_form_params`
+- Adds S7 and R6 as dependencies
+- Adds `data_frame()` utility function which adds the `tbl` class to a `data.frame` for pretty tibble printing without requiring the tibble dependency.
+
 # arcgisutils 0.3.2
 
 - Addresses a bug where NA values were being returned incorrectly <https://github.com/R-ArcGIS/arcgisutils/issues/56>

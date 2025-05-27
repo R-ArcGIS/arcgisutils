@@ -1,6 +1,6 @@
 Package: arcgisutils
 Title: ArcGIS Utility Functions
-Version: 0.3.3
+Version: 0.3.3.9000
 Authors@R: c(
     person("Josiah", "Parry", , "josiah.parry@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9910-865X")),
@@ -29,8 +29,10 @@ Imports:
     cli,
     dbplyr,
     httr2 (>= 1.0.5),
+    R6,
     RcppSimdJson,
     rlang,
+    S7,
     sf,
     utils
 Suggests:
