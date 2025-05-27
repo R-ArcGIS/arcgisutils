@@ -122,8 +122,16 @@ arc_gp_job <- R6::R6Class(
     #' @param base_url the URL of the job service (without `/submitJob`)
     #' @param params a named list where each element is a scalar character
     #' @param token default [arc_token()]. The token to be used with the job.
-    initialize = function(base_url, params = list(), token = arc_token()) {
+    initialize = function(
+      base_url,
+      params = list(),
+      token = arc_token(),
+      error_call = rlang::caller_call()
+    ) {
       # use S7 to validate the form parameters
+      if (!is_url(base_url)) {
+        cli::cli_abort("{.arg base_url} is not a valid URL.", call = error_call)
+      }
       self$base_url <- base_url
       private$.params <- arc_form_params(params)
       private$token <- token
@@ -174,7 +182,10 @@ arc_gp_job <- R6::R6Class(
       # if there is a NULL job ID we abort
       if (is.null(self$id)) {
         cli::cli_abort(
-          c("There is no job ID present.", ">" = " Have you started the job with `x$start()`?")
+          c(
+            "There is no job ID present.",
+            ">" = " Have you started the job with `x$start()`?"
+          )
         )
       }
 
@@ -207,7 +218,10 @@ arc_gp_job <- R6::R6Class(
       # if there is a NULL job ID we abort
       if (is.null(self$id)) {
         cli::cli_abort(
-          c("There is no job ID present.", ">" = " Have you started the job with `x$start()`?")
+          c(
+            "There is no job ID present.",
+            ">" = " Have you started the job with `x$start()`?"
+          )
         )
       }
 
@@ -242,7 +256,11 @@ arc_gp_job <- R6::R6Class(
 #' @param base_url the URL of the job service (without `/submitJob`)
 #' @param params a named list where each element is a scalar character
 #' @param token default [arc_token()]. The token to be used with the job.
-new_gp_job <- function(base_url, params = list(), token = arc_token()) {
+new_gp_job <- function(
+  base_url,
+  params = list(),
+  token = arc_token()
+) {
   check_string(base_url)
   if (!rlang::is_null(token)) {
     obj_check_token(token)

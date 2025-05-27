@@ -172,11 +172,3 @@ extendr_module! {
     // fn parse_esri_json_raw;
     // fn parse_esri_json_raw_geoarrow;
 }
-
-
-fn boxf64_as_doubles(x: &Vec<Box<[f64]>>) -> List {
-    x.iter()
-    .map(|pi| {
-        Doubles::from_values(pi.iter())
-    }).collect::<List>()
-}
