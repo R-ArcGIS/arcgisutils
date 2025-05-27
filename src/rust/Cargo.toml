@@ -1,13 +1,13 @@
 [package]
-name = 'arcgisutils'
+name = "arcgisutils"
 publish = false
-version = '0.1.0'
-edition = '2021'
+version = "0.1.0"
+edition = "2021"
 rust-version = "1.65.0"
 
 [lib]
-crate-type = ['staticlib']
-name = 'arcgisutils'
+crate-type = ["staticlib"]
+name = "arcgisutils"
 
 [dependencies]
 extendr-api = { version = "0.8.0", features = ["serde"] }

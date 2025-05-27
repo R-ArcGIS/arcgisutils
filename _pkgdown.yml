@@ -39,8 +39,8 @@ reference:
   contents:
   - compact
   - rbind_results
+  - arc_url_parse
 - title: Requests
   contents:
   - fetch_layer_metadata
   - detect_errors
-
