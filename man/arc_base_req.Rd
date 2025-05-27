@@ -24,6 +24,9 @@ or related function}
 
 \item{error_call}{the caller environment to be used when propagating errors.}
 }
+\value{
+an \code{httr2_request} with the \code{X-Esri-Authorization} header and \code{User-Agent} set.
+}
 \description{
 This function takes a url and creates a basic httr2 request that
 adds the user-agent and adds an authorization token to the

@@ -24,43 +24,35 @@ pub fn df_to_attributes(x: List, n: usize) -> Vec<Map<String, Value>> {
                     let col_typed = Doubles::try_from(col).unwrap();
                     let v = &col_typed[i];
 
-                    match !v.is_na() {
-                        true => {
-                            let num = Number::from_f64(v.inner())
-                                .expect("double can't be converted to serde_json::Number");
-                            map.insert(name, Value::Number(num))
-                        }
-                        false => map.insert(name, Value::Null),
-                    };
+                    if let false = v.is_na() {
+                        let num = Number::from_f64(v.inner())
+                            .expect("double can't be converted to serde_json::Number");
+                        map.insert(name, Value::Number(num));
+                    }
                 }
                 Rtype::Integers => {
                     let col_typed = Integers::try_from(col).unwrap();
                     let v = &col_typed[i];
 
-                    match !v.is_na() {
-                        true => {
-                            let num = Number::from(v.inner());
-                            map.insert(name, Value::Number(num))
-                        }
-                        false => map.insert(name, Value::Null),
-                    };
+                    if let false = v.is_na() {
+                        let num = Number::from(v.inner());
+                        map.insert(name, Value::Number(num));
+                    }
                 }
                 Rtype::Strings => {
                     let col_typed = Strings::try_from(col).unwrap();
                     let rstr = &col_typed[i];
-                    match !rstr.is_na() {
-                        true => map.insert(name, Value::String(rstr.to_string())),
-                        false => map.insert(name, Value::Null),
-                    };
+                    if let false = rstr.is_na() {
+                        map.insert(name, Value::String(rstr.to_string()));
+                    }
                 }
                 Rtype::Logicals => {
                     let col_typed = Logicals::try_from(col).unwrap();
                     let v = &col_typed[i];
 
-                    match !v.is_na() {
-                        true => map.insert(name, Value::Bool(v.to_bool())),
-                        false => map.insert(name, Value::Null),
-                    };
+                    if let false = v.is_na() {
+                        map.insert(name, Value::Bool(v.to_bool()));
+                    }
                 }
                 _ => unimplemented!(),
             }

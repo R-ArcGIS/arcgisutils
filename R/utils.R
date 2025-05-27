@@ -45,12 +45,18 @@ check_dots_named <- function(dots, call = rlang::caller_env()) {
   invisible(dots)
 }
 
-
 #' @param x a data.frame
-#' @param call default [rlang::caller_call()]. 
+#' @param call default [rlang::caller_call()].
 #' @export
 #' @rdname utilities
-data_frame <- function (x, call = rlang::caller_call()) {
-    check_data_frame(x, call = call)
-    structure(x, class = c("tbl", "data.frame"))
+data_frame <- function(x, call = rlang::caller_call()) {
+  check_data_frame(x, call = call)
+  structure(x, class = c("tbl", "data.frame"))
+}
+
+#' Extract matching patterns from a string
+#' @noRd
+str_extract <- function(string, pattern) {
+  matches <- regexpr(pattern, string, perl = TRUE)
+  regmatches(string, matches)
 }

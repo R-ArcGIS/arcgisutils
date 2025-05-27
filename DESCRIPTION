@@ -1,13 +1,15 @@
 Package: arcgisutils
 Title: ArcGIS Utility Functions
-Version: 0.3.1.9000
+Version: 0.3.3
 Authors@R: c(
     person("Josiah", "Parry", , "josiah.parry@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9910-865X")),
     person("Kenneth", "Vernon", , "kenneth.b.vernon@gmail.com", role = "ctb",
            comment = c(ORCID = "0000-0003-0098-5092")),
     person("Martha", "Bass", role = "ctb",
-           comment = c(ORCID = "0009-0004-0268-5426"))
+           comment = c(ORCID = "0009-0004-0268-5426")),
+    person("Eli", "Pousson", , "eli.pousson@gmail.com", role = "ctb",
+           comment = c(ORCID = "0000-0001-8280-1706"))
   )
 Description: Developer oriented utility functions designed to be used as
     the building blocks of R packages that work with ArcGIS Location
@@ -16,12 +18,14 @@ Description: Developer oriented utility functions designed to be used as
     geometry and Esri type conversions. To support 'ArcGIS Pro' users,
     authorization can be done via 'arcgisbinding'. Installation
     instructions for 'arcgisbinding' can be found at
-    <https://r.esri.com/r-bridge-site/docs/installation.html>.
+    <https://developers.arcgis.com/r-bridge/installation/>.
 License: Apache License (>= 2)
 URL: https://github.com/R-ArcGIS/arcgisutils,
-    https://r.esri.com/arcgisutils/
+    https://developers.arcgis.com/r-bridge/api-reference/arcgisutils/
 BugReports: https://github.com/R-ArcGIS/arcgisutils/issues
-Imports: 
+Depends:
+    R (>= 4.2)
+Imports:
     cli,
     dbplyr,
     httr2 (>= 1.0.5),
@@ -31,19 +35,17 @@ Imports:
     S7,
     sf,
     utils
-Suggests: 
+Suggests:
     arcgisbinding,
     collapse (>= 2.0.0),
     data.table,
-    vctrs,
+    jsonify,
     testthat (>= 3.0.0),
-    jsonify
-Depends:
-    R (>= 4.1.0)
+    vctrs
+Config/rextendr/version: 0.3.1.9001
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-Config/rextendr/version: 0.3.1.9001
+RoxygenNote: 7.3.2
 SystemRequirements: Cargo (Rust's package manager), rustc >= 1.67

@@ -24,9 +24,10 @@
 #' res <- rbind_results(list(x, NULL, x))
 #' attr(res, "null_elements")
 rbind_results <- function(
-    x,
-    call = rlang::current_env(),
-    .ptype = data.frame()) {
+  x,
+  call = rlang::current_env(),
+  .ptype = data.frame()
+) {
   # use for loop for side effects
   # check that each element is a data.frame
   for (item in x) {
@@ -53,7 +54,7 @@ rbind_results <- function(
 
   if (rlang::is_installed("collapse", version = "2.0.0")) {
     # ensure that a data.frame is always returned via return = 2L
-    x <- collapse::rowbind(x, return = 2L)
+    x <- collapse::rowbind(x, return = 2L, fill = TRUE)
   } else if (rlang::is_installed("data.table")) {
     x <- data.table::rbindlist(x)
     data.table::setDF(x)
