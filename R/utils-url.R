@@ -1,4 +1,4 @@
-#' Parse a ArcGIS service or content URL into its components
+#' Parse aan ArcGIS service or content URL into its components
 #'
 #' [arc_url_parse()] uses [httr2::url_parse()] to parse URL components and
 #' combine the components with a service or content URL `type` and a `layer`
@@ -13,7 +13,9 @@
 #' arc_url_parse(
 #'   "https://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer/0"
 #' )
-#'
+#' arc_url_parse(
+#'   "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
+#' )
 #' arc_url_parse(
 #'   "https://services.arcgisonline.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"
 #' )
@@ -122,7 +124,6 @@ arc_url_type <- function(url) {
 
   # TODO: Add check for "rest/services" or other patterns to ensure the URL is a
   # valid ArcGIS service or content url and warn otherwise
-
   matches <- vapply(pattern, grepl, x = url, FUN.VALUE = logical(1))
 
   if (!any(matches)) {
