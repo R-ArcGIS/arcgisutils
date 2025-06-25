@@ -1,3 +1,7 @@
+# arcgisutils (development version)
+
+- Validate `token` in `arc_base_req()`
+
 # arcgisutils 0.3.2
 
 - Addresses a bug where NA values were being returned incorrectly <https://github.com/R-ArcGIS/arcgisutils/issues/56>
