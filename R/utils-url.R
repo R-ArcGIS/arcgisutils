@@ -32,10 +32,7 @@ arc_url_parse <- function(url, base_url = NULL) {
   # Extract trailing layer number from URL path
   layer <- NULL
   if (has_arc_url_layer(httr2_url[["path"]])) {
-    layer <- str_extract(
-      httr2_url[["path"]],
-      "(?<=/)([0-9]+(?=/)|[0-9]+$)"
-    )
+    layer <- str_extract_layer(httr2_url[["path"]])
   }
 
   c(
@@ -57,13 +54,12 @@ has_arc_url_layer <- function(
 ) {
   layer <- layer %||% "[0-9]+"
   pattern <- paste0(
-    "(?<=(",
     paste0(services, collapse = "|"),
-    ")/)",
+    "/",
     layer,
     "/?$"
   )
-  grepl(pattern, url, perl = TRUE)
+  grepl(pattern, url)
 }
 
 #' Vector of valid ArcGIS service types
@@ -154,4 +150,16 @@ is_url <- function(
   pattern <- paste0(pattern, collapse = "|")
 
   grepl(url_pattern, x) & grepl(pattern, x, ...)
+}
+
+#' Extract layer number (w/ or w/o trailing slash)
+#' @noRd
+str_extract_layer <- function(x) {
+  trailing_txt <- str_extract(
+    x,
+    "(?:\\/)([[:digit:]]+)(?:\\/?)$",
+    perl = FALSE
+  )
+
+  str_extract(trailing_txt, "[[:digit:]]+", perl = FALSE)
 }
