@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-url.R
 \name{arc_url_parse}
 \alias{arc_url_parse}
-\title{Parse aan ArcGIS service or content URL into its components}
+\title{Parse an ArcGIS service or content URL into its components}
 \usage{
 arc_url_parse(url, base_url = NULL)
 }

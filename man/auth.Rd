@@ -36,7 +36,7 @@ validate_or_refresh_token(
   token,
   client = Sys.getenv("ARCGIS_CLIENT"),
   host = arc_host(),
-  refresh_threshold = 0,
+  refresh_threshold = 10,
   call = rlang::caller_env()
 )
 }
@@ -61,7 +61,7 @@ Your password to login. \strong{Do not} hard code this value.}
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
 
-\item{refresh_threshold}{default \code{0}. If token expiry is within this
+\item{refresh_threshold}{default \code{10}. If token expiry is within this
 threshold (in seconds) the token will be refreshed only if a
 \code{refresh_token} is available. Token refreshing is only possible with
 \code{auth_code()} flow.}
