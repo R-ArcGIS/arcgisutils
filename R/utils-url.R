@@ -54,8 +54,9 @@ has_arc_url_layer <- function(
 ) {
   layer <- layer %||% "[0-9]+"
   pattern <- paste0(
+    "(",
     paste0(services, collapse = "|"),
-    "/",
+    ")/",
     layer,
     "/?$"
   )
