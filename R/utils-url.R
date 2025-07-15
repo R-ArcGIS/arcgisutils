@@ -1,4 +1,4 @@
-#' Parse aan ArcGIS service or content URL into its components
+#' Parse an ArcGIS service or content URL into its components
 #'
 #' [arc_url_parse()] uses [httr2::url_parse()] to parse URL components and
 #' combine the components with a service or content URL `type` and a `layer`
