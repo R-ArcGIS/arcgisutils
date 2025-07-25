@@ -18,20 +18,23 @@ test_cases <- c(
   group = "https://analysis-1.maps.arcgis.com/home/group.html?id=2f0ec8cb03574128bd673cefab106f39#overview",
   user = "https://analysis-1.maps.arcgis.com/home/user.html?user=jparry_ANGP",
   item_db = "https://analysis-1.maps.arcgis.com/home/item.html?id=84ba9c03786e462d960e3172bc1b2204",
-  item_mapserver = "https://analysis-1.maps.arcgis.com/home/item.html?id=1d150c40d9f642cb8bd691017bf22cee"
+  item_mapserver = "https://analysis-1.maps.arcgis.com/home/item.html?id=1d150c40d9f642cb8bd691017bf22cee",
+  feature_collection = "https://analysis-1.maps.arcgis.com/home/item.html?id=24aa36ce1d7747c2b5a6aa57711d03fb",
+  gp_server = "https://gis.pikepa.org/arcgis/rest/services/Utilities/GeocodingTools/GPServer",
+  geometry_server = "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer"
 )
 
-info <- arc_url_parse(test_cases["item_mapserver"])
+info <- arc_url_parse(test_cases["geometry_server"])
 
 switch(
   info$type,
   "GeoDataServer" = NULL, # FIXME
-  "GeocodeServer" = NULL, # FIXME
-  "GeometryServer" = NULL, # FIXME
-  "GPServer" = NULL, # FIXME
   "WFSServer" = NULL, # FIXME
   "WFCServer" = NULL, # FIXME
   "webmap" = NULL, # FIXME
+  "GeometryServer" = fetch_layer_metadata(info$url), # FIXME, unclear how to use this...
+  "GPServer" = fetch_layer_metadata(info$url),
+  "GeocodeServer" = arcgisgeocode::geocode_server(info$url),
   "item" = {
     # if we have an item url, we fetch the item
     item <- arc_item(info$query$id)
@@ -41,9 +44,15 @@ switch(
       return(item)
     }
 
+    url_type <- arc_url_type(item[["url"]])
+
+    if (is.null(url_type)) {
+      return(item)
+    }
+
     # if there is a URL we check if it is a known service type
     # if so we use arc_open on that
-    if (arc_url_type(item[["url"]]) %in% arc_service_types) {
+    if (url_type %in% arc_service_types) {
       return(arcgislayers::arc_open(item[["url"]]))
     }
 
