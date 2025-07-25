@@ -107,7 +107,7 @@ arc_content_types <- c(
   "webscene" = "/home/webscene/viewer\\.html\\?webscene=",
   "webmap" = "(webmap/viewer|mapviewer/index)\\.html\\?webmap=",
   "app" = "/index\\.html\\?appid=",
-  "notebook" = "/notebook/notebook\\.html\\?rid=",
+  "notebook" = "/notebook/notebook\\.html\\?id=",
   "experience" = "/experience/[a-zA-Z0-9]+",
   "storymap" = "/stories/[a-zA-Z0-9]+",
   "dashboard" = "/dashboards/[a-zA-Z0-9]+",
@@ -162,13 +162,6 @@ is_url <- function(
   grepl(url_pattern, x) & grepl(pattern, x, ...)
 }
 
-#' @noRd
-is_arc_service_url <- function(x, allowed_type = arc_service_types) {
-  is_url(
-    x,
-    pattern = allowed_type
-  )
-}
 
 #' Extract layer number (w/ or w/o trailing slash)
 #' @noRd
