@@ -80,7 +80,8 @@ arc_service_types <- c(
   "GeometryServer",
   "GPServer",
   "WFSServer",
-  "WFCServer"
+  "WFCServer",
+  "SceneServer"
 )
 
 #' Vector of valid ArcGIS layer types
@@ -98,16 +99,20 @@ arc_layer_types <- c(
 #' Length 10 character vector of item or content URL patterns.
 #' @noRd
 arc_content_types <- c(
-  "content" = "/home/content\\.html\\?view=",
-  "search" = "/home/search\\.html",
-  "item" = "/home/item\\.html\\?id=",
-  "group" = "/home/group\\.html\\?id=",
-  "user" = "/home/user\\.html\\?user=",
+  "content" = "/content\\.html\\?view=",
+  "search" = "/search\\.html",
+  "item" = "/item\\.html\\?id=",
+  "group" = "/group\\.html\\?id=",
+  "user" = "/user\\.html\\?user=",
   "webscene" = "/home/webscene/viewer\\.html\\?webscene=",
   "webmap" = "(webmap/viewer|mapviewer/index)\\.html\\?webmap=",
   "app" = "/index\\.html\\?appid=",
   "notebook" = "/notebook/notebook\\.html\\?rid=",
-  "experience" = "/experience/[a-zA-Z0-9]+"
+  "experience" = "/experience/[a-zA-Z0-9]+",
+  "storymap" = "/stories/[a-zA-Z0-9]+",
+  "dashboard" = "/dashboards/[a-zA-Z0-9]+",
+  "datapipeline" = "/datapipelines/editor\\?item\\=",
+  "webapp" = "webappviewer/index.html\\?id=[a-zA-Z0-9]+"
 )
 
 #' What type of ArcGIS service or content URL is this?
