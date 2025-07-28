@@ -22,7 +22,11 @@
 #' meta <- fetch_layer_metadata(furl)
 #' head(names(meta))
 #' @returns returns a list object
-fetch_layer_metadata <- function(url, token = NULL, call = rlang::caller_env()) {
+fetch_layer_metadata <- function(
+  url,
+  token = NULL,
+  call = rlang::caller_env()
+) {
   req <- arc_base_req(url, token, error_call = call)
 
   # add f=json to the url for querying
@@ -75,7 +79,7 @@ detect_errors <- function(response, error_call = rlang::caller_env()) {
   e_msg <- capture_message(response)
 
   if (is.null(e_msg)) {
-    return(invisible(NULL))
+    return(response)
   }
 
   rlang::abort(
