@@ -23,7 +23,7 @@ reference:
       - determine_esri_geo_type
       - validate_crs
   - title: Portal
-    content:
+    contents:
       - arc_item
       - arc_user
       - arc_group
