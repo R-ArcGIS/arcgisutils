@@ -32,13 +32,15 @@ Imports:
     RcppSimdJson,
     rlang,
     sf,
-    utils
+    utils,
+    lifecycle
 Suggests:
     arcgisbinding,
     collapse (>= 2.0.0),
     data.table,
     jsonify,
     testthat (>= 3.0.0),
+    curl,
     vctrs
 Config/rextendr/version: 0.3.1.9001
 Config/testthat/edition: 3

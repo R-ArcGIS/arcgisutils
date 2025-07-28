@@ -285,11 +285,16 @@ validate_or_refresh_token <- function(
 ) {
   # validate the object is a token
   obj_check_token(token, call = call)
-  check_string(client, allow_empty = FALSE)
+  check_string(client, allow_empty = TRUE)
   check_string(host, allow_empty = FALSE)
   check_number_whole(refresh_threshold, min = 0, max = 3600)
 
   cur_time <- as.numeric(Sys.time())
+
+  # if there isn't a client token value then we can return the token
+  if (!nzchar(client)) {
+    return(token)
+  }
 
   # provide an error if there is an expired token
   if (token[["expires_at"]] <= cur_time) {

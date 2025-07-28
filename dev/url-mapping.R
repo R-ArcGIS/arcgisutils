@@ -32,8 +32,16 @@ switch(
   "WFSServer" = NULL, # FIXME
   "WFCServer" = NULL, # FIXME
   "webmap" = NULL, # FIXME
-  "GeometryServer" = fetch_layer_metadata(info$url), # FIXME, unclear how to use this...
-  "GPServer" = fetch_layer_metadata(info$url),
+  "GeometryServer" = {
+    res <- fetch_layer_metadata(info$url)
+    res[["url"]] <- info$url
+    res
+  }, # FIXME, unclear how to use this...
+  "GPServer" = {
+    res <- fetch_layer_metadata(info$url)
+    res[["url"]] <- info$url
+    res
+  },
   "GeocodeServer" = arcgisgeocode::geocode_server(info$url),
   "item" = {
     # if we have an item url, we fetch the item

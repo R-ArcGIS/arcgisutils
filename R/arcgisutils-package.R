@@ -1,5 +1,6 @@
 ## usethis namespace: start
-#' @useDynLib arcgisutils, .registration = TRUE
+#' @importFrom lifecycle deprecated
 #' @keywords internal
+#' @useDynLib arcgisutils, .registration = TRUE
 ## usethis namespace: end
 NULL
