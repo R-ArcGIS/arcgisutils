@@ -13,11 +13,19 @@ arc_user(username, host = arc_host(), token = arc_token())
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
 }
+\value{
+a list of class \code{PortalUser}
+}
 \description{
 Fetch a user's metadata based on username.
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\examples{
+\dontshow{if (curl::has_internet()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+arc_user("esri_en")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other portal organization: 

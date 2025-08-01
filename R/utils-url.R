@@ -175,7 +175,8 @@ arc_content_types <- c(
   "storymap" = "/stories/[a-zA-Z0-9]+",
   "dashboard" = "/dashboards/[a-zA-Z0-9]+",
   "datapipeline" = "/datapipelines/editor\\?item\\=",
-  "webapp" = "webappviewer/index.html\\?id=[a-zA-Z0-9]+"
+  "webapp" = "webappviewer/index.html\\?id=[a-zA-Z0-9]+",
+  "experience_builder" = "builder/\\?id=[a-zA-Z0-9]+"
 )
 
 #' @noRd

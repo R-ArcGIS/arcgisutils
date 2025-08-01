@@ -27,6 +27,10 @@ arc_item <- function(item_id, host = arc_host(), token = arc_token()) {
     RcppSimdJson::fparse() |>
     detect_errors()
 
+  for (field in c("created", "modified", "lastViewed")) {
+    resp[[field]] <- from_esri_date(resp[[field]])
+  }
+
   structure(resp, class = c("PortalItem", "list"))
 }
 
@@ -131,7 +135,7 @@ arc_group <- function(
   token = arc_token()
 ) {
   check_string(group_id)
-  arc_base_req(
+  group <- arc_base_req(
     host,
     token,
     c("sharing/rest/community/groups", group_id),
@@ -141,6 +145,32 @@ arc_group <- function(
     httr2::resp_body_string() |>
     RcppSimdJson::fparse() |>
     detect_errors()
+
+  for (field in c("created", "modified")) {
+    group[[field]] <- from_esri_date(group[[field]])
+  }
+
+  structure(group, class = c("PortalGroup", "list"))
+}
+
+#' @export
+print.PortalGroup <- function(x, ...) {
+  fields <- c("id", "owner", "created")
+  cat(sprintf("<PortalGroup<%s>>\n", x[["title"]]))
+  for (field in fields) {
+    v <- x[[field]]
+
+    if (is.null(v)) {
+      next
+    }
+
+    if (!nzchar(v)) {
+      next
+    }
+
+    cat(field, ": ", format(x[[field]]), "\n", sep = "")
+  }
+  invisible(x)
 }
 
 #' User Information
@@ -153,10 +183,11 @@ arc_group <- function(
 #' @inheritParams arc_item
 #' @export
 #' @family portal organization
+#' @returns a list of class `PortalUser`
 #' @examplesIf curl::has_internet()
 #' arc_user("esri_en")
 arc_user <- function(username, host = arc_host(), token = arc_token()) {
-  arc_base_req(
+  user <- arc_base_req(
     host,
     token,
     c("sharing/rest/community/users", username),
@@ -166,4 +197,29 @@ arc_user <- function(username, host = arc_host(), token = arc_token()) {
     httr2::resp_body_string() |>
     RcppSimdJson::fparse() |>
     detect_errors()
+
+  for (field in c("created", "modified")) {
+    user[[field]] <- from_esri_date(user[[field]])
+  }
+
+  structure(user, class = c("PortalUser", "list"))
+}
+
+#' @export
+print.PortalUser <- function(x, ...) {
+  cat(sprintf("<PortalUser<%s>>\n", x$username))
+  for (field in c("id", "fullName", "created")) {
+    v <- x[[field]]
+
+    if (is.null(v)) {
+      next
+    }
+
+    if (!nzchar(v)) {
+      next
+    }
+
+    cat(field, ": ", format(x[[field]]), "\n", sep = "")
+  }
+  invisible(x)
 }
