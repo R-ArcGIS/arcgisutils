@@ -1,4 +1,5 @@
-hydro_url <- "https://hydro.arcgis.com/arcgis/rest/services/Tools/Hydrology/GPServer"
+devtools::load_all()
+source("dev/geoprocessing-async.R")
 
 #' @references https://developers.arcgis.com/rest/elevation/api-reference/trace-downstream.htm
 trace_downstream <- function(
@@ -33,18 +34,23 @@ trace_downstream <- function(
 }
 
 input_points <- sf::st_sfc(sf::st_point(c(-159.548936, 21.955888)), crs = 4326)
-arcgisutils::as_esri_features(input_points)
 
-set_arc_token(auth_user())
 
-job <- trace_downstream(input_points)
-job$start()
-job$status
+job <- trace_downstream(
+  input_points,
+  token = auth_user()
+)
 
-job$results
-job$results
+res <- poll_gp_job(job$start())
+res
 
-ls(envir = job[[".__enclos_env__"]])
-ls(envir = job[[".__enclos_env__"]]$private)
+extract_promise_value <- function(promise) {
+  promise_impl <- attr(promise, "promise_impl")
+  if (promise_impl$.__enclos_env__$private$state == "fulfilled") {
+    return(promise_impl$.__enclos_env__$private$value)
+  } else {
+    return(NULL)
+  }
+}
 
-yyjsonr::read_json_str(job$results)[["value"]] |> str()
+extract_promise_value(res)
