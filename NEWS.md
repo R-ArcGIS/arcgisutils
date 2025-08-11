@@ -4,6 +4,9 @@
   - `arc_gp_job`, `arc_job_status`, and `arc_form_params`
 - Adds S7 and R6 as dependencies
 - Adds `data_frame()` utility function which adds the `tbl` class to a `data.frame` for pretty tibble printing without requiring the tibble dependency.
+- Adds new experimental functions for parsing urls `arc_url_parse()`, `arc_url_type()`, and `is_url()` h/t [@elipousson](https://github.com/elipousson)
+- Adds new experimental functions for working with a portal's sharing API `arc_item()`, `arc_group()`, `arc_user()`, `arc_item_data()`, `arc_portal_urls()`
+- Validate `token` in `arc_base_req()`
 
 # arcgisutils 0.3.2
 

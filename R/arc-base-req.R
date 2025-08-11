@@ -56,7 +56,7 @@ arc_base_req <- function(
   # if token is not missing, check it
   if (!is.null(token)) {
     # ensure that the token is an httr2_token
-    obj_check_token(token, error_call)
+    # token <- validate_or_refresh_token(token, error_call)
 
     # set the auth header
     req <- httr2::req_headers(

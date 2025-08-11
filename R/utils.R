@@ -56,7 +56,7 @@ data_frame <- function(x, call = rlang::caller_call()) {
 
 #' Extract matching patterns from a string
 #' @noRd
-str_extract <- function(string, pattern) {
-  matches <- regexpr(pattern, string, perl = TRUE)
+str_extract <- function(string, pattern, perl = TRUE) {
+  matches <- regexpr(pattern, string, perl = perl)
   regmatches(string, matches)
 }
