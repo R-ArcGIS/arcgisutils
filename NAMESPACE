@@ -59,12 +59,8 @@ export(get_ptype)
 export(has_m)
 export(has_z)
 export(infer_esri_type)
-export(is_date)
-<<<<<<< HEAD
 export(new_gp_job)
-=======
 export(is_url)
->>>>>>> e4f2667ebf1bdbffa7dcd53158c60bf882dd51f0
 export(obj_check_token)
 export(parse_esri_json)
 export(ptype_tbl)
@@ -75,10 +71,7 @@ export(set_arc_token)
 export(unset_arc_token)
 export(validate_crs)
 export(validate_or_refresh_token)
-<<<<<<< HEAD
 if (getRversion() < "4.3.0") importFrom("S7", "@")
 importFrom(R6,R6Class)
-=======
 importFrom(lifecycle,deprecated)
->>>>>>> e4f2667ebf1bdbffa7dcd53158c60bf882dd51f0
 useDynLib(arcgisutils, .registration = TRUE)
