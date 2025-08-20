@@ -33,7 +33,10 @@ trace_downstream <- function(
   )
 }
 
-input_points <- sf::st_sfc(sf::st_point(c(-159.548936, 21.955888)), crs = 4326)
+input_points <- sf::st_sfc(
+  sf::st_point(c(-159.548936, 21.955888)),
+  crs = 4326
+)
 
 
 job <- trace_downstream(
@@ -43,14 +46,8 @@ job <- trace_downstream(
 
 res <- poll_gp_job(job$start())
 res
-
-extract_promise_value <- function(promise) {
-  promise_impl <- attr(promise, "promise_impl")
-  if (promise_impl$.__enclos_env__$private$state == "fulfilled") {
-    return(promise_impl$.__enclos_env__$private$value)
-  } else {
-    return(NULL)
-  }
-}
-
 extract_promise_value(res)
+res
+
+parse_gp
+job$results

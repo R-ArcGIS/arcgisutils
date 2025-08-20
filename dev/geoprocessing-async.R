@@ -53,3 +53,13 @@ poll_gp_job <- coro::async(
     }
   }
 )
+
+
+extract_promise_value <- function(promise) {
+  promise_impl <- attr(promise, "promise_impl")
+  if (promise_impl$.__enclos_env__$private$state == "fulfilled") {
+    return(promise_impl$.__enclos_env__$private$value)
+  } else {
+    return(NULL)
+  }
+}
