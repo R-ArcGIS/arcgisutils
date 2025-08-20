@@ -28,7 +28,7 @@ trace_downstream <- function(
   trace_downstream_job$new(
     "https://hydro.arcgis.com/arcgis/rest/services/Tools/Hydrology/GPServer/TraceDownstream",
     params,
-    \(.x) .x,
+    parse_gp_feature_record_set,
     token
   )
 }
@@ -44,10 +44,7 @@ job <- trace_downstream(
   token = auth_user()
 )
 
-res <- poll_gp_job(job$start())
-res
-extract_promise_value(res)
-res
+job$start()
+job$status
 
-parse_gp
-job$results
+plot(job$results$geometry)
