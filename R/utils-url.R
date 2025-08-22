@@ -11,7 +11,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @inheritParams httr2::url_parse
-#' @inheritParams arc_base_url
+#' @inheritParams arc_base_req
 #' @examples
 #' arc_url_parse(
 #'   "https://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer/0"

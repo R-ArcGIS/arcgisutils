@@ -29,8 +29,10 @@ Imports:
     cli,
     dbplyr,
     httr2 (>= 1.0.5),
+    R6,
     RcppSimdJson,
     rlang,
+    S7,
     sf,
     utils,
     lifecycle

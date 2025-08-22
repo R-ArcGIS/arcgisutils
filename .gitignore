@@ -1,3 +1,5 @@
+pkgdown/
+.claude/
 configure~
 CRAN-SUBMISSION
 autom4te.cache
