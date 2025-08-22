@@ -1,5 +1,6 @@
 # arcgisutils (development version)
 
+- Adds `arc_paginate_req()` to automatically apply pagination to requests
 - Adds support for parsing and creating geoprocessing service json see `?gp_params`
 - Adds Geoprocessing Service support via new S7 classes:
   - `arc_gp_job`, `arc_job_status`, and `arc_form_params` 

@@ -13,6 +13,7 @@ reference:
       - arc_token
       - arc_agent
       - arc_base_req
+      - arc_paginate_req
       - detect_errors
   - title: Authorization
     contents:
@@ -24,7 +25,9 @@ reference:
       - arc_group
       - arc_item_data
       - arc_portal_urls
-      - arc_self_meta
+      - arc_user_self
+      - arc_portal_self
+      - content
   - title: Geometry
     contents:
       - determine_dims

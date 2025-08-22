@@ -1,4 +1,4 @@
-#' Access the Self Resource
+#' Access the Portal Self Resource
 #'
 #' The function returns the [`/self`](https://developers.arcgis.com/rest/users-groups-and-items/portal-self.htm) resource from the ArcGIS REST API. The `/self` endpoint
 #' returns the view of the portal as seen by the current user, whether anonymous
@@ -24,14 +24,35 @@
 #' self <- arc_self_meta()
 #' names(self)
 #' }
-arc_self_meta <- function(token = arc_token(), error_call = rlang::current_call()) {
+#' @name self
+arc_self_meta <- function(
+  token = arc_token(),
+  error_call = rlang::current_call()
+) {
+  lifecycle::deprecate_warn(
+    "0.3.4",
+    "arc_self_meta()",
+    "arc_portal_self()",
+    always = TRUE
+  )
+  arc_portal_self(token, error_call)
+}
 
+#' @export
+#' @name self
+arc_portal_self <- function(
+  token = arc_token(),
+  error_call = rlang::current_call()
+) {
   obj_check_token(token)
 
   burl <- file.path(
     # use the host from a token if set, otherwise default
     token[["arcgis_host"]] %||% arc_host(),
-    "sharing", "rest", "portals", "self",
+    "sharing",
+    "rest",
+    "portals",
+    "self",
     fsep = "/"
   )
 
@@ -44,5 +65,4 @@ arc_self_meta <- function(token = arc_token(), error_call = rlang::current_call(
   )
 
   res
-
 }
