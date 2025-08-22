@@ -56,6 +56,7 @@ types used in ArcGIS geoprocessing services.
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This package provides support for the following geoprocessing parameter types:
 \subsection{Implemented Types}{
 \itemize{

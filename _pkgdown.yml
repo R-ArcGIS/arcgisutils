@@ -1,4 +1,4 @@
-url: ~
+url: https://github.com/R-ArcGIS/arcgisutils
 template:
   bootstrap: 5
 
@@ -7,63 +7,16 @@ navbar:
     right: [search, github]
 
 reference:
-<<<<<<< HEAD
-
-- title: Request Utilities
-  contents:
-  - arc_host
-  - arc_token
-  - arc_agent
-  - arc_base_req
-- title: Authorization
-  contents:
-  - auth_code
-  - arc_self_meta
-- title: Geometry
-  contents:
-  - determine_dims
-  - determine_esri_geo_type
-  - validate_crs
-- title: JSON
-  contents:
-  - as_esri_geometry
-  - as_features
-  - as_featureset
-  - as_layer
-  - as_extent
-  - parse_esri_json
-- title: Geoprocessing Services
-  contents:
-  - has_concept("geoprocessing")
-- title: Types
-  contents:
-  - infer_esri_type
-  - is_date
-- title: Utilities
-  contents:
-  - compact
-  - rbind_results
-  - arc_url_parse
-- title: Requests
-  contents:
-  - fetch_layer_metadata
-  - detect_errors
-=======
   - title: Request Utilities
     contents:
       - arc_host
       - arc_token
       - arc_agent
       - arc_base_req
+      - detect_errors
   - title: Authorization
     contents:
       - auth_code
-      - arc_self_meta
-  - title: Geometry
-    contents:
-      - determine_dims
-      - determine_esri_geo_type
-      - validate_crs
   - title: Portal
     contents:
       - arc_item
@@ -71,6 +24,12 @@ reference:
       - arc_group
       - arc_item_data
       - arc_portal_urls
+      - arc_self_meta
+  - title: Geometry
+    contents:
+      - determine_dims
+      - determine_esri_geo_type
+      - validate_crs
   - title: JSON
     contents:
       - as_esri_geometry
@@ -79,6 +38,10 @@ reference:
       - as_layer
       - as_extent
       - parse_esri_json
+  - title: Geoprocessing Services
+    contents:
+      - geoprocessing-types
+      - has_concept("geoprocessing")
   - title: Types
     contents:
       - infer_esri_type
@@ -88,8 +51,7 @@ reference:
       - compact
       - rbind_results
       - arc_url_parse
+      - url
   - title: Requests
     contents:
       - fetch_layer_metadata
-      - detect_errors
->>>>>>> e4f2667ebf1bdbffa7dcd53158c60bf882dd51f0
