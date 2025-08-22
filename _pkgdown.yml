@@ -40,7 +40,6 @@ reference:
       - parse_esri_json
   - title: Geoprocessing Services
     contents:
-      - geoprocessing-types
       - has_concept("geoprocessing")
   - title: Types
     contents:

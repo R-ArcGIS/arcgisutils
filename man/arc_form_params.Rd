@@ -25,6 +25,7 @@ internally to store the parameters.
 \seealso{
 Other geoprocessing: 
 \code{\link{arc_gp_job}},
-\code{\link{arc_job_status}()}
+\code{\link{arc_job_status}()},
+\code{\link{gp_params}}
 }
 \concept{geoprocessing}

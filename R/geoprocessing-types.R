@@ -51,8 +51,9 @@
 #'
 #' @references [API Documentation](https://developers.arcgis.com/rest/services-reference/enterprise/gp-data-types/)
 #'
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
+#' @family geoprocessing
 parse_gp_feature_record_set <- function(json) {
   check_string(json, allow_empty = FALSE)
 
@@ -71,7 +72,7 @@ parse_gp_feature_record_set <- function(json) {
   res
 }
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 as_gp_feature_record_set <- function(x) {
   # this handles sf objects, data.frames, tbl, and tibble
@@ -110,7 +111,7 @@ as_gp_feature_record_set <- function(x) {
 
 # GPRecordSet ------------------------------------------------------------
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 parse_gp_record_set <- function(json) {
   res <- yyjsonr::read_json_str(json)
@@ -120,7 +121,7 @@ parse_gp_record_set <- function(json) {
 }
 
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 as_record_set <- function(x) {
   # this handles sf objects, data.frames, tbl, and tibble
@@ -161,7 +162,7 @@ as_record_set <- function(x) {
 
 # GPRasterDataLayer ------------------------------------------------------
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 as_gp_raster_layer <- function(x) {
   # must be either PortalItem, ImageServer, or URL
@@ -202,7 +203,7 @@ as_gp_raster_layer <- function(x) {
 
 # GPLinearUnit -----------------------------------------------------------
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 gp_linear_unit <- S7::new_class(
   "GPLinearUnit",
@@ -239,7 +240,7 @@ gp_linear_unit <- S7::new_class(
   }
 )
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 as_gp_linear_unit <- function(x) {
   if (!rlang::inherits_any(x, "GPLinearUnit")) {
@@ -257,7 +258,7 @@ as_gp_linear_unit <- function(x) {
   )
 }
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 parse_gp_linear_unit <- function(json) {
   rlang::inject(
@@ -266,7 +267,7 @@ parse_gp_linear_unit <- function(json) {
 }
 
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 gp_areal_unit <- S7::new_class(
   "GPArealUnit",
@@ -305,7 +306,7 @@ gp_areal_unit <- S7::new_class(
 
 # GPArealUnit ------------------------------------------------------------
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 as_gp_areal_unit <- function(x) {
   if (!rlang::inherits_any(x, "GPArealUnit")) {
@@ -323,7 +324,7 @@ as_gp_areal_unit <- function(x) {
   )
 }
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 parse_gp_areal_unit <- function(json) {
   rlang::inject(
@@ -334,13 +335,13 @@ parse_gp_areal_unit <- function(json) {
 
 # GPDate -----------------------------------------------------------------
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 as_gp_date <- function(x) {
   date_to_ms(x)
 }
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 parse_gp_date <- function(json) {
   res <- yyjsonr::read_json_str(json)
@@ -360,7 +361,7 @@ parse_gp_date <- function(json) {
 
 # TODO: Handle OUTPUT
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 as_spatial_reference <- function(x) {
   crs <- validate_crs(x)
@@ -368,7 +369,7 @@ as_spatial_reference <- function(x) {
 }
 
 
-#' @name geoprocessing-types
+#' @name gp_params
 #' @export
 parse_spatial_reference <- function(json) {
   sr <- yyjsonr::read_json_str(json)

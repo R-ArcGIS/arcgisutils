@@ -47,7 +47,8 @@ params@params
 \seealso{
 Other geoprocessing: 
 \code{\link{arc_form_params}()},
-\code{\link{arc_job_status}()}
+\code{\link{arc_job_status}()},
+\code{\link{gp_params}}
 }
 \concept{geoprocessing}
 \section{Public fields}{
