@@ -18,7 +18,7 @@ arc_paginate_req <- function(
   max_pages = Inf,
   .progress = TRUE
 ) {
-  if (!inherits(x, "httr2_request")) {
+  if (!inherits(req, "httr2_request")) {
     cli::cli_abort(
       c(
         "{.arg req} must be an {.cls httr2_request}",
