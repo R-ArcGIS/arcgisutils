@@ -19,7 +19,7 @@ arc_paginate_req(req, page_size = 10, max_pages = Inf, .progress = TRUE)
 a list of \code{httr2_response}.
 }
 \description{
-Many API endpoints provide common \href{https://developers.arcgis.com/rest/users-groups-and-items/common-parameters/#paging-properties}{pagination properties}. This \code{arc_paginate_request()} automatically applies pagination to an input request.
+Many API endpoints provide common \href{https://developers.arcgis.com/rest/users-groups-and-items/common-parameters/#paging-properties}{pagination properties}. \code{arc_paginate_request()} automatically applies pagination to an input request.
 }
 \references{
 \href{https://developers.arcgis.com/rest/users-groups-and-items/common-parameters/#paging-properties}{API Documentation}

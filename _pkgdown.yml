@@ -20,6 +20,7 @@ reference:
       - auth_code
   - title: Portal
     contents:
+      - search_items
       - arc_item
       - arc_user
       - arc_group
@@ -28,6 +29,7 @@ reference:
       - arc_user_self
       - arc_portal_self
       - content
+      - portal_types
   - title: Geometry
     contents:
       - determine_dims
