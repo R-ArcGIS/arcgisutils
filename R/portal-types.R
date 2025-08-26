@@ -519,7 +519,7 @@ portal_item_types <- function() {
 #'
 #' Every portal item has an associated item type. Each of those item types have keywords which cna be used to help narrow down search further.
 #'
-#' @reference [REST API Documentation](https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types)
+#' @references [REST API Documentation](https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types)
 #' @export
 #' @name portal_types
 item_type <- S7::new_class(

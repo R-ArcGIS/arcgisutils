@@ -38,6 +38,8 @@ date_to_ms <- function(x, tz = "UTC") {
 #' @export
 #' @rdname dates
 from_esri_date <- function(x) {
+  is_na <- x == -1
+  x[is_na] <- NA_real_
   as.POSIXct(
     x / 1000,
     tz = "UTC",

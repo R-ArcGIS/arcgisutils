@@ -156,8 +156,12 @@ search_range <- function(
   )
 }
 
-
+#' Search for Portal Items
+#'
+#' Perform full text search or use parameters to programamatically query your portal for content items.
+#'
 #' @param query a scalar character for free text search or a valid query string as defined by the REST API.
+#' @param filter a scalar character. If provided all other arguments except query are ignored.
 #' @param title optional character vector of content item titles.
 #' @param tags optional character vector of tags to search for.
 #' @param owner optional character vector of owner usernames to search for.
@@ -171,18 +175,33 @@ search_range <- function(
 #' @param count_fields optional character vector of up to 3 fields to count. Must be one of `c("type", "access", "contentstatus", "categories")`.
 #' @param count_size optional integer determines the maximum number of field values to count for each counted field in `count_fields`. Maximum of 200.
 #' @param display_sublayers default `FALSE`. Returns feature layers inside of feature services.
+#' @param filter_logic default `"and"` must be one of `c("and", "or", "not")`. Determines if parameters
 #' @param bbox unimplemented.
-#'
+#' @inheritParams arc_paginate_req
 #' @details
 #'`r lifecycle::badge("experimental")`
-#' ## Item Type
+#'
+#' Search is quite nuanced and should be handled with care as you may get unexpected results.
+#'
+#' - All arguments except `query` are passed as `filter` parameters to the API endpoint.
+#' - If multiple values are passed to an argument such as `tags`, the search will use an `"OR"` statement.
+#' - When multiple arguments are provided, for example `tags`, `owner`, and `item_type`, the search will use `"AND"` logic—i.e. results shown match the `tags` **and** `owner` **and** `item_type`.
+#'   - Note: you can change this to `"OR"` behavior by setting `filter_logic = "or"`
+#' - If the `filter` argument is provided, all other arguments except `query` are ignored.
+#' @export
+#' @references [API Documentation](https://developers.arcgis.com/rest/users-groups-and-items/search)
+#' @returns a data.frame.
 search_items <- function(
-  query,
-  title = NULL, #
-  tags = NULL, #
-  owner = NULL, #
-  item_type = NULL, #
-  type_keywords = NULL, #
+  query = NULL,
+  filter = NULL,
+  title = NULL,
+  description = NULL,
+  snippet = NULL,
+  tags = NULL,
+  owner = NULL,
+  orgid = NULL,
+  item_type = NULL,
+  type_keywords = NULL,
   created = NULL,
   modified = NULL,
   categories = NULL,
@@ -192,6 +211,7 @@ search_items <- function(
   count_fields = NULL,
   count_size = NULL,
   display_sublayers = FALSE,
+  filter_logic = "and",
   bbox = NULL,
   page_size = 50,
   max_pages = Inf,
@@ -199,14 +219,27 @@ search_items <- function(
   host = arc_host(),
   token = arc_token()
 ) {
-  check_string(query)
+  # scalars
   check_bool(display_sublayers)
+  check_string(query, allow_null = TRUE)
+  check_string(filter, allow_null = TRUE)
+  check_string(snippet, allow_null = TRUE)
+  check_string(description, allow_null = TRUE)
+
+  # vectors
   check_character(tags, allow_null = TRUE)
-  check_character(categories, allow_null = TRUE)
-  check_character(title, allow_null = TRUE)
   check_character(owner, allow_null = TRUE)
+  check_character(orgid, allow_null = TRUE)
+  check_character(title, allow_null = TRUE)
   check_character(item_type, allow_null = TRUE)
+  check_character(categories, allow_null = TRUE)
   check_character(type_keywords, allow_null = TRUE)
+
+  # check the filter logic variable
+  filter_logic <- rlang::arg_match0(
+    tolower(filter_logic),
+    c("and", "or", "not")
+  )
 
   # make title filter
   if (!is.null(title)) {
@@ -221,6 +254,11 @@ search_items <- function(
   # make owner filter query
   if (!is.null(owner)) {
     owner <- search_vals_or("owner", owner)
+  }
+
+  # make org filter query
+  if (!is.null(orgid)) {
+    orgid <- search_vals_or("orgid", orgid)
   }
 
   # make item type filter
@@ -310,13 +348,13 @@ search_items <- function(
       ),
       multiple = TRUE
     )
-    sort_field <- yyjsonr::write_json_str(sort_field, auto_unbox = TRUE)
+    # sort_field <- yyjsonr::write_json_str(sort_field, auto_unbox = TRUE)
   }
 
   check_string(sort_order, allow_null = TRUE, allow_empty = FALSE)
 
   if (!is.null(sort_order)) {
-    rlang::arg_match(sort_order, c("asc", "desc"))
+    sort_order <- rlang::arg_match(sort_order, c("asc", "desc"))
   }
 
   check_character(count_fields, allow_null = TRUE)
@@ -325,7 +363,7 @@ search_items <- function(
     if (length(count_fields) > 3) {
       cli::cli_abort("Only up to 3 {.arg count_fields} are permitted")
     }
-    count_fields <- yyjsonr::write_json_str(count_fields, auto_unbox = TRUE)
+    count_fields <- toString(count_fields)
   }
 
   check_number_whole(count_size, allow_null = TRUE, min = 10, max = 200)
@@ -338,37 +376,53 @@ search_items <- function(
       title,
       tags,
       owner,
+      orgid,
       item_type,
       type_keywords,
       created,
-      modified,
-      categories,
-      category_filters,
-      sort_field,
-      sort_order,
-      count_fields,
-      count_size,
-      search_term("displaySublayers", tolower(as.character(display_sublayers)))
+      modified
     )
   )
 
+  query_params <- compact(list(
+    sortField = sort_field,
+    sortOrder = sort_order,
+    countFields = count_fields,
+    countSize = count_size,
+    displaySublayers = display_sublayers,
+    categoryFilters = category_filters,
+    categories = categories
+  ))
+
   filter_query <- Reduce(
-    \(.prev, .next) sprintf("%s AND %s", .prev, .next),
+    \(.prev, .next) sprintf("%s %s %s", .prev, filter_logic, .next),
     all_params
   )
-  filter_query
 
-  all_resps <- arc_base_req(
+  # when filter is provided, it is always preferred
+  if (!is.null(filter)) {
+    filter_query <- filter
+  }
+
+  if (isTRUE(getOption("arcgislayers.debug_curl"))) {
+    cat(str(query_params))
+    cat(filter_query)
+  }
+
+  req <- arc_base_req(
     host,
     token,
     path = c("sharing", "rest", "search"),
     query = c(q = query, filter = filter_query, f = "json")
   ) |>
-    arc_paginate_req(
-      page_size = page_size,
-      max_pages = max_pages,
-      .progress = .progress
-    )
+    httr2::req_url_query(!!!query_params)
+
+  all_resps <- arc_paginate_req(
+    req,
+    page_size = page_size,
+    max_pages = max_pages,
+    .progress = .progress
+  )
 
   results <- lapply(all_resps, function(.resp) {
     res <- httr2::resp_body_string(.resp) |>
@@ -378,8 +432,15 @@ search_items <- function(
     res[["results"]]
   })
 
-  data_frame(rbind_results(results))
+  res <- data_frame(rbind_results(results))
+  for (col in c("created", "modified", "lastViewed")) {
+    res[[col]] <- from_esri_date(res[[col]])
+  }
+
+  res
 }
+
+# search_items("", title = "Seven Natural Wonders of the World")
 
 # q <- r"{title:"Seven Natural Wonders of the World" OR description:"Seven Natural Wonders of the World"}"
 
