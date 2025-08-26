@@ -35,6 +35,7 @@ Imports:
     S7,
     sf,
     utils,
+    yyjsonr,
     lifecycle
 Suggests:
     arcgisbinding,
@@ -44,7 +45,7 @@ Suggests:
     testthat (>= 3.0.0),
     curl,
     vctrs
-Config/rextendr/version: 0.3.1.9001
+Config/rextendr/version: 0.4.2
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en

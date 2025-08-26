@@ -1,3 +1,4 @@
+.claude/
 ^configure~$
 ^arcgisutils\.Rproj$
 ^\.Rproj\.user$

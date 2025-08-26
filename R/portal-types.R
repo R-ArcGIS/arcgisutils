@@ -1,20 +1,50 @@
-# Item types were fetched from the documentation automatically using:
-# library(rvest)
-# info <- read_html("https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types/#web-content") |>
-#   html_nodes("table") |>
-#   html_table() |>
-#   dplyr::bind_rows()
-#   dplyr::pull(Type) |>
-#   dput()
+#' Portal Item Types
+#'
+#' Every portal item has an associated item type. Each of those item types have keywords which cna be used to help narrow down search further.
+#'
+#' @references [REST API Documentation](https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types)
+#' @export
+#' @name portal_types
+#' @param item_type a scalar character of the item type. See [`portal_item_types()`] for valid item types.
+item_type <- S7::new_class(
+  "ItemType",
+  package = "arcgisutils",
+  properties = list(item_type = S7::class_character),
+  validator = function(self) {
+    check_string(self@item_type, allow_empty = FALSE)
 
-# type_keywords <- read_html("https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types/#web-content") |>
-#   html_nodes("table tbody tr td:nth-child(3) li") |>
-#   html_text() |>
-#   unique() |>
-#   sort()
+    if (!tolower(self@item_type) %in% tolower(portal_item_types())) {
+      cli::cli_abort(
+        "{.arg item_type} is not a valid item type. See {.fn portal_item_types}"
+      )
+    }
+  }
+)
 
-# type_keywords
 
+#' @export
+#' @name portal_types
+#' @param keyword a scalar character of the item type keyword. See [`portal_item_keywords()`].
+item_keyword <- S7::new_class(
+  "ItemKeyword",
+  package = "arcgisutils",
+  properties = list(keyword = S7::class_character),
+  validator = function(self) {
+    check_string(self@keyword, allow_empty = FALSE)
+
+    if (!tolower(self@keyword) %in% tolower(portal_item_keywords())) {
+      cli::cli_abort(
+        c(
+          "{.arg keyword} is not a valid keyword.",
+          "i" = "See {.url https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types}"
+        )
+      )
+    }
+  }
+)
+
+#' @export
+#' @name portal_types
 portal_item_keywords <- function() {
   c(
     ".NET-Windows Desktop",
@@ -354,6 +384,9 @@ portal_item_keywords <- function() {
     "xForm"
   )
 }
+
+#' @export
+#' @name portal_types
 portal_item_types <- function() {
   c(
     "360 VR Experience",
@@ -514,44 +547,16 @@ portal_item_types <- function() {
   )
 }
 
-
-#' Portal Item Types
-#'
-#' Every portal item has an associated item type. Each of those item types have keywords which cna be used to help narrow down search further.
-#'
-#' @references [REST API Documentation](https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types)
-#' @export
-#' @name portal_types
-item_type <- S7::new_class(
-  "ItemType",
-  properties = list(item_type = S7::class_character),
-  validator = function(self) {
-    check_string(self@item_type, allow_empty = FALSE)
-
-    if (!tolower(self@item_type) %in% tolower(portal_item_types())) {
-      cli::cli_abort(
-        "{.arg item_type} is not a valid item type. See {.fn portal_item_types}"
-      )
-    }
-  }
-)
-
-
-#' @export
-#' @name portal_types
-item_keyword <- S7::new_class(
-  "ItemKeyword",
-  properties = list(keyword = S7::class_character),
-  validator = function(self) {
-    check_string(self@keyword, allow_empty = FALSE)
-
-    if (!tolower(self@keyword) %in% tolower(portal_item_keywords())) {
-      cli::cli_abort(
-        c(
-          "{.arg keyword} is not a valid keyword.",
-          "i" = "See {.url https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types}"
-        )
-      )
-    }
-  }
-)
+# Item types were fetched from the documentation automatically using:
+# library(rvest)
+# info <- read_html("https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types/#web-content") |>
+#   html_nodes("table") |>
+#   html_table() |>
+#   dplyr::bind_rows()
+#   dplyr::pull(Type) |>
+#   dput()
+# type_keywords <- read_html("https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types/#web-content") |>
+#   html_nodes("table tbody tr td:nth-child(3) li") |>
+#   html_text() |>
+#   unique() |>
+#   sort()

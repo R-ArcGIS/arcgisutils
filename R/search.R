@@ -165,9 +165,11 @@ search_range <- function(
 #' @param title optional character vector of content item titles.
 #' @param tags optional character vector of tags to search for.
 #' @param owner optional character vector of owner usernames to search for.
+#' @param orgid optional character vector of organization IDs to search for.
 #' @param item_type optional character vector of content item types. Validated with [`item_type()`].
 #' @param type_keywords optional character vector of content tpye keywords. Validated with [`item_keyword()`].
 #' @param created,modified optional length two vector which must be coercible to a date time vector. Converted using [`as.POSIXct()`]. Returns only items within this range.
+#' @param description,snippet optional scalar character of text to check for.
 #' @param categories optional character vector of up to 8 organization content categories.
 #' @param category_filters optional character vector of up to 3 category terms. Items that have matching categories are returned. Exclusive with `categories`.
 #' @param sort_field optional character vector of fields to sort by. Can sort by `title`, `created`, `type`, `owner`, `modified`, `avgrating`, `numratings`, `numcomments`, `numviews`, and `scorecompleteness`.
@@ -178,12 +180,14 @@ search_range <- function(
 #' @param filter_logic default `"and"` must be one of `c("and", "or", "not")`. Determines if parameters
 #' @param bbox unimplemented.
 #' @inheritParams arc_paginate_req
+#' @inheritParams arc_base_req
+#' @inheritParams arc_item
 #' @details
 #'`r lifecycle::badge("experimental")`
 #'
 #' Search is quite nuanced and should be handled with care as you may get unexpected results.
 #'
-#' - All arguments except `query` are passed as `filter` parameters to the API endpoint.
+#' - Most arguments are passed as `filter` parameters to the API endpoint.
 #' - If multiple values are passed to an argument such as `tags`, the search will use an `"OR"` statement.
 #' - When multiple arguments are provided, for example `tags`, `owner`, and `item_type`, the search will use `"AND"` logic—i.e. results shown match the `tags` **and** `owner` **and** `item_type`.
 #'   - Note: you can change this to `"OR"` behavior by setting `filter_logic = "or"`
@@ -402,11 +406,6 @@ search_items <- function(
   # when filter is provided, it is always preferred
   if (!is.null(filter)) {
     filter_query <- filter
-  }
-
-  if (isTRUE(getOption("arcgislayers.debug_curl"))) {
-    cat(str(query_params))
-    cat(filter_query)
   }
 
   req <- arc_base_req(

@@ -3,6 +3,7 @@
 #' Given an authentication token, return a list of user-specfic information such as the user ID, username, available credits, email, groups, last login date and more.
 #'
 #' @inheritParams arc_item
+#' @inheritParams arc_base_req
 #' @keywords portal self
 #' @export
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/self/)

@@ -1,6 +1,6 @@
 test_that("arc_item() works", {
   skip_if_offline()
-
+  unset_arc_token()
   test_cases <- c(
     webmap_app = "80eb92ffc89b4086abe8cedd58ab160c",
     storymap = "ad791fda858c46fdbe79636aa5f35dd8",

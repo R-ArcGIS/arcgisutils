@@ -54,6 +54,7 @@
 #' @name gp_params
 #' @export
 #' @family geoprocessing
+#' @param json raw json to parse
 parse_gp_feature_record_set <- function(json) {
   check_string(json, allow_empty = FALSE)
 
@@ -74,6 +75,7 @@ parse_gp_feature_record_set <- function(json) {
 
 #' @name gp_params
 #' @export
+#' @param x the object to convert into json
 as_gp_feature_record_set <- function(x) {
   # this handles sf objects, data.frames, tbl, and tibble
   if (inherits(x, "data.frame")) {
@@ -205,13 +207,17 @@ as_gp_raster_layer <- function(x) {
 
 #' @name gp_params
 #' @export
+#' @param units a valid unit name. Must be one of "esriUnknownUnits", "esriInches", "esriPoints", "esriFeet", "esriYards", "esriMiles", "esriNauticalMiles", "esriMillimeters", "esriCentimeters", "esriMeters", "esriKilometers", "esriDecimalDegrees", "esriDecimeters", "esriIntInches", "esriIntFeet", "esriIntYards", "esriIntMiles", "esriIntNauticalMiles".
+#' @param distance a scalar number of the distance.
 gp_linear_unit <- S7::new_class(
   "GPLinearUnit",
+  package = "arcgisutils",
   properties = list(
     distance = S7::class_numeric,
     units = S7::class_character
   ),
   validator = function(self) {
+    check_number_decimal(self@distance)
     check_string(self@units, allow_empty = FALSE)
     valid_units <- c(
       "esriUnknownUnits",
@@ -269,8 +275,11 @@ parse_gp_linear_unit <- function(json) {
 
 #' @name gp_params
 #' @export
+#' @param area a scalar number of the measurement.
+#' @param units the unit of the measurement. Must be one of "esriUnknownAreaUnits", "esriSquareInches", "esriSquareFeet", "esriSquareYards", "esriAcres", "esriSquareMiles", "esriSquareMillimeters", "esriSquareCentimeters", "esriSquareDecimeters", "esriSquareMeters", "esriAres", "esriHectares", "esriSquareKilometers", "esriSquareInchesUS", "esriSquareFeetUS", "esriSquareYardsUS", "esriAcresUS", "esriSquareMilesUS".
 gp_areal_unit <- S7::new_class(
   "GPArealUnit",
+  package = "arcgisutils",
   properties = list(
     area = S7::class_numeric,
     units = S7::class_character
@@ -376,10 +385,3 @@ parse_spatial_reference <- function(json) {
   crs <- sr[["latestWkid"]] %||% sr[["wkid"]] %||% sr[["wkt"]]
   sf::st_crs(crs)
 }
-
-# wkt <- r"(PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",0.0],PARAMETER["Standard_Parallel_1",0.0],PARAMETER["Auxiliary_Sphere_Type",0.0],UNIT["Meter",1.0]])"
-
-# as_spatial_reference(wkt) |>
-#   cat()
-
-# wkt2 <- r"-(PROJCRS["WGS_1984_Web_Mercator_Auxiliary_Sphere",BASEGEOGCRS["GCS_WGS_1984",DYNAMIC[FRAMEEPOCH[1990.5],MODEL["AM0-2"]],DATUM["D_WGS_1984", ELLIPSOID["WGS_1984",6378137.0,298.257223563,LENGTHUNIT["Meter",1.0]]],PRIMEM["Greenwich",0.0,ANGLEUNIT["Degree",0.0174532925199433]],CS[ellipsoidal,2],AXIS["Latitude (lat)",north,ORDER[1]],AXIS["Longitude (lon)",east,ORDER[2]],ANGLEUNIT["Degree",0.0174532925199433]],CONVERSION["Mercator_Auxiliary_Sphere",METHOD["Mercator_Auxiliary_Sphere"],PARAMETER["False_Easting",0.0,LENGTHUNIT["Meter",1.0]],PARAMETER["False_Northing",0.0,LENGTHUNIT["Meter",1.0]],PARAMETER["Central_Meridian",0.0,ANGLEUNIT["Degree",0.0174532925199433]],PARAMETER["Standard_Parallel_1",0.0,ANGLEUNIT["Degree",0.0174532925199433]],PARAMETER["Auxiliary_Sphere_Type",0.0]],CS[Cartesian,2],AXIS["Easting (X)",east,ORDER[1]],AXIS["Northing (Y)",north,ORDER[2]],LENGTHUNIT["Meter",1.0]])-"

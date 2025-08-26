@@ -7,6 +7,7 @@ format: gfm
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/arcgisutils)](https://CRAN.R-project.org/package=arcgisutils)
+[![extendr](https://img.shields.io/badge/extendr-^0.8.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
 ```{r, include = FALSE}

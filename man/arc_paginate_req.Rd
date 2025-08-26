@@ -11,9 +11,9 @@ arc_paginate_req(req, page_size = 10, max_pages = Inf, .progress = TRUE)
 
 \item{page_size}{a scalar integer between 1 and 100 indicating the number of responses per page.}
 
-\item{.progress}{default \code{TRUE}. Whether to display a progress bar for requests.}
+\item{max_pages}{the maximum number of pages to fetch. By default fetches all pages.}
 
-\item{`max_pages`}{the maximum number of pages to fetch. By default fetches all pages.}
+\item{.progress}{default \code{TRUE}. Whether to display a progress bar for requests.}
 }
 \value{
 a list of \code{httr2_response}.

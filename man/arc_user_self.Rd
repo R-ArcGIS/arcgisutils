@@ -14,6 +14,8 @@ arc_user_self(
 \item{host}{default \code{"https://www.arcgis.com"}}
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
+
+\item{error_call}{the caller environment to be used when propagating errors.}
 }
 \value{
 a list of the authenticated user's metadata

@@ -6,6 +6,7 @@
 [![R-CMD-check](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/arcgisutils)](https://CRAN.R-project.org/package=arcgisutils)
+[![extendr](https://img.shields.io/badge/extendr-%5E0.8.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
 arcgisutils is designed as the backbone of the
@@ -54,9 +55,6 @@ library(arcgisutils)
 #> The following object is masked from 'package:base':
 #> 
 #>     %||%
-```
-
-``` r
 
 tkn <- auth_client()
 
@@ -64,10 +62,10 @@ set_arc_token(tkn)
 
 arc_token()
 #> <httr2_token>
-#> token_type: bearer
-#> access_token: <REDACTED>
-#> expires_at: 2024-07-11 09:40:56
-#> arcgis_host: https://www.arcgis.com
+#> * token_type  : "bearer"
+#> * access_token: <REDACTED>
+#> * expires_at  : "2025-08-26 14:44:39"
+#> * arcgis_host : "https://www.arcgis.com"
 ```
 
 Alternatively, tokens can be set based on a key-value pair.
@@ -83,10 +81,10 @@ And fetched based on their name via
 ``` r
 arc_token("A")
 #> <httr2_token>
-#> token_type: bearer
-#> access_token: <REDACTED>
-#> expires_at: 2024-07-11 09:40:56
-#> arcgis_host: https://www.arcgis.com
+#> * token_type  : "bearer"
+#> * access_token: <REDACTED>
+#> * expires_at  : "2025-08-26 14:44:39"
+#> * arcgis_host : "https://www.arcgis.com"
 ```
 
 ### Standardized Requests
@@ -102,7 +100,7 @@ arc_base_req(host)
 #> GET https://www.arcgis.com
 #> Body: empty
 #> Options:
-#> • useragent: 'arcgisutils v0.3.0'
+#> * useragent: "arcgisutils v0.3.3.9000"
 ```
 
 ### Esri JSON
@@ -115,10 +113,7 @@ convert to json, it is recommended to use
 
 ``` r
 library(sf)
-#> Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE
-```
-
-``` r
+#> Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE
 
 nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
 nc_json <- as_featureset(nc)
