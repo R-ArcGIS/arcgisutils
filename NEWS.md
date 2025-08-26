@@ -1,5 +1,10 @@
 # arcgisutils (development version)
 
+- Adds `search_item()` to search for content items with automatic pagination.
+- Adds `arc_user_self()` to return metadata for the authenticated user
+- Deprecates `arc_self_meta()` in favor of `arc_portal_self()`—the functions are identical.
+- Adds `arc_group_content()` and `arc_user_content()` to fetch user and group content listings
+- Adds `arc_paginate_req()` to automatically apply pagination to requests
 - Adds support for parsing and creating geoprocessing service json see `?gp_params`
 - Adds Geoprocessing Service support via new S7 classes:
   - `arc_gp_job`, `arc_job_status`, and `arc_form_params` 

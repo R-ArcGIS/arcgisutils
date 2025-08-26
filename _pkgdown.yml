@@ -13,18 +13,23 @@ reference:
       - arc_token
       - arc_agent
       - arc_base_req
+      - arc_paginate_req
       - detect_errors
   - title: Authorization
     contents:
       - auth_code
   - title: Portal
     contents:
+      - search_items
       - arc_item
       - arc_user
       - arc_group
       - arc_item_data
       - arc_portal_urls
-      - arc_self_meta
+      - arc_user_self
+      - arc_portal_self
+      - content
+      - portal_types
   - title: Geometry
     contents:
       - determine_dims

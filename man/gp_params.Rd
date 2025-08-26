@@ -49,6 +49,17 @@ as_spatial_reference(x)
 
 parse_spatial_reference(json)
 }
+\arguments{
+\item{json}{raw json to parse}
+
+\item{x}{the object to convert into json}
+
+\item{distance}{a scalar number of the distance.}
+
+\item{units}{the unit of the measurement. Must be one of "esriUnknownAreaUnits", "esriSquareInches", "esriSquareFeet", "esriSquareYards", "esriAcres", "esriSquareMiles", "esriSquareMillimeters", "esriSquareCentimeters", "esriSquareDecimeters", "esriSquareMeters", "esriAres", "esriHectares", "esriSquareKilometers", "esriSquareInchesUS", "esriSquareFeetUS", "esriSquareYardsUS", "esriAcresUS", "esriSquareMilesUS".}
+
+\item{area}{a scalar number of the measurement.}
+}
 \description{
 Functions for converting R objects to and from ArcGIS geoprocessing parameter
 types. These functions handle the serialization and parsing of various data
