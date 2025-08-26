@@ -33,7 +33,12 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="arcgisutils-development-version">arcgisutils (development version)<a class="anchor" aria-label="anchor" href="#arcgisutils-development-version"></a></h2>
-<ul><li>Adds support for parsing and creating geoprocessing service json see <code><a href="../reference/gp_params.html">?gp_params</a></code>
+<ul><li>Adds <code>search_item()</code> to search for content items with automatic pagination.</li>
+<li>Adds <code><a href="../reference/arc_user_self.html">arc_user_self()</a></code> to return metadata for the authenticated user</li>
+<li>Deprecates <code><a href="../reference/self.html">arc_self_meta()</a></code> in favor of <code><a href="../reference/self.html">arc_portal_self()</a></code>—the functions are identical.</li>
+<li>Adds <code><a href="../reference/content.html">arc_group_content()</a></code> and <code><a href="../reference/content.html">arc_user_content()</a></code> to fetch user and group content listings</li>
+<li>Adds <code><a href="../reference/arc_paginate_req.html">arc_paginate_req()</a></code> to automatically apply pagination to requests</li>
+<li>Adds support for parsing and creating geoprocessing service json see <code><a href="../reference/gp_params.html">?gp_params</a></code>
 </li>
 <li>Adds Geoprocessing Service support via new S7 classes:
 <ul><li>
@@ -81,7 +86,7 @@
 <li>
 <code><a href="../reference/arc_base_req.html">arc_base_req()</a></code> gains two new arguments <code>path</code> and <code>query</code> which allows you to add query parameters and paths to the generated base request</li>
 <li>
-<code><a href="../reference/arc_self_meta.html">arc_self_meta()</a></code> is a new function to provide access to the <a href="https://developers.arcgis.com/rest/users-groups-and-items/portal-self.htm" class="external-link"><code>/self</code></a> endpoint. Closes <a href="https://github.com/R-ArcGIS/arcgisutils/issues/32">#32</a>
+<code><a href="../reference/self.html">arc_self_meta()</a></code> is a new function to provide access to the <a href="https://developers.arcgis.com/rest/users-groups-and-items/portal-self.htm" class="external-link"><code>/self</code></a> endpoint. Closes <a href="https://github.com/R-ArcGIS/arcgisutils/issues/32">#32</a>
 </li>
 <li>Null geometries are parsed into empty Geometry Collections using <code><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">sf::st_geometrycollection()</a></code> Fixed <a href="https://github.com/R-ArcGIS/arcgislayers/issues/168" class="external-link">#168</a>
 </li>

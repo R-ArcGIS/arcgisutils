@@ -12,12 +12,14 @@
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/arc_item.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/arc_item_data.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/arc_job_status.html</loc></url>
+<url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/arc_paginate_req.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/arc_portal_urls.html</loc></url>
-<url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/arc_self_meta.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/arc_user.html</loc></url>
+<url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/arc_user_self.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/as_esri_geometry.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/as_extent.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/auth.html</loc></url>
+<url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/content.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/dates.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/detect_errors.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/determine_dims.html</loc></url>
@@ -31,7 +33,10 @@
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/index.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/layer_json.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/parse_esri_json.html</loc></url>
+<url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/portal_types.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/rbind_results.html</loc></url>
+<url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/search_items.html</loc></url>
+<url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/self.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/token.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/url.html</loc></url>
 <url><loc>https://github.com/R-ArcGIS/arcgisutils/reference/utilities.html</loc></url>
