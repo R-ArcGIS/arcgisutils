@@ -1,5 +1,7 @@
 # arcgisutils (development version)
 
+- `ptype_tbl()` has been deprecated in favor of `fields_as_ptype_df()`.
+- `infer_esri_type()` has been deprecated in favor of `as_fields()`.
 - Adds `search_item()` to search for content items with automatic pagination.
 - Adds `arc_user_self()` to return metadata for the authenticated user
 - Deprecates `arc_self_meta()` in favor of `arc_portal_self()`—the functions are identical.
@@ -13,6 +15,11 @@
 - Adds new experimental functions for parsing urls `arc_url_parse()`, `arc_url_type()`, and `is_url()` h/t [@elipousson](https://github.com/elipousson)
 - Adds new experimental functions for working with a portal's sharing API `arc_item()`, `arc_group()`, `arc_user()`, `arc_item_data()`, `arc_portal_urls()`
 - Validate `token` in `arc_base_req()`
+
+## Breaking changes: 
+
+- `get_ptype()` has been removed from the public API.
+- `remote_ptype_tbl()` has been removed removing the `dbplyr` dependency.
 
 # arcgisutils 0.3.2
 
