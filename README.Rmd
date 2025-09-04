@@ -41,7 +41,7 @@ arcgisutils is the foundational infrastructure package that powers the R-ArcGIS 
 **⚙️ Geoprocessing Services**: 
 
 - Support for the geoprocessing service framework built upon R6 and S7
-- Enables users to call their own custom geoprocessing services or build on top of existing services that we do not yet have explicit support for
+- Enables users to call their own custom geoprocessing services or build on top of existing services
 - R6-based job management (`arc_gp_job`) with real-time status tracking and built-in result parsing
 
 **📄 Esri JSON Ecosystem**: 
@@ -58,19 +58,25 @@ arcgisutils is the foundational infrastructure package that powers the R-ArcGIS 
 
 ## Installation
 
-Install arcgisutils from CRAN.
+`{arcgisutils}` is part of the `{arcgis}` metapackage, which provides the complete R-ArcGIS Bridge toolkit. For most users, installing the metapackage is recommended:
 
-``` r
+```r
+install.packages("arcgis")
+```
+
+You can also install `{arcgisutils}` individually from CRAN:
+
+```r
 install.packages("arcgisutils")
 ```
 
-Or, you can install the development version of arcgisutils [r-universe](https://r-arcgis.r-universe.dev/) with:
+To install the development version:
 
-``` r
-install.packages("arcgisutils", repos = "https://r-arcgis.r-universe.dev")
+```r
+pak::pak("r-arcgis/arcgisutils")
 ```
 
-### Autentication
+### Authentication
 
 Authorization tokens are provided through the functions `auth_code()`, `auth_client()`, `auth_user()`, `auth_key()`, and `auth_binding()`. Additional token validation functions are provided via `refresh_token()` and `validate_or_refresh_token()`. 
 
@@ -247,3 +253,7 @@ res
 # plot the resultant geometry
 plot(st_geometry(res$geometry))
 ```
+
+## Learn More
+
+To learn more about the R-ArcGIS Bridge project visit the [developer documentation](https://developers.arcgis.com/r-bridge/).

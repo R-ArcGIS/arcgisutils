@@ -33,8 +33,7 @@ Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.
 
 - Support for the geoprocessing service framework built upon R6 and S7
 - Enables users to call their own custom geoprocessing services or build
-  on top of existing services that we do not yet have explicit support
-  for
+  on top of existing services
 - R6-based job management (`arc_gp_job`) with real-time status tracking
   and built-in result parsing
 
@@ -53,17 +52,24 @@ Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.
 
 ## Installation
 
-Install arcgisutils from CRAN.
+`{arcgisutils}` is part of the `{arcgis}` metapackage, which provides
+the complete R-ArcGIS Bridge toolkit. For most users, installing the
+metapackage is recommended:
+
+``` r
+install.packages("arcgis")
+```
+
+You can also install `{arcgisutils}` individually from CRAN:
 
 ``` r
 install.packages("arcgisutils")
 ```
 
-Or, you can install the development version of arcgisutils
-[r-universe](https://r-arcgis.r-universe.dev/) with:
+To install the development version:
 
 ``` r
-install.packages("arcgisutils", repos = "https://r-arcgis.r-universe.dev")
+pak::pak("r-arcgis/arcgisutils")
 ```
 
 ### Authentication
@@ -131,7 +137,7 @@ crime_items
 #>  4 64691a… Temp… 2024-01-17 20:01:43 2024-01-17 20:04:45 NA    hate… Hate… Feat…
 #>  5 7c2b78… JASo… 2023-04-04 17:49:30 2023-06-02 22:27:11 NA    <NA>  Sher… Feat…
 #>  6 e0992d… balt… 2023-07-31 20:27:01 2025-01-22 21:21:01 NA    Part… Part… Feat…
-#>  7 c749e3… open… 2024-02-23 19:36:34 2025-09-04 14:40:03 NA    <NA>  Crim… Feat…
+#>  7 c749e3… open… 2024-02-23 19:36:34 2025-09-04 17:08:47 NA    <NA>  Crim… Feat…
 #>  8 2cb53d… KASU… 2019-12-10 19:06:39 2019-12-10 19:14:27 NA    Viol… Viol… Feat…
 #>  9 30644d… MyCi… 2025-03-14 14:55:06 2025-08-20 13:55:24 NA    HPD_… HPD … Feat…
 #> 10 5dc4e6… iwat… 2023-06-23 22:07:21 2023-08-09 15:33:46 NA    <NA>  Prop… Feat…
@@ -169,7 +175,7 @@ req
 #> GET https://www.arcgis.com
 #> Body: empty
 #> Options:
-#> • useragent: "arcgisutils v0.3.3.9000"
+#> * useragent: "arcgisutils v0.3.3.9000"
 ```
 
 To handle paginated services and requests use `arc_paginate_req()` to
@@ -309,13 +315,13 @@ job <- trace_downstream(
 # start the job
 job$start()
 #> <arc_gp_job>
-#> Job ID: jf79b2aba93814c2da83cea5ac5a95006
+#> Job ID: jd9f76de1e62e4d8a877f3e6859fdb7b2
 #> Status: not started
 #> Resource: /TraceDownstream
 #> Params:
-#>   • InputPoints
-#>   • Generalize
-#>   • f
+#> • InputPoints
+#> • Generalize
+#> • f
 ```
 
 Jobs run asynchronously so we can check the status with `job$status`
@@ -323,7 +329,7 @@ Jobs run asynchronously so we can check the status with `job$status`
 ``` r
 job$status
 #> <arcgisutils::arc_job_status>
-#>  @ status: chr "esriJobExecuting"
+#>  @ status: chr "esriJobSubmitted"
 ```
 
 Then, when the job is complete, we can fetch the results applying the
@@ -373,3 +379,8 @@ plot(st_geometry(res$geometry))
 ```
 
 <img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+
+## Learn More
+
+To learn more about the R-ArcGIS Bridge project visit the [developer
+documentation](https://developers.arcgis.com/r-bridge/).
