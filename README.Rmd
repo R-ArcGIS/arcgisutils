@@ -17,25 +17,51 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+library(pillar)
 ```
 
 
-arcgisutils is designed as the backbone of the [`{arcgis}`](https://github.com/r-arcgis/arcgis) meta-package.
+arcgisutils is the foundational infrastructure package that powers the R-ArcGIS Bridge Data and Location Service ecosystem. It provides sophisticated, production-ready tools for interacting with ArcGIS Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.
 
-arcgisutils is a developer oriented package that provides the basic functions to build R packages that work with ArcGIS Location Services. It provides functionality for:
+## Key Capabilities
 
-- authorization, 
-- Esri JSON construction and parsing, 
-- structuring ArcGIS REST API requests,
-- Esri type conversions,
-- among other utilities
+**🔐 Comprehensive Authentication**:
+
+- Multiple OAuth2 workflows (`auth_code()`, `auth_client()`) 
+- API key and legacy token support
+- Automatic token refresh and validation
+- Integration with ArcGIS Pro via `arcgisbinding`
+
+**🌐 Portal Integration**: 
+
+- Advanced content search with filtering, sorting, and pagination
+- User, group, and organization metadata management
+- Portal item discovery and content management workflows
+
+**⚙️ Geoprocessing Services**: 
+
+- Support for the geoprocessing service framework built upon R6 and S7
+- Enables users to call their own custom geoprocessing services or build on top of existing services that we do not yet have explicit support for
+- R6-based job management (`arc_gp_job`) with real-time status tracking and built-in result parsing
+
+**📄 Esri JSON Ecosystem**: 
+
+- Bidirectional conversion between R spatial data and Esri JSON formats
+- Support for FeatureSets, geometry objects, field definitions, and spatial reference systems
+- Optimized parsing with automatic `sf` integration
+
+**🛠️ Developer Utilities**: 
+
+- Standardized HTTP client (`arc_base_req()`, `arc_paginate_req()`)
+- Robust error detection and user-friendly error messages
+- URL parsing, service introspection, and metadata extraction
 
 ## Installation
 
 Install arcgisutils from CRAN.
 
 ``` r
-install.packages("arcgisutils", repos = "https://r-arcgis.r-universe.dev")
+install.packages("arcgisutils")
 ```
 
 Or, you can install the development version of arcgisutils [r-universe](https://r-arcgis.r-universe.dev/) with:
@@ -44,67 +70,180 @@ Or, you can install the development version of arcgisutils [r-universe](https://
 install.packages("arcgisutils", repos = "https://r-arcgis.r-universe.dev")
 ```
 
-### Authorization 
+### Autentication
 
-Authorization tokens are provided through the functions `auth_code()`, `auth_client()`, `auth_user()`, and `auth_binding()`. Additional token validation functions are provided via `refresh_token()` and `validate_or_refresh_token()`. 
+Authorization tokens are provided through the functions `auth_code()`, `auth_client()`, `auth_user()`, `auth_key()`, and `auth_binding()`. Additional token validation functions are provided via `refresh_token()` and `validate_or_refresh_token()`. 
 
-Tokens are managed in a session based cache using `set_arc_token()` and `unset_arc_token()`. They are fetched using `arc_token()`. Here is a minimal example:
+`auth_code()` can be used for integrating into Shiny applications, for example, to have individual users log in. We recommend using `auth_key()` for authenticating in non-interactive environments (for example scheduled scripts or deployments).
 
+Tokens are managed using `set_arc_token()` and `unset_arc_token()`. They are fetched using `arc_token()`. `set_arc_token()` can set the token globally or set multiple named environments. Here is a minimal example:
 
-```{r}
+```{r, eval=TRUE}
 library(arcgisutils)
-
-tkn <- auth_client()
-
-set_arc_token(tkn)
-
-arc_token()
 ```
 
-Alternatively, tokens can be set based on a key-value pair. 
+```{r eval=FALSE}
+key <- auth_key()
+set_arc_token(key)
+```
 
-```{r}
-set_arc_token("A" = tkn, "B" = tkn)
+Alternatively, tokens can be set based on a key-value pair for multiple environments:
+
+```{r eval=FALSE}
+set_arc_token("production" = prod_token, "development" = dev_token)
 ```
 
 And fetched based on their name via
 
-```{r}
-arc_token("A")
+```{r eval=FALSE}
+arc_token("production")
 ```
 
-### Standardized Requests 
+### Portal Integration
 
-The function `arc_base_req()` is used to create a standardized `httr2` request object. It handles authorization tokens and sets a user agent.
+Search and discover content across your ArcGIS organization:
 
 ```{r}
-host <- arc_host() # use arcgis.com by default
+# Search for feature services containing "crime" data
+crime_items <- search_items(
+  query = "crime", 
+  item_type = "Feature Service",
+  max_pages = 1
+)
 
-arc_base_req(host)
+crime_items
 ```
+
+```{r}
+# Get detailed item information for a portal item
+arc_item(crime_items$id[1])
+```
+
+### Developer Utilities
+
+Always use `arc_base_req()` as this will handle setting the user agent and authorization token. The function creates a standardized `httr2` request object:
+
+```{r}
+# defaults to arcgis.com
+host <- arc_host() 
+
+req <- arc_base_req(host)
+req
+```
+
+To handle paginated services and requests use `arc_paginate_req()` to automatically handle fetching pages.
+
 
 ### Esri JSON
 
-There are also a number of utility functions for creating and parsing Esri JSON. For example we can create a list that represent an Esri `FeatureSet` using `as_featurset()` directly from an `sf` object. To convert to json, it is recommended to use `jsonify::to_json(x, unbox = TRUE)`.
+There are also a number of utility functions for creating and parsing Esri JSON. For example we can create an Esri `FeatureSet` json string using `as_esri_featureset()` directly from an `sf` object. 
 
-```{r}
+```{r, message=FALSE, warning = FALSE}
 library(sf)
 
-nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
-nc_json <- as_featureset(nc)
+# load the NC SIDS dataset and extract centroids
+# of the first few rows
+nc <- system.file("shape/nc.shp", package = "sf") |> 
+  st_read(quiet = TRUE) |> 
+  st_centroid() 
 
-str(nc_json, 1)
+# convert to json
+nc_json <- as_esri_featureset(nc[1:2, 1:3])
+
+jsonify::pretty_json(nc_json)
 ```
 
-Alternatively, you can use the set of functions with the `_esri_` infix to directly create the json. See the [Esri geometry reference page](https://r.esri.com/arcgisutils/reference/esri_geometry.html) for more on how the conversion functions work. 
 
-Additionally, sf's `crs` object can be converted to a [`spatialReference`](https://developers.arcgis.com/documentation/common-data-types/geometry-objects.htm#GUID-DFF0E738-5A42-40BC-A811-ACCB5814BABC) JSON object using `validate_crs()`.
+Feature set json can also be parsed using `parse_esri_json()`.
 
 ```{r}
-validate_crs(27700)
+parse_esri_json(nc_json)
 ```
 
 
+Additionally, sf's `crs` object can be converted to a [`spatialReference`](https://developers.arcgis.com/documentation/common-data-types/geometry-objects.htm#GUID-DFF0E738-5A42-40BC-A811-ACCB5814BABC) JSON object using `validate_crs()`. Convert these to json with `yyjsonr` or `jsonify`.
+
+```{r}
+crs <- validate_crs(27700)
+jsonify::pretty_json(crs, unbox = TRUE)
+```
+
+### Geoprocessing Services
+
+The geoprocessing service framework is completely supported in `{arcgisutils}`. Here we combine the functionality of the geoprocessing job framework with utilities such as `as_esri_featureset()` to call the [Trace DownStream Elevation Service](https://developers.arcgis.com/rest/elevation-analysis/trace-downstream/)
+
+```{r}
+trace_downstream <- function(
+  input_points,
+  point_id_field = NULL,
+  resolution = NULL,
+  generalize = FALSE,
+  token = arc_token()
+) {
+
+  # create a list of parameters
+  params <- compact(list(
+    InputPoints = as_esri_featureset(input_points),
+    PointIdField = point_id_field,
+    DataSourceResolution = resolution,
+    Generalize = as.character(generalize),
+    f = "json"
+  ))
+
+  service_url <- "https://hydro.arcgis.com/arcgis/rest/services/Tools/Hydrology/GPServer/TraceDownstream"
+  arc_gp_job$new(
+    base_url = service_url,
+    params = params,
+    result_fn = parse_gp_feature_record_set,
+    token
+  )
+}
+```
 
 
+This new function can be called to start a new job: 
 
+```{r}
+# create input points
+input_points <- st_sfc(
+  st_point(c(-159.548936, 21.955888)),
+  crs = 4326
+)
+
+# initialze an empty job
+job <- trace_downstream(
+  input_points,
+  token = auth_user()
+)
+
+# start the job
+job$start()
+```
+
+Jobs run asynchronously so we can check the status with `job$status`
+
+```{r include = FALSE}
+Sys.sleep(0.5)
+```
+
+```{r}
+job$status
+```
+
+Then, when the job is complete, we can fetch the results applying the result function which is `parse_gp_feature_record_set()` in this case. 
+
+
+```{r include=FALSE}
+Sys.sleep(5)
+```
+
+```{r}
+job$results
+
+# store and view the results
+res <- job$results
+res
+
+# plot the resultant geometry
+plot(st_geometry(res$geometry))
+```

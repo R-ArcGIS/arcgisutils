@@ -1,13 +1,17 @@
-#' Esri field type mapping
+#' Esri Field Type Mapping
 #'
-#' Infers Esri field types from R objects.
+#' Infers Esri field types from R objects. Use [`as_fields()`] to create a
+#' data.frame of valid [Esri Field Types](https://developers.arcgis.com/web-map-specification/objects/field/)
+#' from an `sf` object or `data.frame`.
 #'
 #' @details
+#' `r lifecycle::badge("experimental")`
 #'
+#' - `as_fields()` takes a data frame-like object and infers the Esri field type from it.
+#' - `fields_as_pytpe_df()` takes a list with `type` and `name` and creates an empty `data.frame` with the corresponding column names and types.
+
 #' - `get_ptype()` takes a scalar character containing the Esri field type and returns a prototype of the pertinent R type
-#' - `infer_esri_type()` takes a data frame-like object and infers the Esri field type from it.
-#' - `remote_ptype_tbl()` takes a data frame of fields as derived from `list_fields()` and
-#' creates a lazy table proto type intended to be used with `dbplyr` integration
+
 #'
 #' ### Field type mapping:
 #'
@@ -32,16 +36,13 @@
 #' - `raw`: esriFieldTypeBlob
 #'
 #' @examples
-#'
-#' get_ptype("esriFieldTypeDouble")
-#' inferred <- infer_esri_type(iris)
+#' inferred <- as_esri_fields(iris)
 #' ptype_tbl(inferred)
 #'
 #' @returns
 #'
 #' - `get_pytpe()` returns an object of the class of the prototype.
 #' - `ptype_tbl()` takes a `data.frame` with columns `name` and `type` and creates an empty `data.frame` with the corresponding columns and R types
-#' - `remote_ptype_tbl()` provides the results of `ptype_tbl()` as a lazy data frame from the `dbplyr` package.
 #' - `infer_esri_ptype()` returns a `data.frame` with columns `name`, `type`, `alias`, `nullable`, and `editable` columns
 #'   - This resembles that of the `fields` returned by a FeatureService
 #' @export
@@ -49,7 +50,11 @@
 #' @param .data an object of class `data.frame`.
 #' @inheritParams cli::cli_abort
 #' @inheritParams rlang::caller_arg
-infer_esri_type <- function(.data, arg = rlang::caller_arg(.data), call = rlang::caller_env()) {
+as_fields <- function(
+  .data,
+  arg = rlang::caller_arg(.data),
+  call = rlang::caller_env()
+) {
   if (!inherits(.data, "data.frame")) {
     cli::cli_abort(
       "Expected {.cls data.frame} found {.obj_type_friendly {(.data)}}.",
@@ -58,7 +63,9 @@ infer_esri_type <- function(.data, arg = rlang::caller_arg(.data), call = rlang:
     )
   }
 
-  if (inherits(.data, "sf")) .data <- sf::st_drop_geometry(.data)
+  if (inherits(.data, "sf")) {
+    .data <- sf::st_drop_geometry(.data)
+  }
 
   if (nrow(.data) == 0) {
     empty_fields <- data.frame(
@@ -90,12 +97,21 @@ infer_esri_type <- function(.data, arg = rlang::caller_arg(.data), call = rlang:
   )
 }
 
-
 #' @export
 #' @rdname field_mapping
-#' @param field_type a character of a desired Esri field type. See details for more.
+infer_esri_type <- function(
+  .data,
+  arg = rlang::caller_arg(.data),
+  call = rlang::caller_env()
+) {
+  lifecycle::deprecate_soft("0.4.0", "infer_esri_type()", "as_fields()")
+  as_fields(.data, arg, call)
+}
+
+
 get_ptype <- function(field_type, n = 1, call = rlang::caller_env()) {
-  res <- switch(field_type,
+  res <- switch(
+    field_type,
     "esriFieldTypeSmallInteger" = integer(n),
     "esriFieldTypeSingle" = double(n),
     "esriFieldTypeGUID" = integer(n),
@@ -116,18 +132,32 @@ get_ptype <- function(field_type, n = 1, call = rlang::caller_env()) {
     )
   }
 
-
   res
 }
 
 #' @export
 #' @rdname field_mapping
 #' @param n the number of rows to create in the prototype table
-ptype_tbl <- function(fields, n = 0, call = rlang::caller_env()) {
+fields_as_ptype_df <- function(fields, n = 0, call = rlang::caller_env()) {
+  if (!rlang::is_list(fields)) {
+    cli::cli_abort(
+      "{.arg fields} must be a list with fields `type` and `name`",
+      call = call
+    )
+  }
+
   ftype <- fields[["type"]]
   fname <- fields[["name"]]
 
-  tbl <- as.data.frame(
+  if (rlang::is_null(ftype)) {
+    cli::cli_abort("{.field type} is missing from {.arg fields}", call = call)
+  }
+
+  if (rlang::is_null(name)) {
+    cli::cli_abort("{.field name} is missing from {.arg fields}", call = call)
+  }
+
+  as.data.frame(
     lapply(
       rlang::set_names(ftype, fname),
       get_ptype,
@@ -135,26 +165,13 @@ ptype_tbl <- function(fields, n = 0, call = rlang::caller_env()) {
       call = call
     )
   )
-
-  # select no rows from it
-  tbl
 }
-
 
 #' @export
 #' @rdname field_mapping
-#' @param fields a data.frame containing, at least, the columns `type` and `name`.
-#'  Typically retrieved from the `field` metadata from a `FeatureLayer` or `Table`.
-#'  Also can use the output of `infer_esri_type()`.
-remote_ptype_tbl <- function(fields, call = rlang::caller_env()) {
-  rlang::check_installed("dbplyr")
-
-  ftype <- fields[["type"]]
-  fname <- fields[["name"]]
-
-  dbplyr::lazy_frame(
-    ptype_tbl(fields, call = call)
-  )
+ptype_tbl <- function(fields, n = 0, call = rlang::caller_env()) {
+  lifecycle::deprecate_soft("0.4.0", "ptype_tbl()", "fields_as_ptype_df()")
+  fields_as_ptype_df(fields = fields, n = n, call = call)
 }
 
 
@@ -169,11 +186,7 @@ vec_mapping <- c(
   "raw" = "esriFieldTypeBlob"
 )
 
-
-
-
 # notes -------------------------------------------------------------------
-
 
 # fields is a dateframe
 
