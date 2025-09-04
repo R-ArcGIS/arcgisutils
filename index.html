@@ -54,98 +54,303 @@
 </div>
 <!-- badges: start -->
 
-<p>arcgisutils is designed as the backbone of the <a href="https://github.com/r-arcgis/arcgis" class="external-link"><code>{arcgis}</code></a> meta-package.</p>
-<p>arcgisutils is a developer oriented package that provides the basic functions to build R packages that work with ArcGIS Location Services. It provides functionality for:</p>
+<p>arcgisutils is the foundational infrastructure package that powers the R-ArcGIS Bridge Data and Location Service ecosystem. It provides sophisticated, production-ready tools for interacting with ArcGIS Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.</p>
+<div class="section level2">
+<h2 id="key-capabilities">Key Capabilities<a class="anchor" aria-label="anchor" href="#key-capabilities"></a>
+</h2>
+<p><strong>🔐 Comprehensive Authentication</strong>:</p>
 <ul>
-<li>authorization,</li>
-<li>Esri JSON construction and parsing,</li>
-<li>structuring ArcGIS REST API requests,</li>
-<li>Esri type conversions,</li>
-<li>among other utilities</li>
+<li>Multiple OAuth2 workflows (<code><a href="reference/auth.html">auth_code()</a></code>, <code><a href="reference/auth.html">auth_client()</a></code>)</li>
+<li>API key and legacy token support</li>
+<li>Automatic token refresh and validation</li>
+<li>Integration with ArcGIS Pro via <code>arcgisbinding</code>
+</li>
 </ul>
+<p><strong>🌐 Portal Integration</strong>:</p>
+<ul>
+<li>Advanced content search with filtering, sorting, and pagination</li>
+<li>User, group, and organization metadata management</li>
+<li>Portal item discovery and content management workflows</li>
+</ul>
+<p><strong>⚙️ Geoprocessing Services</strong>:</p>
+<ul>
+<li>Support for the geoprocessing service framework built upon R6 and S7</li>
+<li>Enables users to call their own custom geoprocessing services or build on top of existing services that we do not yet have explicit support for</li>
+<li>R6-based job management (<code>arc_gp_job</code>) with real-time status tracking and built-in result parsing</li>
+</ul>
+<p><strong>📄 Esri JSON Ecosystem</strong>:</p>
+<ul>
+<li>Bidirectional conversion between R spatial data and Esri JSON formats</li>
+<li>Support for FeatureSets, geometry objects, field definitions, and spatial reference systems</li>
+<li>Optimized parsing with automatic <code>sf</code> integration</li>
+</ul>
+<p><strong>🛠️ Developer Utilities</strong>:</p>
+<ul>
+<li>Standardized HTTP client (<code><a href="reference/arc_base_req.html">arc_base_req()</a></code>, <code><a href="reference/arc_paginate_req.html">arc_paginate_req()</a></code>)</li>
+<li>Robust error detection and user-friendly error messages</li>
+<li>URL parsing, service introspection, and metadata extraction</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>Install arcgisutils from CRAN.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"arcgisutils"</span>, repos <span class="op">=</span> <span class="st">"https://r-arcgis.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"arcgisutils"</span><span class="op">)</span></span></code></pre></div>
 <p>Or, you can install the development version of arcgisutils <a href="https://r-arcgis.r-universe.dev/" class="external-link">r-universe</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"arcgisutils"</span>, repos <span class="op">=</span> <span class="st">"https://r-arcgis.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="authorization">Authorization<a class="anchor" aria-label="anchor" href="#authorization"></a>
+<h3 id="autentication">Autentication<a class="anchor" aria-label="anchor" href="#autentication"></a>
 </h3>
-<p>Authorization tokens are provided through the functions <code><a href="reference/auth.html">auth_code()</a></code>, <code><a href="reference/auth.html">auth_client()</a></code>, <code><a href="reference/auth.html">auth_user()</a></code>, and <code><a href="reference/auth.html">auth_binding()</a></code>. Additional token validation functions are provided via <code><a href="reference/auth.html">refresh_token()</a></code> and <code><a href="reference/auth.html">validate_or_refresh_token()</a></code>.</p>
-<p>Tokens are managed in a session based cache using <code><a href="reference/token.html">set_arc_token()</a></code> and <code><a href="reference/token.html">unset_arc_token()</a></code>. They are fetched using <code><a href="reference/token.html">arc_token()</a></code>. Here is a minimal example:</p>
+<p>Authorization tokens are provided through the functions <code><a href="reference/auth.html">auth_code()</a></code>, <code><a href="reference/auth.html">auth_client()</a></code>, <code><a href="reference/auth.html">auth_user()</a></code>, <code><a href="reference/auth.html">auth_key()</a></code>, and <code><a href="reference/auth.html">auth_binding()</a></code>. Additional token validation functions are provided via <code><a href="reference/auth.html">refresh_token()</a></code> and <code><a href="reference/auth.html">validate_or_refresh_token()</a></code>.</p>
+<p><code><a href="reference/auth.html">auth_code()</a></code> can be used for integrating into Shiny applications, for example, to have individual users log in. We recommend using <code><a href="reference/auth.html">auth_key()</a></code> for authenticating in non-interactive environments (for example scheduled scripts or deployments).</p>
+<p>Tokens are managed using <code><a href="reference/token.html">set_arc_token()</a></code> and <code><a href="reference/token.html">unset_arc_token()</a></code>. They are fetched using <code><a href="reference/token.html">arc_token()</a></code>. <code><a href="reference/token.html">set_arc_token()</a></code> can set the token globally or set multiple named environments. Here is a minimal example:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R-ArcGIS/arcgisutils">arcgisutils</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'arcgisutils'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     %||%</span></span>
-<span></span>
-<span><span class="va">tkn</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auth.html">auth_client</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/token.html">set_arc_token</a></span><span class="op">(</span><span class="va">tkn</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="reference/token.html">arc_token</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;httr2_token&gt;</span></span>
-<span><span class="co">#&gt; * token_type  : "bearer"</span></span>
-<span><span class="co">#&gt; * access_token: &lt;REDACTED&gt;</span></span>
-<span><span class="co">#&gt; * expires_at  : "2025-08-26 14:44:39"</span></span>
-<span><span class="co">#&gt; * arcgis_host : "https://www.arcgis.com"</span></span></code></pre></div>
-<p>Alternatively, tokens can be set based on a key-value pair.</p>
+<span><span class="co">#&gt;     %||%</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/token.html">set_arc_token</a></span><span class="op">(</span><span class="st">"A"</span> <span class="op">=</span> <span class="va">tkn</span>, <span class="st">"B"</span> <span class="op">=</span> <span class="va">tkn</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ✔ Named tokens set: `A` and `B`</span></span>
-<span><span class="co">#&gt; ℹ Access named tokens with `arc_token("name")`</span></span></code></pre></div>
-<p>And fetched based on their name via</p>
+<code class="sourceCode R"><span><span class="va">key</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auth.html">auth_key</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/token.html">set_arc_token</a></span><span class="op">(</span><span class="va">key</span><span class="op">)</span></span></code></pre></div>
+<p>Alternatively, tokens can be set based on a key-value pair for multiple environments:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/token.html">arc_token</a></span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;httr2_token&gt;</span></span>
-<span><span class="co">#&gt; * token_type  : "bearer"</span></span>
-<span><span class="co">#&gt; * access_token: &lt;REDACTED&gt;</span></span>
-<span><span class="co">#&gt; * expires_at  : "2025-08-26 14:44:39"</span></span>
-<span><span class="co">#&gt; * arcgis_host : "https://www.arcgis.com"</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/token.html">set_arc_token</a></span><span class="op">(</span><span class="st">"production"</span> <span class="op">=</span> <span class="va">prod_token</span>, <span class="st">"development"</span> <span class="op">=</span> <span class="va">dev_token</span><span class="op">)</span></span></code></pre></div>
+<p>And fetched based on their name via</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/token.html">arc_token</a></span><span class="op">(</span><span class="st">"production"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="standardized-requests">Standardized Requests<a class="anchor" aria-label="anchor" href="#standardized-requests"></a>
+<h3 id="portal-integration">Portal Integration<a class="anchor" aria-label="anchor" href="#portal-integration"></a>
 </h3>
-<p>The function <code><a href="reference/arc_base_req.html">arc_base_req()</a></code> is used to create a standardized <code>httr2</code> request object. It handles authorization tokens and sets a user agent.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">host</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/arc_host.html">arc_host</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># use arcgis.com by default</span></span>
+<p>Search and discover content across your ArcGIS organization:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Search for feature services containing "crime" data</span></span>
+<span><span class="va">crime_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/search_items.html">search_items</a></span><span class="op">(</span></span>
+<span>  query <span class="op">=</span> <span class="st">"crime"</span>, </span>
+<span>  item_type <span class="op">=</span> <span class="st">"Feature Service"</span>,</span>
+<span>  max_pages <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/arc_base_req.html">arc_base_req</a></span><span class="op">(</span><span class="va">host</span><span class="op">)</span></span>
+<span><span class="va">crime_items</span></span>
+<span><span class="co">#&gt; # A data frame: 50 × 46</span></span>
+<span><span class="co">#&gt;    id      owner created             modified            guid  name  title type </span></span>
+<span><span class="co">#&gt;  * &lt;chr&gt;   &lt;chr&gt; &lt;dttm&gt;              &lt;dttm&gt;              &lt;lgl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1 ea0cfe… Toro… 2023-03-28 15:02:39 2025-01-22 18:27:48 NA    Neig… Neig… Feat…</span></span>
+<span><span class="co">#&gt;  2 0a239a… Toro… 2023-03-27 18:59:00 2025-08-06 14:01:27 NA    Majo… Majo… Feat…</span></span>
+<span><span class="co">#&gt;  3 5e055d… JASo… 2023-04-04 17:36:59 2023-09-07 19:05:06 NA    &lt;NA&gt;  Sher… Feat…</span></span>
+<span><span class="co">#&gt;  4 64691a… Temp… 2024-01-17 20:01:43 2024-01-17 20:04:45 NA    hate… Hate… Feat…</span></span>
+<span><span class="co">#&gt;  5 7c2b78… JASo… 2023-04-04 17:49:30 2023-06-02 22:27:11 NA    &lt;NA&gt;  Sher… Feat…</span></span>
+<span><span class="co">#&gt;  6 e0992d… balt… 2023-07-31 20:27:01 2025-01-22 21:21:01 NA    Part… Part… Feat…</span></span>
+<span><span class="co">#&gt;  7 c749e3… open… 2024-02-23 19:36:34 2025-09-04 14:40:03 NA    &lt;NA&gt;  Crim… Feat…</span></span>
+<span><span class="co">#&gt;  8 2cb53d… KASU… 2019-12-10 19:06:39 2019-12-10 19:14:27 NA    Viol… Viol… Feat…</span></span>
+<span><span class="co">#&gt;  9 30644d… MyCi… 2025-03-14 14:55:06 2025-08-20 13:55:24 NA    HPD_… HPD … Feat…</span></span>
+<span><span class="co">#&gt; 10 5dc4e6… iwat… 2023-06-23 22:07:21 2023-08-09 15:33:46 NA    &lt;NA&gt;  Prop… Feat…</span></span>
+<span><span class="co">#&gt; # ℹ 40 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 38 more variables: typeKeywords &lt;list&gt;, description &lt;chr&gt;, tags &lt;list&gt;,</span></span>
+<span><span class="co">#&gt; #   snippet &lt;chr&gt;, thumbnail &lt;chr&gt;, documentation &lt;lgl&gt;, extent &lt;list&gt;,</span></span>
+<span><span class="co">#&gt; #   categories &lt;list&gt;, spatialReference &lt;chr&gt;, accessInformation &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   classification &lt;lgl&gt;, licenseInfo &lt;chr&gt;, culture &lt;chr&gt;, properties &lt;list&gt;,</span></span>
+<span><span class="co">#&gt; #   advancedSettings &lt;lgl&gt;, url &lt;chr&gt;, proxyFilter &lt;lgl&gt;, access &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   size &lt;int&gt;, subInfo &lt;int&gt;, appCategories &lt;list&gt;, industries &lt;list&gt;, …</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get detailed item information for a portal item</span></span>
+<span><span class="fu"><a href="reference/arc_item.html">arc_item</a></span><span class="op">(</span><span class="va">crime_items</span><span class="op">$</span><span class="va">id</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;PortalItem&lt;Feature Service&gt;&gt;</span></span>
+<span><span class="co">#&gt; id: ea0cfecdb1de416884e6b0bf08a9e195</span></span>
+<span><span class="co">#&gt; title: Neighbourhood Crime Rates Open Data</span></span>
+<span><span class="co">#&gt; owner: TorontoPoliceService</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="developer-utilities">Developer Utilities<a class="anchor" aria-label="anchor" href="#developer-utilities"></a>
+</h3>
+<p>Always use <code><a href="reference/arc_base_req.html">arc_base_req()</a></code> as this will handle setting the user agent and authorization token. The function creates a standardized <code>httr2</code> request object:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># defaults to arcgis.com</span></span>
+<span><span class="va">host</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/arc_host.html">arc_host</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">req</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/arc_base_req.html">arc_base_req</a></span><span class="op">(</span><span class="va">host</span><span class="op">)</span></span>
+<span><span class="va">req</span></span>
 <span><span class="co">#&gt; &lt;httr2_request&gt;</span></span>
 <span><span class="co">#&gt; GET https://www.arcgis.com</span></span>
 <span><span class="co">#&gt; Body: empty</span></span>
 <span><span class="co">#&gt; Options:</span></span>
-<span><span class="co">#&gt; * useragent: "arcgisutils v0.3.3.9000"</span></span></code></pre></div>
+<span><span class="co">#&gt; • useragent: "arcgisutils v0.3.3.9000"</span></span></code></pre></div>
+<p>To handle paginated services and requests use <code><a href="reference/arc_paginate_req.html">arc_paginate_req()</a></code> to automatically handle fetching pages.</p>
 </div>
 <div class="section level3">
 <h3 id="esri-json">Esri JSON<a class="anchor" aria-label="anchor" href="#esri-json"></a>
 </h3>
-<p>There are also a number of utility functions for creating and parsing Esri JSON. For example we can create a list that represent an Esri <code>FeatureSet</code> using <code>as_featurset()</code> directly from an <code>sf</code> object. To convert to json, it is recommended to use <code>jsonify::to_json(x, unbox = TRUE)</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>There are also a number of utility functions for creating and parsing Esri JSON. For example we can create an Esri <code>FeatureSet</code> json string using <code><a href="reference/featureset.html">as_esri_featureset()</a></code> directly from an <code>sf</code> object.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Linking to GEOS 3.13.0, GDAL 3.8.5, PROJ 9.5.1; sf_use_s2() is TRUE</span></span>
 <span></span>
-<span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">nc_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/featureset.html">as_featureset</a></span><span class="op">(</span><span class="va">nc</span><span class="op">)</span></span>
+<span><span class="co"># load the NC SIDS dataset and extract centroids</span></span>
+<span><span class="co"># of the first few rows</span></span>
+<span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="op">)</span> </span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">nc_json</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 3</span></span>
-<span><span class="co">#&gt;  $ geometryType    : chr "esriGeometryPolygon"</span></span>
-<span><span class="co">#&gt;  $ spatialReference:List of 1</span></span>
-<span><span class="co">#&gt;  $ features        :List of 100</span></span></code></pre></div>
-<p>Alternatively, you can use the set of functions with the <code>_esri_</code> infix to directly create the json. See the <a href="https://r.esri.com/arcgisutils/reference/esri_geometry.html" class="external-link">Esri geometry reference page</a> for more on how the conversion functions work.</p>
-<p>Additionally, sf’s <code>crs</code> object can be converted to a <a href="https://developers.arcgis.com/documentation/common-data-types/geometry-objects.htm#GUID-DFF0E738-5A42-40BC-A811-ACCB5814BABC" class="external-link"><code>spatialReference</code></a> JSON object using <code><a href="reference/validate_crs.html">validate_crs()</a></code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/validate_crs.html">validate_crs</a></span><span class="op">(</span><span class="fl">27700</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $spatialReference</span></span>
-<span><span class="co">#&gt; $spatialReference$wkid</span></span>
-<span><span class="co">#&gt; [1] 27700</span></span></code></pre></div>
+<span><span class="co"># convert to json</span></span>
+<span><span class="va">nc_json</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/featureset.html">as_esri_featureset</a></span><span class="op">(</span><span class="va">nc</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">jsonify</span><span class="fu">::</span><span class="fu">pretty_json</span><span class="op">(</span><span class="va">nc_json</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;     "geometryType": "esriGeometryPoint",</span></span>
+<span><span class="co">#&gt;     "spatialReference": {</span></span>
+<span><span class="co">#&gt;         "wkid": 4267</span></span>
+<span><span class="co">#&gt;     },</span></span>
+<span><span class="co">#&gt;     "features": [</span></span>
+<span><span class="co">#&gt;         {</span></span>
+<span><span class="co">#&gt;             "geometry": {</span></span>
+<span><span class="co">#&gt;                 "x": -81.4982290095261,</span></span>
+<span><span class="co">#&gt;                 "y": 36.43139560823758</span></span>
+<span><span class="co">#&gt;             },</span></span>
+<span><span class="co">#&gt;             "attributes": {</span></span>
+<span><span class="co">#&gt;                 "AREA": 0.114,</span></span>
+<span><span class="co">#&gt;                 "CNTY_": 1825.0,</span></span>
+<span><span class="co">#&gt;                 "PERIMETER": 1.442</span></span>
+<span><span class="co">#&gt;             }</span></span>
+<span><span class="co">#&gt;         },</span></span>
+<span><span class="co">#&gt;         {</span></span>
+<span><span class="co">#&gt;             "geometry": {</span></span>
+<span><span class="co">#&gt;                 "x": -81.12512977849917,</span></span>
+<span><span class="co">#&gt;                 "y": 36.49110847237506</span></span>
+<span><span class="co">#&gt;             },</span></span>
+<span><span class="co">#&gt;             "attributes": {</span></span>
+<span><span class="co">#&gt;                 "AREA": 0.061,</span></span>
+<span><span class="co">#&gt;                 "CNTY_": 1827.0,</span></span>
+<span><span class="co">#&gt;                 "PERIMETER": 1.231</span></span>
+<span><span class="co">#&gt;             }</span></span>
+<span><span class="co">#&gt;         }</span></span>
+<span><span class="co">#&gt;     ]</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
+<p>Feature set json can also be parsed using <code><a href="reference/parse_esri_json.html">parse_esri_json()</a></code>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/parse_esri_json.html">parse_esri_json</a></span><span class="op">(</span><span class="va">nc_json</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Simple feature collection with 2 features and 3 fields</span></span>
+<span><span class="co">#&gt; Geometry type: POINT</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: -81.49823 ymin: 36.4314 xmax: -81.12513 ymax: 36.49111</span></span>
+<span><span class="co">#&gt; Geodetic CRS:  NAD27</span></span>
+<span><span class="co">#&gt;    AREA CNTY_ PERIMETER                   geometry</span></span>
+<span><span class="co">#&gt; 1 0.114  1825     1.442  POINT (-81.49823 36.4314)</span></span>
+<span><span class="co">#&gt; 2 0.061  1827     1.231 POINT (-81.12513 36.49111)</span></span></code></pre></div>
+<p>Additionally, sf’s <code>crs</code> object can be converted to a <a href="https://developers.arcgis.com/documentation/common-data-types/geometry-objects.htm#GUID-DFF0E738-5A42-40BC-A811-ACCB5814BABC" class="external-link"><code>spatialReference</code></a> JSON object using <code><a href="reference/validate_crs.html">validate_crs()</a></code>. Convert these to json with <code>yyjsonr</code> or <code>jsonify</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/validate_crs.html">validate_crs</a></span><span class="op">(</span><span class="fl">27700</span><span class="op">)</span></span>
+<span><span class="fu">jsonify</span><span class="fu">::</span><span class="fu">pretty_json</span><span class="op">(</span><span class="va">crs</span>, unbox <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;     "spatialReference": {</span></span>
+<span><span class="co">#&gt;         "wkid": 27700</span></span>
+<span><span class="co">#&gt;     }</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="geoprocessing-services">Geoprocessing Services<a class="anchor" aria-label="anchor" href="#geoprocessing-services"></a>
+</h3>
+<p>The geoprocessing service framework is completely supported in <a href="https://github.com/R-ArcGIS/arcgisutils">arcgisutils</a>. Here we combine the functionality of the geoprocessing job framework with utilities such as <code><a href="reference/featureset.html">as_esri_featureset()</a></code> to call the <a href="https://developers.arcgis.com/rest/elevation-analysis/trace-downstream/" class="external-link">Trace DownStream Elevation Service</a></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trace_downstream</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
+<span>  <span class="va">input_points</span>,</span>
+<span>  <span class="va">point_id_field</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">resolution</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">generalize</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">token</span> <span class="op">=</span> <span class="fu"><a href="reference/token.html">arc_token</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="co"># create a list of parameters</span></span>
+<span>  <span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/utilities.html">compact</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    InputPoints <span class="op">=</span> <span class="fu"><a href="reference/featureset.html">as_esri_featureset</a></span><span class="op">(</span><span class="va">input_points</span><span class="op">)</span>,</span>
+<span>    PointIdField <span class="op">=</span> <span class="va">point_id_field</span>,</span>
+<span>    DataSourceResolution <span class="op">=</span> <span class="va">resolution</span>,</span>
+<span>    Generalize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">generalize</span><span class="op">)</span>,</span>
+<span>    f <span class="op">=</span> <span class="st">"json"</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">service_url</span> <span class="op">&lt;-</span> <span class="st">"https://hydro.arcgis.com/arcgis/rest/services/Tools/Hydrology/GPServer/TraceDownstream"</span></span>
+<span>  <span class="va"><a href="reference/gp_job.html">arc_gp_job</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>    base_url <span class="op">=</span> <span class="va">service_url</span>,</span>
+<span>    params <span class="op">=</span> <span class="va">params</span>,</span>
+<span>    result_fn <span class="op">=</span> <span class="va">parse_gp_feature_record_set</span>,</span>
+<span>    <span class="va">token</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>This new function can be called to start a new job:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create input points</span></span>
+<span><span class="va">input_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html" class="external-link">st_sfc</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">st_point</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">159.548936</span>, <span class="fl">21.955888</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  crs <span class="op">=</span> <span class="fl">4326</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># initialze an empty job</span></span>
+<span><span class="va">job</span> <span class="op">&lt;-</span> <span class="fu">trace_downstream</span><span class="op">(</span></span>
+<span>  <span class="va">input_points</span>,</span>
+<span>  token <span class="op">=</span> <span class="fu"><a href="reference/auth.html">auth_user</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># start the job</span></span>
+<span><span class="va">job</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;arc_gp_job&gt;</span></span>
+<span><span class="co">#&gt; Job ID: jf79b2aba93814c2da83cea5ac5a95006</span></span>
+<span><span class="co">#&gt; Status: not started</span></span>
+<span><span class="co">#&gt; Resource: /TraceDownstream</span></span>
+<span><span class="co">#&gt; Params:</span></span>
+<span><span class="co">#&gt;   • InputPoints</span></span>
+<span><span class="co">#&gt;   • Generalize</span></span>
+<span><span class="co">#&gt;   • f</span></span></code></pre></div>
+<p>Jobs run asynchronously so we can check the status with <code>job$status</code></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">job</span><span class="op">$</span><span class="va">status</span></span>
+<span><span class="co">#&gt; &lt;arcgisutils::arc_job_status&gt;</span></span>
+<span><span class="co">#&gt;  @ status: chr "esriJobExecuting"</span></span></code></pre></div>
+<p>Then, when the job is complete, we can fetch the results applying the result function which is <code><a href="reference/gp_params.html">parse_gp_feature_record_set()</a></code> in this case.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">job</span><span class="op">$</span><span class="va">results</span></span>
+<span><span class="co">#&gt; $param_name</span></span>
+<span><span class="co">#&gt; [1] "OutputTraceLine"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $data_type</span></span>
+<span><span class="co">#&gt; [1] "GPFeatureRecordSetLayer"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $geometry</span></span>
+<span><span class="co">#&gt; Simple feature collection with 1 feature and 6 fields</span></span>
+<span><span class="co">#&gt; Geometry type: MULTILINESTRING</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: 438895 ymin: 2422310 xmax: 443325 ymax: 2428045</span></span>
+<span><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 4N + Unknown VCS</span></span>
+<span><span class="co">#&gt;   OBJECTID PourPtID               Description DataResolution LengthKm</span></span>
+<span><span class="co">#&gt; 1        1        1 NED 10m processed by Esri           10.0 9.489823</span></span>
+<span><span class="co">#&gt;   Shape_Length                       geometry</span></span>
+<span><span class="co">#&gt; 1     9489.823 MULTILINESTRING ((443325 24...</span></span>
+<span></span>
+<span><span class="co"># store and view the results</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="va">job</span><span class="op">$</span><span class="va">results</span></span>
+<span><span class="va">res</span></span>
+<span><span class="co">#&gt; $param_name</span></span>
+<span><span class="co">#&gt; [1] "OutputTraceLine"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $data_type</span></span>
+<span><span class="co">#&gt; [1] "GPFeatureRecordSetLayer"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $geometry</span></span>
+<span><span class="co">#&gt; Simple feature collection with 1 feature and 6 fields</span></span>
+<span><span class="co">#&gt; Geometry type: MULTILINESTRING</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: 438895 ymin: 2422310 xmax: 443325 ymax: 2428045</span></span>
+<span><span class="co">#&gt; Projected CRS: NAD83 / UTM zone 4N + Unknown VCS</span></span>
+<span><span class="co">#&gt;   OBJECTID PourPtID               Description DataResolution LengthKm</span></span>
+<span><span class="co">#&gt; 1        1        1 NED 10m processed by Esri           10.0 9.489823</span></span>
+<span><span class="co">#&gt;   Shape_Length                       geometry</span></span>
+<span><span class="co">#&gt; 1     9489.823 MULTILINESTRING ((443325 24...</span></span>
+<span></span>
+<span><span class="co"># plot the resultant geometry</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-17-1.png" width="100%"></p>
 </div>
 </div>
 </div>

@@ -33,7 +33,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="arcgisutils-development-version">arcgisutils (development version)<a class="anchor" aria-label="anchor" href="#arcgisutils-development-version"></a></h2>
-<ul><li>Adds <code>search_item()</code> to search for content items with automatic pagination.</li>
+<ul><li>
+<code><a href="../reference/field_mapping.html">ptype_tbl()</a></code> has been deprecated in favor of <code><a href="../reference/field_mapping.html">fields_as_ptype_df()</a></code>.</li>
+<li>
+<code><a href="../reference/field_mapping.html">infer_esri_type()</a></code> has been deprecated in favor of <code><a href="../reference/field_mapping.html">as_fields()</a></code>.</li>
+<li>Adds <code>search_item()</code> to search for content items with automatic pagination.</li>
 <li>Adds <code><a href="../reference/arc_user_self.html">arc_user_self()</a></code> to return metadata for the authenticated user</li>
 <li>Deprecates <code><a href="../reference/self.html">arc_self_meta()</a></code> in favor of <code><a href="../reference/self.html">arc_portal_self()</a></code>—the functions are identical.</li>
 <li>Adds <code><a href="../reference/content.html">arc_group_content()</a></code> and <code><a href="../reference/content.html">arc_user_content()</a></code> to fetch user and group content listings</li>
@@ -53,7 +57,14 @@
 </li>
 <li>Validate <code>token</code> in <code><a href="../reference/arc_base_req.html">arc_base_req()</a></code>
 </li>
+</ul><div class="section level3">
+<h3 id="breaking-changes-development-version">Breaking changes:<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<ul><li>
+<code>get_ptype()</code> has been removed from the public API.</li>
+<li>
+<code>remote_ptype_tbl()</code> has been removed removing the <code>dbplyr</code> dependency.</li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.2" id="arcgisutils-032">arcgisutils 0.3.2<a class="anchor" aria-label="anchor" href="#arcgisutils-032"></a></h2>
 <ul><li>Addresses a bug where NA values were being returned incorrectly <a href="https://github.com/R-ArcGIS/arcgisutils/issues/56" class="uri">https://github.com/R-ArcGIS/arcgisutils/issues/56</a>
