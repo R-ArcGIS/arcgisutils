@@ -153,7 +153,7 @@ fields_as_ptype_df <- function(fields, n = 0, call = rlang::caller_env()) {
     cli::cli_abort("{.field type} is missing from {.arg fields}", call = call)
   }
 
-  if (rlang::is_null(name)) {
+  if (rlang::is_null(fname)) {
     cli::cli_abort("{.field name} is missing from {.arg fields}", call = call)
   }
 
