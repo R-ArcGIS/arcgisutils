@@ -66,7 +66,7 @@ Or, you can install the development version of arcgisutils
 install.packages("arcgisutils", repos = "https://r-arcgis.r-universe.dev")
 ```
 
-### Autentication
+### Authentication
 
 Authorization tokens are provided through the functions `auth_code()`,
 `auth_client()`, `auth_user()`, `auth_key()`, and `auth_binding()`.
