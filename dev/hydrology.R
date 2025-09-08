@@ -46,5 +46,6 @@ job <- trace_downstream(
 
 job$start()
 job$status
+job$results
 
 plot(job$results$geometry)

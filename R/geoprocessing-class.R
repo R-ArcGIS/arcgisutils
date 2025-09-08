@@ -54,10 +54,15 @@ arc_job_status <- S7::new_class(
 #' ensuring that each element is a scalar string. It uses a named list
 #' internally to store the parameters.
 #'
+#' The helper function `as_form_params()` converts a named list to form
+#' parameters by automatically JSON-encoding each element using
+#' `yyjsonr::write_json_str()` with `auto_unbox = TRUE`.
+#'
 #' @export
 #' @family geoprocessing
 #' @return an object of class `arc_form_params`
 #' @param params a named list with scalar character elements
+#' @param x for `as_form_params()`, a named list to convert to form parameters
 arc_form_params <- S7::new_class(
   "arc_form_params",
   package = "arcgisutils",
@@ -70,10 +75,26 @@ arc_form_params <- S7::new_class(
       allow_na = FALSE,
       call = rlang::caller_call()
     )
-    # idk why this has to return NULL
+    # must return null
     return(NULL)
   }
 )
+
+#' @export
+#' @family geoprocessing
+#' @rdname arc_form_params
+as_form_params <- function(x) {
+  if (!rlang::is_list(x)) {
+    cli::cli_abort("{.arg x} must be a list.")
+  }
+
+  if (!rlang::is_named(x)) {
+    cli::cli_abort("{.arg x} must be a named list.")
+  }
+
+  params <- lapply(x, \(.x) yyjsonr::write_json_str(.x, auto_unbox = TRUE))
+  arc_form_params(params)
+}
 
 #' @title Create a Geoprocessing Service Job
 #'
@@ -137,14 +158,18 @@ arc_gp_job <- R6::R6Class(
         cli::cli_abort("{.arg base_url} is not a valid URL.", call = error_call)
       }
 
-      # set th
       if (!rlang::is_null(result_fn)) {
         check_function(result_fn)
         private$.result_fn <- result_fn
       }
 
       self$base_url <- base_url
-      private$.params <- arc_form_params(params)
+      if (inherits(params, "arcgisutils::arc_form_params")) {
+        private$.params <- params
+      } else {
+        private$.params <- arc_form_params(params)
+      }
+
       private$token <- token
       self
     },
@@ -185,6 +210,44 @@ arc_gp_job <- R6::R6Class(
       self$status <- arc_job_status(status = res$jobStatus)
       self$id <- res$jobId
       self
+    },
+    #' @description Waits for job completion and returns results.
+    #' @param interval polling interval in seconds (default 0.1)
+    #' @param verbose whether to print status messages (default FALSE)
+    await = function(interval = 0.1, verbose = FALSE) {
+      if (is.null(self$id)) {
+        cli::cli_abort("Job has not been started.")
+      }
+
+      is_complete <- FALSE
+      Sys.sleep(0.5) # initial sleep 500ms
+
+      while (!is_complete) {
+        cur_status <- self$status@status
+        if (verbose) {
+          cli::cli_alert_info(
+            "Job status is {.val {cur_status}}. Waiting before polling again..."
+          )
+        }
+
+        is_complete <- cur_status %in%
+          c("esriJobFailed", "esriJobCancelled", "esriJobSucceeded")
+
+        if (cur_status %in% c("esriJobCancelled", "esriJobFailed")) {
+          cli::cli_alert_danger(
+            "Job ID {.val {self$id}} ended with {.val {cur_status}}",
+            ">" = "Returning GP results"
+          )
+          return(self$results)
+        } else if (is_complete) {
+          if (!rlang::is_null(private$.result_fn)) {
+            return(private$.result_fn(self$results))
+          } else {
+            return(self$results)
+          }
+        }
+        Sys.sleep(interval)
+      }
     }
   ),
   private = list(
