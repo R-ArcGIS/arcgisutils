@@ -240,11 +240,7 @@ arc_gp_job <- R6::R6Class(
           )
           return(self$results)
         } else if (is_complete) {
-          if (!rlang::is_null(private$.result_fn)) {
-            return(private$.result_fn(self$results))
-          } else {
-            return(self$results)
-          }
+          return(self$results)
         }
         Sys.sleep(interval)
       }
