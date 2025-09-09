@@ -38,3 +38,10 @@ self <- arc_self_meta()
 names(self)
 }
 }
+\seealso{
+Other portal: 
+\code{\link{arc_portal_resources}()},
+\code{\link{arc_portal_urls}()},
+\code{\link{arc_portal_users}()}
+}
+\concept{portal}

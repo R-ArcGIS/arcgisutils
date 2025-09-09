@@ -23,4 +23,10 @@ See \href{https://developers.arcgis.com/rest/users-groups-and-items/urls/}{API R
 arc_portal_urls()
 \dontshow{\}) # examplesIf}
 }
+\seealso{
+Other portal: 
+\code{\link{arc_portal_resources}()},
+\code{\link{arc_portal_users}()},
+\code{\link{self}}
+}
 \concept{portal}

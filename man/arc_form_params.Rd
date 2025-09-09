@@ -2,12 +2,17 @@
 % Please edit documentation in R/geoprocessing-class.R
 \name{arc_form_params}
 \alias{arc_form_params}
+\alias{as_form_params}
 \title{Form request parameters}
 \usage{
 arc_form_params(params = list())
+
+as_form_params(x)
 }
 \arguments{
 \item{params}{a named list with scalar character elements}
+
+\item{x}{for \code{as_form_params()}, a named list to convert to form parameters}
 }
 \value{
 an object of class \code{arc_form_params}
@@ -21,8 +26,17 @@ and is encoded as a single string—often as json.
 The \code{arc_form_params} class provides validation of form body parameters
 ensuring that each element is a scalar string. It uses a named list
 internally to store the parameters.
+
+The helper function \code{as_form_params()} converts a named list to form
+parameters by automatically JSON-encoding each element using
+\code{yyjsonr::write_json_str()} with \code{auto_unbox = TRUE}.
 }
 \seealso{
+Other geoprocessing: 
+\code{\link{arc_gp_job}},
+\code{\link{arc_job_status}()},
+\code{\link{gp_params}}
+
 Other geoprocessing: 
 \code{\link{arc_gp_job}},
 \code{\link{arc_job_status}()},

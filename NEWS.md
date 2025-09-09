@@ -1,10 +1,10 @@
 # arcgisutils (development version)
 
-- `ptype_tbl()` has been deprecated in favor of `fields_as_ptype_df()`.
-- `infer_esri_type()` has been deprecated in favor of `as_fields()`.
+- Adds `arc_portal_servers()` to list all federated servers in your ArcGIS Enterprise portal
+- Adds `arc_portal_resources()` to list all file resources for a given portal ID
+- Adds `arc_portal_users()` to list all users in a provided portal
 - Adds `search_item()` to search for content items with automatic pagination.
 - Adds `arc_user_self()` to return metadata for the authenticated user
-- Deprecates `arc_self_meta()` in favor of `arc_portal_self()`—the functions are identical.
 - Adds `arc_group_content()` and `arc_user_content()` to fetch user and group content listings
 - Adds `arc_paginate_req()` to automatically apply pagination to requests
 - Adds support for parsing and creating geoprocessing service json see `?gp_params`
@@ -15,6 +15,13 @@
 - Adds new experimental functions for parsing urls `arc_url_parse()`, `arc_url_type()`, and `is_url()` h/t [@elipousson](https://github.com/elipousson)
 - Adds new experimental functions for working with a portal's sharing API `arc_item()`, `arc_group()`, `arc_user()`, `arc_item_data()`, `arc_portal_urls()`
 - Validate `token` in `arc_base_req()`
+
+### Deprecations 
+
+- Deprecates `arc_self_meta()` in favor of `arc_portal_self()`—the functions are identical.
+- `ptype_tbl()` has been deprecated in favor of `fields_as_ptype_df()`.
+- `infer_esri_type()` has been deprecated in favor of `as_fields()`.
+
 
 ## Breaking changes: 
 

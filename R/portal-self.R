@@ -18,6 +18,7 @@
 #'
 #' @inheritParams arc_base_req
 #' @export
+#' @family portal
 #' @examples
 #' \dontrun{
 #' set_arc_token(auth_code())

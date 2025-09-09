@@ -77,6 +77,7 @@ Other geoprocessing:
 \item \href{#method-arc_gp_job-new}{\code{arc_gp_job$new()}}
 \item \href{#method-arc_gp_job-start}{\code{arc_gp_job$start()}}
 \item \href{#method-arc_gp_job-cancel}{\code{arc_gp_job$cancel()}}
+\item \href{#method-arc_gp_job-await}{\code{arc_gp_job$await()}}
 \item \href{#method-arc_gp_job-clone}{\code{arc_gp_job$clone()}}
 }
 }
@@ -129,6 +130,25 @@ Cancels a job by calling the \verb{/cancel} endpoint.
 \if{html}{\out{<div class="r">}}\preformatted{arc_gp_job$cancel()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-arc_gp_job-await"></a>}}
+\if{latex}{\out{\hypertarget{method-arc_gp_job-await}{}}}
+\subsection{Method \code{await()}}{
+Waits for job completion and returns results.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{arc_gp_job$await(interval = 0.1, verbose = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{interval}}{polling interval in seconds (default 0.1)}
+
+\item{\code{verbose}}{whether to print status messages (default FALSE)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-arc_gp_job-clone"></a>}}
