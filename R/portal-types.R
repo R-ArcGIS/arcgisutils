@@ -388,7 +388,7 @@ portal_item_keywords <- function() {
 #' @export
 #' @name portal_types
 portal_item_types <- function() {
-  c(
+  sort(c(
     "360 VR Experience",
     "CityEngine Web Scene",
     "Map Area",
@@ -544,7 +544,7 @@ portal_item_types <- function() {
     "Explorer Add In",
     "Survey123 Add In",
     "Workflow Manager Package"
-  )
+  ))
 }
 
 # Item types were fetched from the documentation automatically using:
