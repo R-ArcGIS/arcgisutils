@@ -161,6 +161,76 @@ types used in ArcGIS geoprocessing services.</p>
 <code><a href="arc_job_status.html">arc_job_status</a>()</code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># create a feature record set</span></span></span>
+<span class="r-in"><span><span class="va">fset</span> <span class="op">&lt;-</span> <span class="fu">as_gp_feature_record_set</span><span class="op">(</span><span class="va">penguins</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fset</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"spatialReference\":{},\"features\":[{\"attributes\":{\"bill_dep\":18.7,\"bill_len\":39.1,\"body_mass\":3750,\"flipper_len\":181,\"island\":\"Torgersen\",\"sex\":\"male\",\"species\":\"Adelie\",\"year\":2007}}]}"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># create fake gp feature record set to parse</span></span></span>
+<span class="r-in"><span><span class="va">fset_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    dataType <span class="op">=</span> <span class="st">"GPFeatureRecordSetLayer"</span>,</span></span>
+<span class="r-in"><span>    paramName <span class="op">=</span> <span class="st">"example"</span>,</span></span>
+<span class="r-in"><span>    value <span class="op">=</span> <span class="fu"><a href="featureset.html">as_featureset</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># create the json</span></span></span>
+<span class="r-in"><span><span class="va">json</span> <span class="op">&lt;-</span> <span class="fu">yyjsonr</span><span class="fu">::</span><span class="fu"><a href="https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html" class="external-link">write_json_str</a></span><span class="op">(</span><span class="va">fset_list</span>, auto_unbox <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># parse the record set json</span></span></span>
+<span class="r-in"><span><span class="fu">parse_gp_feature_record_set</span><span class="op">(</span><span class="va">json</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $param_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "example"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GPFeatureRecordSetLayer"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $geometry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   bill_dep bill_len body_mass flipper_len    island  sex species year</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     18.7     39.1      3750         181 Torgersen male  Adelie 2007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># linear units</span></span></span>
+<span class="r-in"><span><span class="va">lu</span> <span class="op">&lt;-</span> <span class="fu">gp_linear_unit</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"esriMeters"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lu</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;arcgisutils::GPLinearUnit&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ distance: num 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ units   : chr "esriMeters"</span>
+<span class="r-in"><span><span class="fu">as_gp_linear_unit</span><span class="op">(</span><span class="va">lu</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"distance\":10.0,\"units\":\"esriMeters\"}"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># areal units</span></span></span>
+<span class="r-in"><span><span class="va">au</span> <span class="op">&lt;-</span> <span class="fu">gp_areal_unit</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"esriSquareMeters"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">au</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;arcgisutils::GPArealUnit&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ area : num 10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ units: chr "esriSquareMeters"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">as_gp_areal_unit</span><span class="op">(</span><span class="va">au</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"area\":10.0,\"units\":\"esriSquareMeters\"}"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># dates</span></span></span>
+<span class="r-in"><span><span class="va">json</span> <span class="op">&lt;-</span> <span class="st">r"({</span></span></span>
+<span class="r-in"><span><span class="st">  "paramName": "Output_Date",</span></span></span>
+<span class="r-in"><span><span class="st">  "dataType": "GPDate",</span></span></span>
+<span class="r-in"><span><span class="st">  "value": 1199145600000</span></span></span>
+<span class="r-in"><span><span class="st">})"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">parse_gp_date</span><span class="op">(</span><span class="va">json</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $paramName</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Output_Date"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $dataType</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GPDate"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2008-01-01 UTC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

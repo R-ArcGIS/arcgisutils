@@ -44,7 +44,9 @@ and is encoded as a single string—often as json.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">arc_form_params</span><span class="op">(</span>params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">arc_form_params</span><span class="op">(</span>params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">as_form_params</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -53,6 +55,10 @@ and is encoded as a single string—often as json.</p>
 
 <dl><dt id="arg-params">params<a class="anchor" aria-label="anchor" href="#arg-params"></a></dt>
 <dd><p>a named list with scalar character elements</p></dd>
+
+
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>for <code>as_form_params()</code>, a named list to convert to form parameters</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -64,15 +70,34 @@ and is encoded as a single string—often as json.</p>
     <p>The <code>arc_form_params</code> class provides validation of form body parameters
 ensuring that each element is a scalar string. It uses a named list
 internally to store the parameters.</p>
+<p>The helper function <code>as_form_params()</code> converts a named list to form
+parameters by automatically JSON-encoding each element using
+<code><a href="https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html" class="external-link">yyjsonr::write_json_str()</a></code> with <code>auto_unbox = TRUE</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other geoprocessing:
 <code><a href="gp_job.html">arc_gp_job</a></code>,
 <code><a href="arc_job_status.html">arc_job_status</a>()</code>,
+<code><a href="gp_params.html">gp_params</a></code></p>
+<p>Other geoprocessing:
+<code><a href="gp_job.html">arc_gp_job</a></code>,
+<code><a href="arc_job_status.html">arc_job_status</a>()</code>,
 <code><a href="gp_params.html">gp_params</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">arc_form_params</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>f <span class="op">=</span> <span class="st">"json"</span>, outFields <span class="op">=</span> <span class="st">"*"</span>, where <span class="op">=</span> <span class="st">"1 = 1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;arcgisutils::arc_form_params&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  @ params:List of 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ f        : chr "json"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ outFields: chr "*"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  .. $ where    : chr "1 = 1"</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

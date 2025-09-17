@@ -161,7 +161,7 @@
 
 
 <dt id="arg-host">host<a class="anchor" aria-label="anchor" href="#arg-host"></a></dt>
-<dd><p>default <code>"https://www.arcgis.com"</code></p></dd>
+<dd><p>default <code>"https://www.arcgis.com"</code>. The host of your ArcGIS Portal.</p></dd>
 
 
 <dt id="arg-token">token<a class="anchor" aria-label="anchor" href="#arg-token"></a></dt>
@@ -187,6 +187,36 @@ or related function</p></dd>
     <p><a href="https://developers.arcgis.com/rest/users-groups-and-items/search" class="external-link">API Documentation</a></p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">crime_items</span> <span class="op">&lt;-</span> <span class="fu">search_items</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  query <span class="op">=</span> <span class="st">"crime"</span>,</span></span>
+<span class="r-in"><span>  item_type <span class="op">=</span> <span class="st">"Feature Service"</span>,</span></span>
+<span class="r-in"><span>  max_pages <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">crime_items</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A data frame: 50 × 46</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    id      owner created             modified            guid  name  title type </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ea0cfe… Toro… 2023-03-28 <span style="color: #949494;">15:02:39</span> 2025-01-22 <span style="color: #949494;">18:27:48</span> <span style="color: #BB0000;">NA</span>    Neig… Neig… Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 0a239a… Toro… 2023-03-27 <span style="color: #949494;">18:59:00</span> 2025-08-06 <span style="color: #949494;">14:01:27</span> <span style="color: #BB0000;">NA</span>    Majo… Majo… Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 5e055d… JASo… 2023-04-04 <span style="color: #949494;">17:36:59</span> 2023-09-07 <span style="color: #949494;">19:05:06</span> <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    Sher… Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 64691a… Temp… 2024-01-17 <span style="color: #949494;">20:01:43</span> 2024-01-17 <span style="color: #949494;">20:04:45</span> <span style="color: #BB0000;">NA</span>    hate… Hate… Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 7c2b78… JASo… 2023-04-04 <span style="color: #949494;">17:49:30</span> 2023-06-02 <span style="color: #949494;">22:27:11</span> <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    Sher… Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> c749e3… open… 2024-02-23 <span style="color: #949494;">19:36:34</span> 2025-09-17 <span style="color: #949494;">14:39:35</span> <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    Crim… Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> e0992d… balt… 2023-07-31 <span style="color: #949494;">20:27:01</span> 2025-01-22 <span style="color: #949494;">21:21:01</span> <span style="color: #BB0000;">NA</span>    Part… Part… Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2cb53d… KASU… 2019-12-10 <span style="color: #949494;">19:06:39</span> 2019-12-10 <span style="color: #949494;">19:14:27</span> <span style="color: #BB0000;">NA</span>    Viol… Viol… Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 30644d… MyCi… 2025-03-14 <span style="color: #949494;">14:55:06</span> 2025-08-20 <span style="color: #949494;">13:55:24</span> <span style="color: #BB0000;">NA</span>    HPD_… HPD … Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 5dc4e6… iwat… 2023-06-23 <span style="color: #949494;">22:07:21</span> 2023-08-09 <span style="color: #949494;">15:33:46</span> <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    Prop… Feat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 40 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 38 more variables: typeKeywords &lt;list&gt;, description &lt;chr&gt;, tags &lt;list&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   snippet &lt;chr&gt;, thumbnail &lt;chr&gt;, documentation &lt;lgl&gt;, extent &lt;list&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   categories &lt;list&gt;, spatialReference &lt;chr&gt;, accessInformation &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   classification &lt;lgl&gt;, licenseInfo &lt;chr&gt;, culture &lt;chr&gt;, properties &lt;list&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   advancedSettings &lt;lgl&gt;, url &lt;chr&gt;, proxyFilter &lt;lgl&gt;, access &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   size &lt;int&gt;, subInfo &lt;int&gt;, appCategories &lt;list&gt;, industries &lt;list&gt;, …</span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

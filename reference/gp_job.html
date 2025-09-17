@@ -115,6 +115,7 @@ service are all character scalars as required by the form body.</p>
 <ul><li><p><a href="#method-arc_gp_job-new"><code>arc_gp_job$new()</code></a></p></li>
 <li><p><a href="#method-arc_gp_job-start"><code>arc_gp_job$start()</code></a></p></li>
 <li><p><a href="#method-arc_gp_job-cancel"><code>arc_gp_job$cancel()</code></a></p></li>
+<li><p><a href="#method-arc_gp_job-await"><code>arc_gp_job$await()</code></a></p></li>
 <li><p><a href="#method-arc_gp_job-clone"><code>arc_gp_job$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-arc_gp_job-new"></a><div class="section">
 <h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -171,15 +172,35 @@ service are all character scalars as required by the form body.</p>
 </div>
 
 
-</div><p></p><hr><a id="method-arc_gp_job-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
-<p>The objects of this class are cloneable with this method.</p><div class="section">
+</div><p></p><hr><a id="method-arc_gp_job-await"></a><div class="section">
+<h3 id="method-await-">Method <code>await()</code><a class="anchor" aria-label="anchor" href="#method-await-"></a></h3>
+<p>Waits for job completion and returns results.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">arc_gp_job</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">arc_gp_job</span><span class="op">$</span><span class="fu">await</span><span class="op">(</span>interval <span class="op">=</span> <span class="fl">0.1</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>interval</code></dt>
+<dd><p>polling interval in seconds (default 0.1)</p></dd>
+
+
+<dt><code>verbose</code></dt>
+<dd><p>whether to print status messages (default FALSE)</p></dd>
+
+
+</dl><p></p></div>
+</div>
+
+</div><p></p><hr><a id="method-arc_gp_job-clone"></a><div class="section">
+<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p>The objects of this class are cloneable with this method.</p><div class="section">
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">arc_gp_job</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
