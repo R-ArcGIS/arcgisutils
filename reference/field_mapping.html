@@ -126,30 +126,23 @@ respectively not display any call or hard-code a code to display.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">inferred</span> <span class="op">&lt;-</span> <span class="fu">as_fields</span><span class="op">(</span><span class="va">penguins</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">inferred</span> <span class="op">&lt;-</span> <span class="fu">as_fields</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">inferred</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                    name                 type       alias length nullable</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> species         species  esriFieldTypeString     species    255     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> island           island  esriFieldTypeString      island    255     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bill_len       bill_len  esriFieldTypeDouble    bill_len     NA     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bill_dep       bill_dep  esriFieldTypeDouble    bill_dep     NA     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> flipper_len flipper_len esriFieldTypeInteger flipper_len     NA     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> body_mass     body_mass esriFieldTypeInteger   body_mass     NA     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sex                 sex  esriFieldTypeString         sex    255     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> year               year esriFieldTypeInteger        year     NA     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             editable</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> species         TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> island          TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bill_len        TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> bill_dep        TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> flipper_len     TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> body_mass       TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sex             TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> year            TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      name                type        alias length nullable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length Sepal.Length esriFieldTypeDouble Sepal.Length     NA     TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width   Sepal.Width esriFieldTypeDouble  Sepal.Width     NA     TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length Petal.Length esriFieldTypeDouble Petal.Length     NA     TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Width   Petal.Width esriFieldTypeDouble  Petal.Width     NA     TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Species           Species esriFieldTypeString      Species    255     TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              editable</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Length     TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sepal.Width      TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Length     TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Petal.Width      TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Species          TRUE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">fields_as_ptype_df</span><span class="op">(</span><span class="va">inferred</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] species     island      bill_len    bill_dep    flipper_len body_mass  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [7] sex         year       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] Sepal.Length Sepal.Width  Petal.Length Petal.Width  Species     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

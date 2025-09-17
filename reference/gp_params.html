@@ -164,16 +164,16 @@ types used in ArcGIS geoprocessing services.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># create a feature record set</span></span></span>
-<span class="r-in"><span><span class="va">fset</span> <span class="op">&lt;-</span> <span class="fu">as_gp_feature_record_set</span><span class="op">(</span><span class="va">penguins</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fset</span> <span class="op">&lt;-</span> <span class="fu">as_gp_feature_record_set</span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fset</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"spatialReference\":{},\"features\":[{\"attributes\":{\"bill_dep\":18.7,\"bill_len\":39.1,\"body_mass\":3750,\"flipper_len\":181,\"island\":\"Torgersen\",\"sex\":\"male\",\"species\":\"Adelie\",\"year\":2007}}]}"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "{\"spatialReference\":{},\"features\":[{\"attributes\":{\"Petal.Length\":1.4,\"Petal.Width\":0.2,\"Sepal.Length\":5.1,\"Sepal.Width\":3.5,\"Species\":\"setosa\"}}]}"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># create fake gp feature record set to parse</span></span></span>
 <span class="r-in"><span><span class="va">fset_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    dataType <span class="op">=</span> <span class="st">"GPFeatureRecordSetLayer"</span>,</span></span>
 <span class="r-in"><span>    paramName <span class="op">=</span> <span class="st">"example"</span>,</span></span>
-<span class="r-in"><span>    value <span class="op">=</span> <span class="fu"><a href="featureset.html">as_featureset</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    value <span class="op">=</span> <span class="fu"><a href="featureset.html">as_featureset</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -189,8 +189,8 @@ types used in ArcGIS geoprocessing services.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "GPFeatureRecordSetLayer"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $geometry</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   bill_dep bill_len body_mass flipper_len    island  sex species year</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     18.7     39.1      3750         181 Torgersen male  Adelie 2007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Petal.Length Petal.Width Sepal.Length Sepal.Width Species</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          1.4         0.2          5.1         3.5  setosa</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># linear units</span></span></span>
