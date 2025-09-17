@@ -6,7 +6,7 @@
 [![R-CMD-check](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R-ArcGIS/arcgisutils/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/arcgisutils)](https://CRAN.R-project.org/package=arcgisutils)
-[![extendr](https://img.shields.io/badge/extendr-%5E0.8.0-276DC2)](https://extendr.github.io/extendr/extendr_api/)
+[![extendr](https://img.shields.io/badge/extendr-%5E0.8.0-276DC2)](https://extendr.rs/extendr/extendr_api/)
 <!-- badges: end -->
 
 arcgisutils is the foundational infrastructure package that powers the
