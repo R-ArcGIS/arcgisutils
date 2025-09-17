@@ -9,7 +9,7 @@ arc_group(group_id, host = arc_host(), token = arc_token())
 \arguments{
 \item{group_id}{the unique group identifier. A scalar character.}
 
-\item{host}{default \code{"https://www.arcgis.com"}}
+\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
 }

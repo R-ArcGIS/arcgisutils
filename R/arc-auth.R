@@ -17,7 +17,7 @@
 #'  environment variable `ARCGIS_CLIENT`.
 #' @param secret an OAuth 2.0 developer application secret. By default uses the environment
 #'   variable `ARCGIS_SECRET`.
-#' @param host default `"https://www.arcgis.com"`
+#' @param host default `"https://www.arcgis.com"`. The host of your ArcGIS Portal.
 #' @param expiration the duration of the token in minutes.
 #' @inheritParams cli::cli_abort
 #'

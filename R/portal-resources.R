@@ -20,6 +20,7 @@ arc_portal_resources <- function(
   page_size = 50,
   max_pages = Inf,
   .progress = TRUE,
+  host = arc_host(),
   token = arc_token()
 ) {
   check_string(id)

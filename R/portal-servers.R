@@ -12,6 +12,7 @@
 #' @returns a data.frame of servers
 arc_portal_servers <- function(
   id = arc_portal_self(token)[["id"]],
+  host = arc_host(),
   token = arc_token()
 ) {
   check_string(id)

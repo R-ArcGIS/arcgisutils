@@ -12,10 +12,13 @@ arc_job_status(status = character(0))
 \code{"esriJobTimedOut"}, \code{"esriJobCancelling"}, or \verb{"esriJobCancelled}".}
 }
 \value{
-an object of class \code{gp_job_status}
+an object of class \code{arc_job_status}
 }
 \description{
 Represents the status of a geoprocessing job.
+}
+\examples{
+arc_job_status("esriJobSubmitted")
 }
 \seealso{
 Other geoprocessing: 

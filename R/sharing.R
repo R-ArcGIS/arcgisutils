@@ -54,6 +54,7 @@ print.PortalItem <- function(x, ...) {
 #' @inheritParams auth_user
 #' @examplesIf curl::has_internet()
 #' arc_portal_urls()
+#' @returns a data.frame
 arc_portal_urls <- function(host = arc_host(), token = arc_token()) {
   arc_base_req(
     host,

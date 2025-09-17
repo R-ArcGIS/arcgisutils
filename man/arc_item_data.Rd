@@ -9,7 +9,7 @@ arc_item_data(item, host = arc_host(), token = arc_token())
 \arguments{
 \item{item}{the item ID or the result of \code{arc_item()}.}
 
-\item{host}{default \code{"https://www.arcgis.com"}}
+\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
 }

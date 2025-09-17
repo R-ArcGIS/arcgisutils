@@ -44,7 +44,7 @@ validate_or_refresh_token(
 \item{client}{an OAuth 2.0 developer application client ID. By default uses the
 environment variable \code{ARCGIS_CLIENT}.}
 
-\item{host}{default \code{"https://www.arcgis.com"}}
+\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
 
 \item{secret}{an OAuth 2.0 developer application secret. By default uses the environment
 variable \code{ARCGIS_SECRET}.}

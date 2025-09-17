@@ -195,6 +195,13 @@ search_range <- function(
 #' @export
 #' @references [API Documentation](https://developers.arcgis.com/rest/users-groups-and-items/search)
 #' @returns a data.frame.
+#' @examplesIf curl::has_internet()
+#' crime_items <- search_items(
+#'   query = "crime",
+#'   item_type = "Feature Service",
+#'   max_pages = 1
+#' )
+#' crime_items
 search_items <- function(
   query = NULL,
   filter = NULL,

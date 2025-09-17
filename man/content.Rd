@@ -13,7 +13,7 @@ arc_user_content(user, host = arc_host(), token = arc_token())
 \arguments{
 \item{group}{a scalar character of the group ID or a \code{PortalGroup} object created using \code{\link[=arc_group]{arc_group()}}}
 
-\item{host}{default \code{"https://www.arcgis.com"}}
+\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
 

@@ -13,7 +13,9 @@ NULL
 #'
 #' @export
 #' @family geoprocessing
-#' @return an object of class `gp_job_status`
+#' @return an object of class `arc_job_status`
+#' @examples
+#' arc_job_status("esriJobSubmitted")
 arc_job_status <- S7::new_class(
   "arc_job_status",
   package = "arcgisutils",
@@ -63,6 +65,10 @@ arc_job_status <- S7::new_class(
 #' @return an object of class `arc_form_params`
 #' @param params a named list with scalar character elements
 #' @param x for `as_form_params()`, a named list to convert to form parameters
+#' @examples
+#' arc_form_params(
+#'   list(f = "json", outFields = "*", where = "1 = 1")
+#' )
 arc_form_params <- S7::new_class(
   "arc_form_params",
   package = "arcgisutils",

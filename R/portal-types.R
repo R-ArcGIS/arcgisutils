@@ -21,7 +21,6 @@ item_type <- S7::new_class(
   }
 )
 
-
 #' @export
 #' @name portal_types
 #' @param keyword a scalar character of the item type keyword. See [`portal_item_keywords()`].

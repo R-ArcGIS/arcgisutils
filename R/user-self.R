@@ -8,6 +8,12 @@
 #' @export
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/self/)
 #' @returns a list of the authenticated user's metadata
+#' @examples
+#' \dontrun{
+#' if (interactive()) {
+#'   arc_user_self(token = auth_user())
+#' }
+#' }
 arc_user_self <- function(
   host = arc_host(),
   token = arc_token(),

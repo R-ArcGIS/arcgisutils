@@ -118,6 +118,46 @@ parse_gp_feature_record_set(response_json)
 }\if{html}{\out{</div>}}
 }
 
+\examples{
+# create a feature record set
+fset <- as_gp_feature_record_set(penguins[1,])
+fset
+
+# create fake gp feature record set to parse
+fset_list <- list(
+  list(
+    dataType = "GPFeatureRecordSetLayer",
+    paramName = "example",
+    value = as_featureset(penguins[1,])
+  )
+)
+
+# create the json
+json <- yyjsonr::write_json_str(fset_list, auto_unbox = TRUE)
+
+# parse the record set json
+parse_gp_feature_record_set(json)
+
+# linear units
+lu <- gp_linear_unit(10, "esriMeters")
+lu
+as_gp_linear_unit(lu)
+
+# areal units
+au <- gp_areal_unit(10, "esriSquareMeters")
+au
+
+as_gp_areal_unit(au)
+
+# dates
+json <- r"({
+  "paramName": "Output_Date",
+  "dataType": "GPDate",
+  "value": 1199145600000
+})"
+
+parse_gp_date(json)
+}
 \references{
 \href{https://developers.arcgis.com/rest/services-reference/enterprise/gp-data-types/}{API Documentation}
 }

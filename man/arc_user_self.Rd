@@ -11,7 +11,7 @@ arc_user_self(
 )
 }
 \arguments{
-\item{host}{default \code{"https://www.arcgis.com"}}
+\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
 
@@ -22,6 +22,13 @@ a list of the authenticated user's metadata
 }
 \description{
 Given an authentication token, return a list of user-specfic information such as the user ID, username, available credits, email, groups, last login date and more.
+}
+\examples{
+\dontrun{
+if (interactive()) {
+  arc_user_self(token = auth_user())
+}
+}
 }
 \references{
 \href{https://developers.arcgis.com/rest/users-groups-and-items/self/}{API Reference}

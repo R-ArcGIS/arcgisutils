@@ -4,6 +4,7 @@
 #'
 #' @param id the portal ID. By default it fetches the `id` from [`arc_portal_self()`].
 #' @param sort_field optional field to sort by. It must be one of "username", "fullname", "created", "lastlogin", "mfaenabled", "level", "role".
+#' @param provider optional filter users based on their identity provider. Must be one of "arcgis", "enterprise", "facebook", "google", "apple", or "github".
 #' @param sort_order optional order to sort by. It must be one of `"asc"` or `"desc"`.
 #' @param role optional role to filter down to. It must be one of "org_admin", "org_publisher", "org_user".
 #' @param fullname optional string of the user's fullanme to search for.
@@ -13,6 +14,7 @@
 #' @param filter_intersection optional boolean value. If `TRUE` mutliple filters are treated as an `"and"` condition. If `FALSE`, treated as an `"or"`.
 #' @inheritParams arc_base_req
 #' @inheritParams arc_paginate_req
+#' @inheritParams arc_user
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/users/)
 #' @examples
 #' \dontrun{
@@ -36,6 +38,7 @@ arc_portal_users <- function(
   page_size = 50,
   max_pages = Inf,
   .progress = TRUE,
+  host = arc_host(),
   token = arc_token()
 ) {
   obj_check_token(token)

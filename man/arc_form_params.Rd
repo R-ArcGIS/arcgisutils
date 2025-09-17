@@ -31,6 +31,11 @@ The helper function \code{as_form_params()} converts a named list to form
 parameters by automatically JSON-encoding each element using
 \code{yyjsonr::write_json_str()} with \code{auto_unbox = TRUE}.
 }
+\examples{
+arc_form_params(
+  list(f = "json", outFields = "*", where = "1 = 1")
+)
+}
 \seealso{
 Other geoprocessing: 
 \code{\link{arc_gp_job}},

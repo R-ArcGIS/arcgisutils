@@ -29,6 +29,9 @@ respectively not display any call or hard-code a code to display.
 
 For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
 }
+\value{
+a list or a json string
+}
 \description{
 These functions create an Esri FeatureSet object. A FeatureSet contains an inner array
 of features as well as additional metadata about the the collection such as the

@@ -38,13 +38,14 @@ respectively not display any call or hard-code a code to display.
 
 For more information about error calls, see \ifelse{html}{\link[rlang:topic-error-call]{Including function calls in error messages}}{\link[rlang:topic-error-call]{Including function calls in error messages}}.}
 
+\item{fields}{a list or data.frame of field types. Requires the fields \code{type} and \code{name} to be present.}
+
 \item{n}{the number of rows to create in the prototype table}
 }
 \value{
 \itemize{
-\item \code{get_pytpe()} returns an object of the class of the prototype.
-\item \code{ptype_tbl()} takes a \code{data.frame} with columns \code{name} and \code{type} and creates an empty \code{data.frame} with the corresponding columns and R types
-\item \code{infer_esri_ptype()} returns a \code{data.frame} with columns \code{name}, \code{type}, \code{alias}, \code{nullable}, and \code{editable} columns
+\item \code{fields_as_ptype_df()} takes a \code{data.frame} with columns \code{name} and \code{type} and creates an empty \code{data.frame} with the corresponding columns and R types
+\item \code{as_fields()} returns a \code{data.frame} with columns \code{name}, \code{type}, \code{alias}, \code{nullable}, and \code{editable} columns
 \itemize{
 \item This resembles that of the \code{fields} returned by a FeatureService
 }
@@ -88,7 +89,9 @@ R types are mapped as
 }
 }
 \examples{
-inferred <- as_esri_fields(iris)
-ptype_tbl(inferred)
+inferred <- as_fields(penguins)
+inferred
+
+fields_as_ptype_df(inferred)
 
 }

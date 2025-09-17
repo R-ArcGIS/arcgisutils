@@ -36,14 +36,15 @@
 #' - `raw`: esriFieldTypeBlob
 #'
 #' @examples
-#' inferred <- as_esri_fields(iris)
-#' ptype_tbl(inferred)
+#' inferred <- as_fields(penguins)
+#' inferred
+#'
+#' fields_as_ptype_df(inferred)
 #'
 #' @returns
 #'
-#' - `get_pytpe()` returns an object of the class of the prototype.
-#' - `ptype_tbl()` takes a `data.frame` with columns `name` and `type` and creates an empty `data.frame` with the corresponding columns and R types
-#' - `infer_esri_ptype()` returns a `data.frame` with columns `name`, `type`, `alias`, `nullable`, and `editable` columns
+#' - `fields_as_ptype_df()` takes a `data.frame` with columns `name` and `type` and creates an empty `data.frame` with the corresponding columns and R types
+#' - `as_fields()` returns a `data.frame` with columns `name`, `type`, `alias`, `nullable`, and `editable` columns
 #'   - This resembles that of the `fields` returned by a FeatureService
 #' @export
 #' @rdname field_mapping
@@ -135,6 +136,7 @@ get_ptype <- function(field_type, n = 1, call = rlang::caller_env()) {
   res
 }
 
+#' @param fields a list or data.frame of field types. Requires the fields `type` and `name` to be present.
 #' @export
 #' @rdname field_mapping
 #' @param n the number of rows to create in the prototype table
@@ -185,28 +187,3 @@ vec_mapping <- c(
   # FIXME actually should be `blob::blob.`
   "raw" = "esriFieldTypeBlob"
 )
-
-# notes -------------------------------------------------------------------
-
-# fields is a dateframe
-
-# users are to provide a character vector name of the
-# OID column esriFieldTypeOID
-# global ID would be inferred by the feature layer or
-# provided by the user I suspect esriFieldTypeGlobalID
-
-# list columns will be omitted and a warning emitted
-
-# field types that will be ignored
-# esriFieldTypeSmallInteger
-# esriFieldTypeSingle
-# esriFieldTypeGeometry (not sure when this would be used)
-# esriFieldTypeRaster (not sure when this would be used)
-# esriFieldTypeGUID (not sure when this would be used)
-# esriFieldTypeXML (oh boy i hope no one has to use this lol)
-# esriFieldTypeBigInteger (not sure how this would be supported)
-
-# by default when adding new feature only fields in the feature
-# layer should be snet up because they will be ignored
-# if there are non-matching field names emit a warning and
-# suggest them to use update_fields
