@@ -26,10 +26,13 @@ reference:
       - arc_group
       - arc_item_data
       - arc_portal_urls
+      - arc_portal_users
       - arc_user_self
       - arc_portal_self
-      - content
+      - arc_portal_resources
+      - arc_portal_servers
       - portal_types
+      - content
   - title: Geometry
     contents:
       - determine_dims
