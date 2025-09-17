@@ -89,7 +89,7 @@ R types are mapped as
 }
 }
 \examples{
-inferred <- as_fields(penguins)
+inferred <- as_fields(iris)
 inferred
 
 fields_as_ptype_df(inferred)

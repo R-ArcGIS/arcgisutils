@@ -120,7 +120,7 @@ parse_gp_feature_record_set(response_json)
 
 \examples{
 # create a feature record set
-fset <- as_gp_feature_record_set(penguins[1,])
+fset <- as_gp_feature_record_set(iris[1,])
 fset
 
 # create fake gp feature record set to parse
@@ -128,7 +128,7 @@ fset_list <- list(
   list(
     dataType = "GPFeatureRecordSetLayer",
     paramName = "example",
-    value = as_featureset(penguins[1,])
+    value = as_featureset(iris[1,])
   )
 )
 
