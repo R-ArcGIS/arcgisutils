@@ -1,5 +1,7 @@
 # arcgisutils (development version)
 
+# arcgisutils 0.4.0
+
 - Adds `arc_portal_servers()` to list all federated servers in your ArcGIS Enterprise portal
 - Adds `arc_portal_resources()` to list all file resources for a given portal ID
 - Adds `arc_portal_users()` to list all users in a provided portal
