@@ -1,5 +1,7 @@
 # arcgisutils (development version)
 
+- Adds `gp_job_from_url()` which creates a new `arc_gp_job` from a given URL
+
 # arcgisutils 0.4.0
 
 - Adds `arc_portal_servers()` to list all federated servers in your ArcGIS Enterprise portal

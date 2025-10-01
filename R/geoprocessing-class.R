@@ -115,6 +115,11 @@ as_form_params <- function(x) {
 #' [arc_form_params()] ensures that parameters provided to a geoprocessing
 #' service are all character scalars as required by the form body.
 #'
+#' @section Associated Functions:
+#' \describe{
+#'   \item{\code{from_url(url, token = arc_token())}}{Create a GP Job object from an existing job URL}
+#' }
+#'
 #' @importFrom R6 R6Class
 #' @export
 #' @returns
@@ -136,7 +141,6 @@ as_form_params <- function(x) {
 #'
 #' # view underlying list
 #' params@params
-#'
 arc_gp_job <- R6::R6Class(
   "arc_gp_job",
   #' @field base_url the URL of the job service (without `/submitJob`)
@@ -196,6 +200,7 @@ arc_gp_job <- R6::R6Class(
       self$id <- res$jobId
       self
     },
+
     #' @description Cancels a job by calling the `/cancel` endpoint.
     cancel = function() {
       resp <- arc_base_req(
@@ -257,12 +262,7 @@ arc_gp_job <- R6::R6Class(
     .status = function() {
       # if there is a NULL job ID we abort
       if (is.null(self$id)) {
-        cli::cli_abort(
-          c(
-            "There is no job ID present.",
-            ">" = " Have you started the job with `x$start()`?"
-          )
-        )
+        return(NULL)
       }
 
       # check the status
@@ -333,6 +333,51 @@ arc_gp_job <- R6::R6Class(
   lock_class = TRUE
 )
 
+#' Create GP Job from existing URL
+#'
+#' @export
+#' @family geoprocessing
+#' @param url the url of an existing geoprocessing job
+#' @inheritParams arc_gp_job
+#'
+#' @examples
+#' if (interactive()) {
+#' job_url <- "https://hydro.arcgis.com/arcgis/rest/services/Tools/Hydrology/GPServer/TraceDownstream/jobs/jfde67910074649e4a567f0adbb8af870"
+#'
+#' gp_job_from_url(
+#'   job_url,
+#'   token = auth_user()
+#' )
+#' }
+gp_job_from_url = function(url, token = arc_token()) {
+  obj_check_token(token)
+  check_string(url, allow_empty = FALSE)
+
+  job_info <- arc_base_req(
+    url,
+    token = token,
+    query = c(f = "json")
+  ) |>
+    httr2::req_perform() |>
+    httr2::resp_body_string() |>
+    yyjsonr::read_json_str()
+
+  # parse the input url
+  url_parts <- httr2::url_parse(url)
+  path_parts <- strsplit(url_parts$path, "/")[[1]]
+  end_idx <- which(path_parts == "jobs") - 1
+
+  # combine back together
+  url_parts[["path"]] <- paste0(path_parts[1:end_idx], collapse = "/")
+
+  # build the url without the job ID
+  base_url <- httr2::url_build(url_parts)
+
+  # Create and return new instance
+  instance <- new_gp_job(base_url, token = token)
+  instance$id <- job_info$jobId
+  instance
+}
 
 #' @export
 #' @rdname gp_job
@@ -348,16 +393,20 @@ new_gp_job <- function(
   if (!rlang::is_null(token)) {
     obj_check_token(token)
   }
-  arc_gp_job$new(base_url, params, token)
+  arc_gp_job$new(base_url, params = params, token = token)
 }
 
 #' @export
 print.arc_gp_job <- function(x, ...) {
-  x
+  status <- if (!is.null(x$status)) {
+    x$status@status
+  } else {
+    "not started"
+  }
   contents <- c(
     sprintf("<%s>", class(x)[1]),
     sprintf("Job ID: %s", x$id %||% "not initiated"),
-    sprintf("Status: %s", x$.status %||% "not started"),
+    sprintf("Status: %s", status),
     sprintf("Resource: /%s", utils::tail(strsplit(x$base_url, "/")[[1]], 1)),
     "Params:",
     cli::cli_fmt(cli::cli_ul(names(compact(x$params@params))))
