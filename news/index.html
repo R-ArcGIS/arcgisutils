@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,11 +28,15 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/R-ArcGIS/arcgisutils/blob/v0.4.0/NEWS.md"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/R-ArcGIS/arcgisutils/blob/main/NEWS.md"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="arcgisutils-development-version">arcgisutils (development version)<a class="anchor" aria-label="anchor" href="#arcgisutils-development-version"></a></h2>
+<ul><li>Adds <code>gp_job_from_url()</code> which creates a new <code>arc_gp_job</code> from a given URL</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="arcgisutils-040">arcgisutils 0.4.0<a class="anchor" aria-label="anchor" href="#arcgisutils-040"></a></h2><p class="text-muted">CRAN release: 2025-09-18</p>
 <ul><li>Adds <code><a href="../reference/arc_portal_servers.html">arc_portal_servers()</a></code> to list all federated servers in your ArcGIS Enterprise portal</li>
 <li>Adds <code><a href="../reference/arc_portal_resources.html">arc_portal_resources()</a></code> to list all file resources for a given portal ID</li>
 <li>Adds <code><a href="../reference/arc_portal_users.html">arc_portal_users()</a></code> to list all users in a provided portal</li>
@@ -56,7 +60,7 @@
 <li>Validate <code>token</code> in <code><a href="../reference/arc_base_req.html">arc_base_req()</a></code>
 </li>
 </ul><div class="section level4">
-<h4 id="deprecations-development-version">Deprecations<a class="anchor" aria-label="anchor" href="#deprecations-development-version"></a></h4>
+<h4 id="deprecations-0-4-0">Deprecations<a class="anchor" aria-label="anchor" href="#deprecations-0-4-0"></a></h4>
 <ul><li>Deprecates <code><a href="../reference/self.html">arc_self_meta()</a></code> in favor of <code><a href="../reference/self.html">arc_portal_self()</a></code>—the functions are identical.</li>
 <li>
 <code><a href="../reference/field_mapping.html">ptype_tbl()</a></code> has been deprecated in favor of <code><a href="../reference/field_mapping.html">fields_as_ptype_df()</a></code>.</li>
@@ -64,7 +68,7 @@
 <code><a href="../reference/field_mapping.html">infer_esri_type()</a></code> has been deprecated in favor of <code><a href="../reference/field_mapping.html">as_fields()</a></code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="breaking-changes-development-version">Breaking changes:<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<h3 id="breaking-changes-0-4-0">Breaking changes:<a class="anchor" aria-label="anchor" href="#breaking-changes-0-4-0"></a></h3>
 <ul><li>
 <code>get_ptype()</code> has been removed from the public API.</li>
 <li>
