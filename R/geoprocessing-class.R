@@ -260,11 +260,6 @@ arc_gp_job <- R6::R6Class(
   private = list(
     .params = NULL,
     .status = function() {
-      # if there is a NULL job ID we abort
-      # if (is.null(self$id)) {
-      #   return(NULL)
-      # }
-
       # check the status
       resp <- arc_base_req(
         self$base_url,
@@ -275,8 +270,6 @@ arc_gp_job <- R6::R6Class(
         httr2::req_error(is_error = function(e) FALSE) |>
         httr2::req_perform() |>
         httr2::resp_body_string()
-
-      cat(resp)
 
       # read the string
       res <- RcppSimdJson::fparse(resp)
