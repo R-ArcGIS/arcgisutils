@@ -85,6 +85,7 @@ service are all character scalars as required by the form body.</p>
     <div class="dont-index"><p>Other geoprocessing:
 <code><a href="arc_form_params.html">arc_form_params</a>()</code>,
 <code><a href="arc_job_status.html">arc_job_status</a>()</code>,
+<code><a href="gp_job_from_url.html">gp_job_from_url</a>()</code>,
 <code><a href="gp_params.html">gp_params</a></code></p></div>
     </div>
     <div class="section level2">
@@ -230,12 +231,8 @@ service are all character scalars as required by the form body.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">job</span> <span class="op">&lt;-</span> <span class="fu">new_gp_job</span><span class="op">(</span><span class="va">url</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>f <span class="op">=</span> <span class="st">"json"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">job</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;arc_gp_job&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Job ID: not initiated</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Status: not started</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Resource: /GenerateServiceAreas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Params:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> • f</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in private$.status():</span> Status code: 400</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Error: Invalid URL</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># extract params S7 class</span></span></span>
 <span class="r-in"><span><span class="va">params</span> <span class="op">&lt;-</span> <span class="va">job</span><span class="op">$</span><span class="va">params</span></span></span>
