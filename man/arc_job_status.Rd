@@ -24,6 +24,7 @@ arc_job_status("esriJobSubmitted")
 Other geoprocessing: 
 \code{\link{arc_form_params}()},
 \code{\link{arc_gp_job}},
+\code{\link{gp_job_from_url}()},
 \code{\link{gp_params}}
 }
 \concept{geoprocessing}

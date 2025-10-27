@@ -165,6 +165,7 @@ parse_gp_date(json)
 Other geoprocessing: 
 \code{\link{arc_form_params}()},
 \code{\link{arc_gp_job}},
-\code{\link{arc_job_status}()}
+\code{\link{arc_job_status}()},
+\code{\link{gp_job_from_url}()}
 }
 \concept{geoprocessing}
