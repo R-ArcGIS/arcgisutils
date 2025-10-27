@@ -260,11 +260,6 @@ arc_gp_job <- R6::R6Class(
   private = list(
     .params = NULL,
     .status = function() {
-      # if there is a NULL job ID we abort
-      if (is.null(self$id)) {
-        return(NULL)
-      }
-
       # check the status
       resp <- arc_base_req(
         self$base_url,

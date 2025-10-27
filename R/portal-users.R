@@ -108,7 +108,15 @@ arc_portal_users <- function(
     resp <- httr2::resp_body_string(.resp) |>
       yyjsonr::read_json_str() |>
       detect_errors()
-    resp[["users"]]
+
+    # extract the users from this
+    users <- resp[["users"]]
+
+    # unlist these fields in the event that there is a `-1`
+    # which causes the dates to become a list
+    users[["lastLogin"]] <- unlist(users$lastLogin, recursive = FALSE)
+    users[["modified"]] <- unlist(users$modified, recursive = FALSE)
+    users
   })
 
   res <- data_frame(rbind_results(results))
