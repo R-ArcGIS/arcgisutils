@@ -23,7 +23,7 @@ Fetches metadata about a group based on a provided \code{group_id}.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
-\dontshow{if (curl::has_internet()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (curl::has_internet()) withAutoprint(\{ # examplesIf}
 arc_group("2f0ec8cb03574128bd673cefab106f39")
 \dontshow{\}) # examplesIf}
 }

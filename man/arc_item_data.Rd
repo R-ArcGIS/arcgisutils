@@ -24,7 +24,7 @@ a raw vector as the type of the data that is downloaded cannot always be known.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
-\dontshow{if (curl::has_internet()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (curl::has_internet()) withAutoprint(\{ # examplesIf}
 arc_item_data("9df5e769bfe8412b8de36a2e618c7672")
 \dontshow{\}) # examplesIf}
 }
