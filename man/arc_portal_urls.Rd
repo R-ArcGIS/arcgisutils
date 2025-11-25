@@ -22,7 +22,7 @@ See \href{https://developers.arcgis.com/rest/users-groups-and-items/urls/}{API R
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
-\dontshow{if (curl::has_internet()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (curl::has_internet()) withAutoprint(\{ # examplesIf}
 arc_portal_urls()
 \dontshow{\}) # examplesIf}
 }
