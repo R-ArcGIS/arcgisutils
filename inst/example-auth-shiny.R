@@ -1,17 +1,16 @@
 library(shiny)
 library(shinyOAuth)
 library(arcgisutils)
+
 # Simple UI
 ui <- fluidPage(
   use_shinyOAuth(),
   uiOutput("login_information")
 )
 
-client <- auth_shiny_provider()
-oauth_provider_arcgis()
+client <- auth_shiny()
 
 server <- function(input, output, session) {
-  # Set auto_redirect = FALSE for manual login
   auth <- shinyOAuth::oauth_module_server(
     "auth",
     client,
@@ -46,4 +45,3 @@ runApp(
 )
 
 # Open the app in your regular browser at http://127.0.01:8100
-# (viewers in RStudio/Positron/etc. cannot perform necessary redirects)
