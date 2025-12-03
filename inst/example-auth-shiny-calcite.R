@@ -1,5 +1,6 @@
 library(shiny)
-library(calcite)
+library(calcite) # requires calcite 0.1.2
+library(shinyOAuth)
 library(arcgisutils)
 
 # create the shiny AGOL login provider
@@ -8,16 +9,6 @@ client <- auth_shiny()
 ui <- calcite_shell(
   # Include the shinyOAuth module
   use_shinyOAuth(),
-  # TODO fix this in {calcite}
-  tags$script(HTML(
-    "
-    $(document).on('shiny:connected', function() {
-      $(document).on('click', '#login_btn', function(e) {
-        Shiny.setInputValue('login_btn_clicked', Math.random());
-      });
-    });
-  "
-  )),
   uiOutput("navigation")
 )
 
@@ -67,7 +58,7 @@ server <- function(input, output, session) {
   })
 
   # Trigger login when button is clicked
-  observeEvent(input$login_btn_clicked, {
+  observeEvent(input$login_btn$clicked, {
     auth$request_login()
   })
 }
