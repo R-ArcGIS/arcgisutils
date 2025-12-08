@@ -123,12 +123,18 @@ get_ptype <- function(field_type, n = 1, call = rlang::caller_env()) {
     "esriFieldTypeDouble" = double(n),
     "esriFieldTypeString" = character(n),
     "esriFieldTypeDate" = rep(Sys.Date(), n),
-    "esriFieldTypeGeometry" = numeric(n)
+    "esriFieldTypeGeometry" = numeric(n),
+    "esriFieldTypeBlob" = {
+      cli::cli_alert_warning(
+        "{.code esriFieldTypeBlob} encountered. If an issue occurs please report it at {.url https://github.com/r-arcgis/arcgisutils/issues/new}"
+      )
+      vector("list", length = n)
+    }
   )
 
   if (is.null(res)) {
     cli::cli_abort(
-      "Column of type {.var field_type} cannot be mapped to an R vector",
+      "Column of type {.var {field_type}} cannot be mapped to an R vector",
       call = call
     )
   }
@@ -159,12 +165,14 @@ fields_as_ptype_df <- function(fields, n = 0, call = rlang::caller_env()) {
     cli::cli_abort("{.field name} is missing from {.arg fields}", call = call)
   }
 
-  as.data.frame(
-    lapply(
-      rlang::set_names(ftype, fname),
-      get_ptype,
-      n = n,
-      call = call
+  data_frame(
+    list2DF(
+      lapply(
+        rlang::set_names(ftype, fname),
+        get_ptype,
+        n = n,
+        call = call
+      )
     )
   )
 }

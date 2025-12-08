@@ -1,6 +1,6 @@
 Package: arcgisutils
 Title: R-ArcGIS Bridge Utility Functions
-Version: 0.4.0.9000
+Version: 0.4.0.9001
 Authors@R: c(
     person("Josiah", "Parry", , "josiah.parry@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9910-865X")),
@@ -42,8 +42,8 @@ Suggests:
     data.table,
     jsonify,
     testthat (>= 3.0.0),
-    curl,
     vctrs,
+    curl,
     shinyOAuth
 Config/rextendr/version: 0.4.2
 Config/testthat/edition: 3
