@@ -419,8 +419,24 @@ as_spatial_reference <- function(x) {
 
 #' @name gp_params
 #' @export
-parse_spatial_reference <- function(json) {
-  sr <- yyjsonr::read_json_str(json)
+#' @examples
+#' sr <- list(wkid = 4326L)
+#' from_spatial_reference(sr)
+from_spatial_reference <- function(sr, error_call = rlang::caller_call()) {
+  if (!rlang::is_list(sr)) {
+    cli::cli_abort(
+      "spatial reference must be a bare list with fields {.code latestWkid}, {.code wkid}, or {.code wkt}",
+      call = error_call
+    )
+  }
+
   crs <- sr[["latestWkid"]] %||% sr[["wkid"]] %||% sr[["wkt"]]
   sf::st_crs(crs)
+}
+
+#' @name gp_params
+#' @export
+parse_spatial_reference <- function(json) {
+  sr <- yyjsonr::read_json_str(json)
+  from_spatial_reference(sr)
 }
