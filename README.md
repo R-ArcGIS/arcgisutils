@@ -9,10 +9,10 @@ status](https://www.r-pkg.org/badges/version/arcgisutils)](https://CRAN.R-projec
 [![extendr](https://img.shields.io/badge/extendr-%5E0.8.0-276DC2)](https://extendr.rs/extendr/extendr_api/)
 <!-- badges: end -->
 
-arcgisutils is the foundational infrastructure package that powers the
-R-ArcGIS Bridge Data and Location Service ecosystem. It provides
+`{arcgisutils}` is the foundational infrastructure package that powers the
+R-ArcGIS Bridge data and location services ecosystem. It provides
 sophisticated, production-ready tools for interacting with ArcGIS
-Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.
+Online, ArcGIS Enterprise, and ArcGIS Location Platform via their REST APIs.
 
 ## Key Capabilities
 
@@ -21,7 +21,7 @@ Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.
 - Multiple OAuth2 workflows (`auth_code()`, `auth_client()`)
 - API key and legacy token support
 - Automatic token refresh and validation
-- Integration with ArcGIS Pro via `arcgisbinding`
+- Integration with ArcGIS Pro via `{arcgisbinding}`
 
 **🌐 Portal Integration**:
 
@@ -42,7 +42,7 @@ Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.
 - Bidirectional conversion between R spatial data and Esri JSON formats
 - Support for FeatureSets, geometry objects, field definitions, and
   spatial reference systems
-- Optimized parsing with automatic `sf` integration
+- Optimized parsing with automatic `{sf}` integration
 
 **🛠️ Developer Utilities**:
 
@@ -52,9 +52,9 @@ Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.
 
 ## Installation
 
-`{arcgisutils}` is part of the `{arcgis}` metapackage, which provides
+`{arcgisutils}` is part of the `{arcgis}` meta-package, which provides
 the complete R-ArcGIS Bridge toolkit. For most users, installing the
-metapackage is recommended:
+meta-package is recommended:
 
 ``` r
 install.packages("arcgis")
@@ -109,7 +109,7 @@ environments:
 set_arc_token("production" = prod_token, "development" = dev_token)
 ```
 
-And fetched based on their name via
+And fetched based on their name via:
 
 ``` r
 arc_token("production")
@@ -162,7 +162,7 @@ arc_item(crime_items$id[1])
 ### Developer Utilities
 
 Always use `arc_base_req()` as this will handle setting the user agent
-and authorization token. The function creates a standardized `httr2`
+and authorization token. The function creates a standardized `{httr2}`
 request object:
 
 ``` r
@@ -184,8 +184,8 @@ automatically handle fetching pages.
 ### Esri JSON
 
 There are also a number of utility functions for creating and parsing
-Esri JSON. For example we can create an Esri `FeatureSet` json string
-using `as_esri_featureset()` directly from an `sf` object.
+Esri JSON. For example we can create an Esri `FeatureSet` JSON string
+using `as_esri_featureset()` directly from an `{sf}` object.
 
 ``` r
 library(sf)
@@ -232,7 +232,7 @@ jsonify::pretty_json(nc_json)
 #> }
 ```
 
-Feature set json can also be parsed using `parse_esri_json()`.
+Feature set JSON can also be parsed using `parse_esri_json()`.
 
 ``` r
 parse_esri_json(nc_json)
@@ -248,8 +248,8 @@ parse_esri_json(nc_json)
 
 Additionally, sf’s `crs` object can be converted to a
 [`spatialReference`](https://developers.arcgis.com/documentation/common-data-types/geometry-objects.htm#GUID-DFF0E738-5A42-40BC-A811-ACCB5814BABC)
-JSON object using `validate_crs()`. Convert these to json with `yyjsonr`
-or `jsonify`.
+JSON object using `validate_crs()`. Convert these to JSON with `{yyjsonr}`
+or `{jsonify}`.
 
 ``` r
 crs <- validate_crs(27700)
@@ -267,7 +267,7 @@ The geoprocessing service framework is completely supported in
 `{arcgisutils}`. Here we combine the functionality of the geoprocessing
 job framework with utilities such as `as_esri_featureset()` to call the
 [Trace DownStream Elevation
-Service](https://developers.arcgis.com/rest/elevation-analysis/trace-downstream/)
+Service](https://developers.arcgis.com/rest/elevation-analysis/trace-downstream/).
 
 ``` r
 trace_downstream <- function(
@@ -324,7 +324,7 @@ job$start()
 #> • f
 ```
 
-Jobs run asynchronously so we can check the status with `job$status`
+Jobs run asynchronously so we can check the status with `job$status`:
 
 ``` r
 job$status
