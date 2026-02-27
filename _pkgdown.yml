@@ -18,12 +18,14 @@ reference:
   - title: Authorization
     contents:
       - auth_code
+      - auth_shiny
   - title: Portal
     contents:
       - search_items
       - arc_item
       - arc_user
       - arc_group
+      - arc_group_users
       - arc_item_data
       - arc_portal_urls
       - arc_portal_users
