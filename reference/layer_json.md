@@ -1,0 +1,201 @@
+# Create Esri layer objects
+
+These functions are used to generate list objects that can be converted
+into json objects that are used in REST API requests. Notably they are
+used for adding R objects as items to a portal.
+
+## Usage
+
+``` r
+as_layer(
+  x,
+  name,
+  title,
+  layer_definition = as_layer_definition(x, name, "object_id", infer_esri_type(x)),
+  id = NULL,
+  layer_url = NULL,
+  legend_url = NULL,
+  popup_info = NULL,
+  call = rlang::caller_env()
+)
+
+as_layer_definition(
+  x,
+  name,
+  object_id_field,
+  fields = infer_esri_type(x),
+  display_field = NULL,
+  drawing_info = NULL,
+  has_attachments = FALSE,
+  max_scale = 0,
+  min_scale = 0,
+  templates = NULL,
+  type_id_field = NULL,
+  types = NULL,
+  call = rlang::caller_env()
+)
+
+as_feature_collection(
+  layers = list(),
+  show_legend = TRUE,
+  call = rlang::caller_env()
+)
+```
+
+## Arguments
+
+- x:
+
+  an object of class `data.frame`. This can be an `sf` object or
+  `tibble` or any other subclass of `data.frame`.
+
+- name:
+
+  a scalar character of the name of the layer. Must be unique.
+
+- title:
+
+  A user-friendly string title for the layer that can be used in a table
+  of contents.
+
+- layer_definition:
+
+  a layer definition list as created by `as_layer_definition()`. A
+  default is derived from `x` and the `name` object.
+
+- id:
+
+  A number indicating the index position of the layer in the WMS or map
+  service.
+
+- layer_url:
+
+  default `NULL`. A string URL to a service that should be used for all
+  queries against the layer. Used with hosted tiled map services on
+  ArcGIS Online when there is an associated feature service that allows
+  for queries.
+
+- legend_url:
+
+  default `NULL`. A string URL to a legend graphic for the layer. Used
+  with WMS layers. The URL usually contains a GetLegendGraphic request.
+
+- popup_info:
+
+  default `NULL`. A list that can be converted into a
+  [popupInfo](https://developers.arcgis.com/web-map-specification/objects/popupInfo/)
+  object defining the pop-up window content for the layer. There is no
+  helper for popupInfo objects.
+
+- call:
+
+  The execution environment of a currently running function, e.g.
+  `call = caller_env()`. The corresponding function call is retrieved
+  and mentioned in error messages as the source of the error.
+
+  You only need to supply `call` when throwing a condition from a helper
+  function which wouldn't be relevant to mention in the message.
+
+  Can also be `NULL` or a [defused function
+  call](https://rlang.r-lib.org/reference/topic-defuse.html) to
+  respectively not display any call or hard-code a code to display.
+
+  For more information about error calls, see [Including function calls
+  in error
+  messages](https://rlang.r-lib.org/reference/topic-error-call.html).
+
+- object_id_field:
+
+  a scalar character vector indicating the name of the object ID field
+  in the dataset.
+
+- fields:
+
+  a data.frame describing the fields in `x`. These values are inferred
+  by default via
+  [`infer_esri_type()`](https://github.com/R-ArcGIS/arcgisutils/reference/field_mapping.md).
+
+- display_field:
+
+  default `NULL`. A scalar character containing the name of the field
+  that best summarizes the feature. Values from this field are used by
+  default as the titles for pop-up windows.
+
+- drawing_info:
+
+  default `NULL`. See REST documentation in details for more. There are
+  no helpers or validators for `drawingInfo` objects.
+
+- has_attachments:
+
+  default `FALSE`.
+
+- max_scale:
+
+  default `NULL`. A number representing the maximum scale at which the
+  layer definition will be applied. The number is the scale's
+  denominator; thus, a value of 2400 represents a scale of 1/2,400. A
+  value of 0 indicates that the layer definition will be applied
+  regardless of how far you zoom in.
+
+- min_scale:
+
+  default `NULL`. A number representing the minimum scale at which the
+  layer definition will be applied.
+
+- templates:
+
+  default `NULL`. See REST documentation in details for more.
+
+- type_id_field:
+
+  default `NULL`. See REST documentation in details for more.
+
+- types:
+
+  An array of type objects available for the dataset. This is used when
+  the `type_id_field` is populated. NOTE there are no helper functions
+  to create type objects. Any type list objects must match the json
+  structure when passed to `jsonify::to_json(x, unbox = TRUE)`.
+
+- layers:
+
+  a list of layers as created by `as_layer()`.
+
+- show_legend:
+
+  default `FALSE`. Logical scalar indicating if this layer should be
+  shown in the legend in client applications.
+
+## Value
+
+A list object containing the required fields for each respective json
+type. The results can be converted to json using
+`jsonify::to_json(x, unbox = TRUE)`
+
+## Details
+
+A `featureCollection` defines a layer of features that will be stored on
+a web map. It consists of an array of `layer`s. The `layer` contains the
+features (attributes and geometries) as a `featureSet` (see
+[`as_esri_featureset()`](https://github.com/R-ArcGIS/arcgisutils/reference/featureset.md))
+and additional metadata which is stored in the `layerDefinition`object.
+The `layerDefinition` most importantly documents the fields in the
+object, the object ID, and additional metadata such as name, title, and
+display scale.
+
+Additional documentation for these json object:
+
+- [`layer`](https://developers.arcgis.com/rest/services-reference/enterprise/layer/)
+
+- [`layerDefinition`](https://developers.arcgis.com/web-map-specification/objects/layerDefinition/)
+
+- [`featureCollection`](https://developers.arcgis.com/web-map-specification/objects/featureCollection/)
+
+## Examples
+
+``` r
+ld <- as_layer_definition(iris, "iris", "objectID")
+l <- as_layer(iris, "iris name", "Iris Title")
+fc <- as_feature_collection(layers = list(l))
+```

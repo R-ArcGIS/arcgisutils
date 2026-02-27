@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,8 +65,8 @@
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other portal:
-<code><a href="arc_portal_resources.html">arc_portal_resources</a>()</code>,
-<code><a href="arc_portal_users.html">arc_portal_users</a>()</code>,
+<code><a href="arc_portal_resources.html">arc_portal_resources()</a></code>,
+<code><a href="arc_portal_users.html">arc_portal_users()</a></code>,
 <code><a href="self.html">self</a></code></p></div>
     </div>
 
@@ -437,18 +437,24 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$url</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "https://aiutils.arcgis.com"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$models</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$models$`gpt-4o`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/proxy/gpt-4o"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$api</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$api$text_translate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/api/text/translate"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$models$`gpt-4o-mini`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/proxy/gpt-4o-mini"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$api$text_analyze</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/api/text/analyze"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$models$`gpt-4.1`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/proxy/gpt-4.1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$api$image_analyze</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/api/image/analyze"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$models$`gpt-4.1-mini`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/proxy/gpt-4.1-mini"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$api$image_extract</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/api/image/extractText"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$api$embeddings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/api/embeddings"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$api$audio_transcribe</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/api/audio/transcribe"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$translateUtility</span>
@@ -456,6 +462,11 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiUtilityServices$imageExtractTextUtility</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/api/assistant/imageExtractText"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiModels</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$aiModels$url</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "https://aimodels.arcgis.com"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $helperServices$geoenrichment</span>
@@ -549,7 +560,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $currentVersion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2025.3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026.1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
@@ -562,7 +573,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
