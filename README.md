@@ -14,6 +14,13 @@ R-ArcGIS Bridge Data and Location Service ecosystem. It provides
 sophisticated, production-ready tools for interacting with ArcGIS
 Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.
 
+<div class="callout-tip">
+
+An [`llms.txt`](https://r.esri.com/arcgisutils/llms.txt) file is
+available to provide context for LLMs when working with this package.
+
+</div>
+
 ## Key Capabilities
 
 **🔐 Comprehensive Authentication**:
@@ -131,16 +138,16 @@ crime_items
 #> # A data frame: 50 × 46
 #>    id      owner created             modified            guid  name  title type 
 #>  * <chr>   <chr> <dttm>              <dttm>              <lgl> <chr> <chr> <chr>
-#>  1 ea0cfe… Toro… 2023-03-28 15:02:39 2025-01-22 18:27:48 NA    Neig… Neig… Feat…
-#>  2 0a239a… Toro… 2023-03-27 18:59:00 2025-08-06 14:01:27 NA    Majo… Majo… Feat…
+#>  1 ea0cfe… Toro… 2023-03-28 15:02:39 2026-02-02 17:45:21 NA    Neig… Neig… Feat…
+#>  2 64691a… Temp… 2024-01-17 20:01:43 2024-01-17 20:04:45 NA    hate… Hate… Feat…
 #>  3 5e055d… JASo… 2023-04-04 17:36:59 2023-09-07 19:05:06 NA    <NA>  Sher… Feat…
-#>  4 64691a… Temp… 2024-01-17 20:01:43 2024-01-17 20:04:45 NA    hate… Hate… Feat…
-#>  5 7c2b78… JASo… 2023-04-04 17:49:30 2023-06-02 22:27:11 NA    <NA>  Sher… Feat…
+#>  4 30644d… MyCi… 2025-03-14 14:55:06 2025-08-20 13:55:24 NA    HPD_… HPD … Feat…
+#>  5 c749e3… open… 2024-02-23 19:36:34 2026-01-09 18:36:21 NA    <NA>  Crim… Feat…
 #>  6 e0992d… balt… 2023-07-31 20:27:01 2025-01-22 21:21:01 NA    Part… Part… Feat…
-#>  7 c749e3… open… 2024-02-23 19:36:34 2025-09-04 17:08:47 NA    <NA>  Crim… Feat…
-#>  8 2cb53d… KASU… 2019-12-10 19:06:39 2019-12-10 19:14:27 NA    Viol… Viol… Feat…
-#>  9 30644d… MyCi… 2025-03-14 14:55:06 2025-08-20 13:55:24 NA    HPD_… HPD … Feat…
-#> 10 5dc4e6… iwat… 2023-06-23 22:07:21 2023-08-09 15:33:46 NA    <NA>  Prop… Feat…
+#>  7 2cb53d… KASU… 2019-12-10 19:06:39 2019-12-10 19:14:27 NA    Viol… Viol… Feat…
+#>  8 5dc4e6… iwat… 2023-06-23 22:07:21 2023-08-09 15:33:46 NA    <NA>  Prop… Feat…
+#>  9 ab92f5… KASU… 2019-12-09 16:16:13 2019-12-10 18:55:20 NA    Prop… Prop… Feat…
+#> 10 94bc33… admi… 2023-08-11 20:09:35 2026-01-09 17:03:25 NA    <NA>  Crim… Feat…
 #> # ℹ 40 more rows
 #> # ℹ 38 more variables: typeKeywords <list>, description <chr>, tags <list>,
 #> #   snippet <chr>, thumbnail <chr>, documentation <lgl>, extent <list>,
@@ -175,7 +182,7 @@ req
 #> GET https://www.arcgis.com
 #> Body: empty
 #> Options:
-#> * useragent: "arcgisutils v0.3.3.9000"
+#> * useragent: "arcgisutils v0.4.0.9001"
 ```
 
 To handle paginated services and requests use `arc_paginate_req()` to
@@ -315,8 +322,8 @@ job <- trace_downstream(
 # start the job
 job$start()
 #> <arc_gp_job>
-#> Job ID: jd9f76de1e62e4d8a877f3e6859fdb7b2
-#> Status: not started
+#> Job ID: j89b6513d04f44037b39748e8d931cb31
+#> Status: esriJobExecuting
 #> Resource: /TraceDownstream
 #> Params:
 #> • InputPoints
@@ -329,7 +336,7 @@ Jobs run asynchronously so we can check the status with `job$status`
 ``` r
 job$status
 #> <arcgisutils::arc_job_status>
-#>  @ status: chr "esriJobSubmitted"
+#>  @ status: chr "esriJobExecuting"
 ```
 
 Then, when the job is complete, we can fetch the results applying the

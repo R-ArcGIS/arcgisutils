@@ -20,8 +20,12 @@ knitr::opts_chunk$set(
 library(pillar)
 ```
 
-
 arcgisutils is the foundational infrastructure package that powers the R-ArcGIS Bridge Data and Location Service ecosystem. It provides sophisticated, production-ready tools for interacting with ArcGIS Online, ArcGIS Enterprise, and ArcGIS Platform via their REST APIs.
+
+::: callout-tip
+An [`llms.txt`](https://r.esri.com/arcgisutils/llms.txt) file is available to provide context for LLMs when working with this package.
+:::
+
 
 ## Key Capabilities
 
