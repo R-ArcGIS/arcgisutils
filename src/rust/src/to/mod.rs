@@ -17,8 +17,7 @@ mod polygon;
 // they will always need type annotions
 // point is implemented independently since it does not have a
 // const generic. It is implemented on the struct itself
-#[allow(unused_variables
-)]
+#[allow(unused_variables)]
 pub trait AsEsriGeometry<const N: usize> {
     fn as_multipoint(&self, sr: Option<SpatialReference>) -> Option<EsriMultiPoint<N>> {
         None
