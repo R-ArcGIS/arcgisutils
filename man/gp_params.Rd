@@ -65,6 +65,10 @@ from_envelope(x, error_call = rlang::caller_call())
 \item{units}{the unit of the measurement. Must be one of "esriUnknownAreaUnits", "esriSquareInches", "esriSquareFeet", "esriSquareYards", "esriAcres", "esriSquareMiles", "esriSquareMillimeters", "esriSquareCentimeters", "esriSquareDecimeters", "esriSquareMeters", "esriAres", "esriHectares", "esriSquareKilometers", "esriSquareInchesUS", "esriSquareFeetUS", "esriSquareYardsUS", "esriAcresUS", "esriSquareMilesUS".}
 
 \item{area}{a scalar number of the measurement.}
+
+\item{sr}{a list with fields \code{latestWkid}, \code{wkid}, or \code{wkt} representing a spatial reference}
+
+\item{error_call}{the caller environment to be used when propagating errors.}
 }
 \description{
 Functions for converting R objects to and from ArcGIS geoprocessing parameter

@@ -16,7 +16,10 @@ Create GP Job from existing URL
 }
 \examples{
 if (interactive()) {
-job_url <- "https://hydro.arcgis.com/arcgis/rest/services/Tools/Hydrology/GPServer/TraceDownstream/jobs/jfde67910074649e4a567f0adbb8af870"
+job_url <- paste0(
+  "https://hydro.arcgis.com/arcgis/rest/services/Tools/Hydrology/",
+  "GPServer/TraceDownstream/jobs/jfde67910074649e4a567f0adbb8af870"
+)
 
 gp_job_from_url(
   job_url,

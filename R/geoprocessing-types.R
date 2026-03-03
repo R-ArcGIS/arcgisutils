@@ -419,6 +419,8 @@ as_spatial_reference <- function(x) {
 
 #' @name gp_params
 #' @export
+#' @inheritParams arc_base_req
+#' @param sr a list with fields `latestWkid`, `wkid`, or `wkt` representing a spatial reference
 #' @examples
 #' sr <- list(wkid = 4326L)
 #' from_spatial_reference(sr)

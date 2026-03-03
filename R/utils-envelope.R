@@ -1,5 +1,6 @@
 #' @export
 #' @name gp_params
+#' @inheritParams arc_base_req
 #' @examples
 #' x <- list(
 #'   xmin = -122.4195,
