@@ -1,0 +1,352 @@
+# arcgisutils
+
+`arcgisutils` is the shared foundation of the R-ArcGIS bridge. It provides authentication, EsriJSON serialization/parsing, geoprocessing service support, and portal API utilities for R packages that work with ArcGIS Location Services (ArcGIS Online and ArcGIS Enterprise).
+
+---
+
+## Authentication
+
+All auth functions return an `httr2_token` object with an `arcgis_host` field attached. This token is passed to `arc_base_req()` to authorize requests.
+
+### Auth flows
+
+```r
+# Interactive OAuth2: opens browser, prompts for code
+token <- auth_code()
+
+# Non-interactive OAuth2 client credentials
+token <- auth_client(expiration = 120)  # minutes
+
+# Static API key
+token <- auth_key()
+
+# Legacy username/password (generateToken endpoint)
+token <- auth_user()
+
+# ArcGIS Pro via arcgisbinding
+token <- auth_binding()
+
+# Shiny application OAuth2 (requires shinyOAuth package)
+client <- auth_shiny()
+```
+
+All functions read credentials from environment variables by default:
+
+| Variable | Used by |
+|---|---|
+| `ARCGIS_HOST` | `arc_host()` defaults to `https://www.arcgis.com` |
+| `ARCGIS_CLIENT` | `auth_code()`, `auth_client()`, `auth_shiny()` |
+| `ARCGIS_SECRET` | `auth_client()`, `auth_shiny()` |
+| `ARCGIS_API_KEY` | `auth_key()` |
+| `ARCGIS_USER` | `auth_user()` |
+| `ARCGIS_PASSWORD` | `auth_user()` |
+| `ARCGIS_REDIRECT_URI` | `auth_shiny()` |
+
+### Token management
+
+```r
+# Store a token in the session (default name: "ARCGIS_TOKEN")
+set_arc_token(token)
+
+# Store multiple named tokens
+set_arc_token(org_a = token_a, org_b = token_b)
+
+# Retrieve the default token
+arc_token()
+
+# Retrieve a named token
+arc_token("org_a")
+
+# Remove tokens
+unset_arc_token()
+unset_arc_token(c("org_a", "org_b"))
+
+# Validate or refresh before use
+validate_or_refresh_token(token)
+```
+
+---
+
+## Building Requests
+
+`arc_base_req()` is the entry point for all HTTP requests. It sets the `User-Agent` header and attaches the authorization token.
+
+```r
+req <- arc_base_req(
+  url   = "https://services.arcgis.com/.../FeatureServer/0",
+  token = arc_token(),
+  path  = c("query"),
+  query = list(f = "json")
+)
+
+# Chain httr2 verbs, then perform
+resp <- req |>
+  httr2::req_body_form(where = "1=1", outFields = "*") |>
+  httr2::req_perform()
+```
+
+ArcGIS REST API responses embed errors in the JSON body (HTTP status is always 200). Use `detect_errors()` after parsing:
+
+```r
+result <- httr2::resp_body_string(resp) |>
+  RcppSimdJson::fparse() |>
+  detect_errors()
+```
+
+### Pagination
+
+Many portal endpoints use cursor-based pagination. `arc_paginate_req()` handles this automatically:
+
+```r
+req <- arc_base_req(host, token, path = c("sharing", "rest", "search"), query = c(f = "json", q = "crime"))
+
+responses <- arc_paginate_req(
+  req,
+  page_size = 50,
+  max_pages = Inf,
+  .progress = TRUE
+)
+# Returns a list of httr2_response objects
+```
+
+---
+
+## EsriJSON Serialization
+
+Convert R spatial objects to EsriJSON for use in REST API request bodies.
+
+### Single geometry
+
+```r
+pt <- sf::st_point(c(-122.4, 37.8))
+as_esri_geometry(pt, crs = sf::st_crs(4326))
+```
+
+### Feature arrays
+
+```r
+# sf or data.frame to list of feature objects
+as_features(my_sf)
+
+# sf or sfc to JSON string of feature array
+as_esri_features(my_sfc)
+```
+
+### Full featureSet (features + fields + spatialReference)
+
+```r
+# Returns a JSON string ready for use in a request body
+as_featureset(my_sf)
+as_esri_featureset(my_sf)  # equivalent
+```
+
+### Parsing EsriJSON
+
+```r
+# Converts featureSet JSON string to data.frame or sf
+result <- parse_esri_json(json_string)
+# Returns sf when geometry is present, data.frame otherwise
+```
+
+---
+
+## Field Type Mapping
+
+```r
+# Infer Esri field definitions from a data.frame
+fields <- as_fields(my_data)
+# Returns data.frame with columns: name, type, alias, nullable, editable
+
+# Create an empty prototype data.frame from a fields list
+fields_as_ptype_df(fields)
+```
+
+Bidirectional type mapping:
+
+| R type | Esri type |
+|---|---|
+| `double` | `esriFieldTypeDouble` |
+| `integer` | `esriFieldTypeInteger` |
+| `character` | `esriFieldTypeString` |
+| `Date`/`POSIXct` | `esriFieldTypeDate` |
+| `raw` | `esriFieldTypeBlob` |
+
+---
+
+## Geoprocessing Services
+
+### Async GP job workflow
+
+```r
+# 1. Create a job object
+job <- new_gp_job(
+  base_url = "https://logistics.arcgis.com/arcgis/rest/services/World/ServiceAreas/GPServer/GenerateServiceAreas",
+  params   = list(f = "json", travelMode = "..."),
+  token    = arc_token()
+)
+
+# 2. Submit
+job$start()
+
+# 3. Poll status (makes an HTTP request each access)
+job$status
+
+# 4. Wait for completion and return results
+results <- job$await(interval = 0.5, verbose = TRUE)
+
+# 5. Cancel if needed
+job$cancel()
+
+# Reconnect to an existing job by URL
+job <- gp_job_from_url("https://.../GPServer/ToolName/jobs/j1234abcd")
+```
+
+### GP parameter types
+
+```r
+# Linear distance
+dist <- gp_linear_unit(distance = 100, units = "esriMeters")
+as_gp_linear_unit(dist)
+
+# Area
+area <- gp_areal_unit(area = 500, units = "esriSquareMeters")
+as_gp_areal_unit(area)
+
+# Feature record set (accepts sf, data.frame, PortalItem, FeatureLayer)
+as_gp_feature_record_set(my_sf)
+
+# Record set (tabular, no geometry)
+as_record_set(my_data_frame)
+
+# Date (converts to milliseconds since epoch)
+as_gp_date(Sys.time())
+
+# Spatial reference
+as_spatial_reference(sf::st_crs(4326))
+
+# Parsing GP responses
+parse_gp_feature_record_set(json)
+parse_gp_linear_unit(json)
+parse_gp_areal_unit(json)
+parse_gp_date(json)
+parse_spatial_reference(json)
+```
+
+---
+
+## Portal API
+
+All functions default to `host = arc_host()` and `token = arc_token()`.
+
+### Portal self
+
+```r
+# View the portal as the current user/app
+arc_portal_self()
+
+# Authenticated user's own metadata (credits, groups, email, etc.)
+arc_user_self()
+
+# Organization's registered service URLs
+arc_portal_urls()
+
+# Federated ArcGIS Enterprise servers
+arc_portal_servers()
+```
+
+### Content items
+
+```r
+# Fetch item metadata by ID
+item <- arc_item("9df5e769bfe8412b8de36a2e618c7672")
+# Returns a PortalItem: item$id, item$title, item$type, item$owner, ...
+
+# Download the raw data backing an item
+raw <- arc_item_data(item)
+```
+
+### Search
+
+```r
+results <- search_items(
+  query      = "crime",
+  item_type  = "Feature Service",
+  owner      = "esri",
+  tags       = c("police", "public safety"),
+  sort_field = "numviews",
+  sort_order = "desc",
+  page_size  = 50,
+  max_pages  = 3
+)
+# Returns a data.frame of matching items
+```
+
+### Users, groups, and content
+
+```r
+arc_user("esri_en")
+arc_group("group_id")
+arc_user_content("username")
+arc_group_content("group_id")
+arc_portal_users()
+arc_portal_resources(id = "portal_id")
+```
+
+---
+
+## Feature Collections (Web Map layers)
+
+Build the JSON structures required to add R data to a web map as a feature collection.
+
+```r
+layer_def <- as_layer_definition(my_sf, name = "my_layer", object_id_field = "OBJECTID")
+layer     <- as_layer(my_sf, name = "my_layer", title = "My Layer Title")
+fc        <- as_feature_collection(layers = list(layer))
+```
+
+---
+
+## Geometry Utilities
+
+```r
+# Convert Esri Envelope list to sf bbox
+from_envelope(list(xmin = -122.4, ymin = 37.3, xmax = -122.0, ymax = 37.8,
+                   spatialReference = list(wkid = 4326L)))
+
+# Convert Esri SpatialReference list to sf CRS
+from_spatial_reference(list(wkid = 4326L))
+```
+
+---
+
+## URL Utilities
+
+```r
+# Parse an ArcGIS service URL into components
+arc_url_parse("https://services.arcgisonline.com/arcgis/rest/services/USA_Topo_Maps/MapServer/0")
+# Returns a list with: scheme, hostname, path, url, type ("MapServer"), layer ("0")
+
+# Detect service type from URL
+arc_url_type("https://.../FeatureServer/0")  # "FeatureServer"
+
+# Check if a string is a URL
+is_url("https://example.com")  # TRUE
+```
+
+---
+
+## General Utilities
+
+```r
+# NULL coalescing
+NULL %||% "default"
+
+# Remove NULL list elements
+compact(list(a = 1, b = NULL, c = 3))
+
+# Coerce to tbl class (tibble-style printing without tibble dependency)
+data_frame(x)
+
+# Fetch layer metadata from a service URL
+meta <- fetch_layer_metadata("https://.../FeatureServer/0", token = arc_token())
+```

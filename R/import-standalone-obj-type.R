@@ -89,12 +89,11 @@ obj_type_friendly <- function(x, value = TRUE) {
           typeof(x),
           logical = "`NA`",
           integer = "an integer `NA`",
-          double =
-            if (is.nan(x)) {
-              "`NaN`"
-            } else {
-              "a numeric `NA`"
-            },
+          double = if (is.nan(x)) {
+            "`NaN`"
+          } else {
+            "a numeric `NA`"
+          },
           complex = "a complex `NA`",
           character = "a character `NA`",
           .rlang_stop_unexpected_typeof(x)
@@ -297,14 +296,14 @@ obj_type_oo <- function(x) {
 #' @inheritParams args_error_context
 #' @noRd
 stop_input_type <- function(
-    x,
-    what,
-    ...,
-    allow_na = FALSE,
-    allow_null = FALSE,
-    show_value = TRUE,
-    arg = rlang::caller_arg(x),
-    call = rlang::caller_env()
+  x,
+  what,
+  ...,
+  allow_na = FALSE,
+  allow_null = FALSE,
+  show_value = TRUE,
+  arg = rlang::caller_arg(x),
+  call = rlang::caller_env()
 ) {
   # From standalone-cli.R
   cli <- rlang::env_get_list(

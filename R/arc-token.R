@@ -67,7 +67,6 @@ arc_token <- function(token = "ARCGIS_TOKEN") {
 #' @export
 #' @rdname token
 set_arc_token <- function(token, ...) {
-
   # one of the two must be provided
   if (rlang::is_missing(token) && rlang::dots_n(...) == 0) {
     cli::cli_abort("Must provide {.arg token} or {.arg ...}")
@@ -85,7 +84,6 @@ set_arc_token <- function(token, ...) {
 
   # handle dots if present
   if (rlang::dots_n(...) > 0) {
-
     # capture dots
     dots <- rlang::list2(...)
 
@@ -105,7 +103,6 @@ set_arc_token <- function(token, ...) {
     cli::cli_alert_success("Named tokens set: {.var {rlang::names2(dots)}}\n")
     cli::cli_alert_info("Access named tokens with {.code arc_token(\"name\")}")
   }
-
 }
 
 #' @rdname token
@@ -135,7 +132,8 @@ obj_check_token <- function(token, call = rlang::caller_env()) {
   # if no host is set
   if (is.null(token[["arcgis_host"]])) {
     cli::cli_abort(
-      c("{.arg token} does not have {.val arcgis_host}.",
+      c(
+        "{.arg token} does not have {.val arcgis_host}.",
         "i" = "was your token created using {.pkg arcgisutils}?"
       ),
       call = call
@@ -145,7 +143,8 @@ obj_check_token <- function(token, call = rlang::caller_env()) {
   # if more than one host is set, error
   if (length(token[["arcgis_host"]]) > 1) {
     cli::cli_abort(
-      c("{.arg token} has more than one {.val arcgis_host}.",
+      c(
+        "{.arg token} has more than one {.val arcgis_host}.",
         "i" = "was your token created using {.pkg arcgisutils}?"
       ),
       call = call

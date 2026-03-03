@@ -100,7 +100,8 @@ as_esri_geometry <- function(x, crs = NULL, call = rlang::caller_env()) {
   }
 
   sfg_class <- inherits_which(x, valid_sfg_classes)
-  switch(sfg_class,
+  switch(
+    sfg_class,
     "POINT" = sfg_point_as_point(x, sr),
     "MULTIPOINT" = sfg_multipoint_as_multipoint(x, sr),
     "LINESTRING" = sfg_linestring_as_polyline(x, sr),

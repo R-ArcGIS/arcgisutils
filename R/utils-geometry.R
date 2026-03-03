@@ -18,7 +18,6 @@
 #' @examples
 #' determine_esri_geo_type(sf::st_point(c(0, 0)))
 determine_esri_geo_type <- function(x, call = rlang::caller_env()) {
-
   # if `geom` is a data.frame return NULL
   if (inherits(x, "data.frame") && !inherits(x, "sf")) return(NULL)
 
@@ -57,7 +56,6 @@ determine_esri_geo_type <- function(x, call = rlang::caller_env()) {
 #' An extent json object. Use `jsonify::to_json(x, unbox = TRUE)` to convert
 #' to json.
 as_extent <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
-
   # if a Table (no spatial dimensions) return NULL
   if (inherits(x, "data.frame") && !inherits(x, "sf")) {
     return(NULL)
@@ -71,6 +69,4 @@ as_extent <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
 
   bbox <- as.list(sf::st_bbox(x))
   compact(c(bbox, crs))
-
 }
-

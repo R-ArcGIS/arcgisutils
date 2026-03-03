@@ -96,7 +96,8 @@ as_features <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
 
   sr <- validate_crs(crs)[[1]] %||% list()
 
-  switch(x_class,
+  switch(
+    x_class,
     "sf" = as_features_sf(x, sr, call = call),
     "data.frame" = as_features_sf(x, sr, call = call),
     "sfc" = as_features_sfc(x, sr, call = call)
@@ -145,7 +146,8 @@ as_features_sfc <- function(x, crs = NULL, call = rlang::caller_env()) {
 
   # switch based on dimensions
   if (three_dim) {
-    switch(sfc_class,
+    switch(
+      sfc_class,
       "sfc_POINT" = sfc_point_features_3d_list(x, crs),
       "sfc_MULTIPOINT" = sfc_multipoint_features_3d_list(x, crs),
       "sfc_LINESTRING" = sfc_linestring_features_3d_list(x, crs),
@@ -154,7 +156,8 @@ as_features_sfc <- function(x, crs = NULL, call = rlang::caller_env()) {
       "sfc_MULTIPOLYGON" = sfc_multipolygon_features_3d_list(x, crs),
     )
   } else {
-    switch(sfc_class,
+    switch(
+      sfc_class,
       "sfc_POINT" = sfc_point_features_2d_list(x, crs),
       "sfc_MULTIPOINT" = sfc_multipoint_features_2d_list(x, crs),
       "sfc_LINESTRING" = sfc_linestring_features_2d_list(x, crs),

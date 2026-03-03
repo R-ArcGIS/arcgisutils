@@ -36,11 +36,19 @@
 #' is `NA` and another field `wkt` contains the valid wkt.
 #'
 #'
-validate_crs <- function(crs, arg = rlang::caller_arg(crs), call = rlang::caller_env()) {
+validate_crs <- function(
+  crs,
+  arg = rlang::caller_arg(crs),
+  call = rlang::caller_env()
+) {
   if (rlang::is_null(crs)) {
     return(list(spatialReference = c()))
   }
-  if (!((inherits(crs, "character") || inherits(crs, "crs") || inherits(crs, "numeric")))) {
+  if (
+    !((inherits(crs, "character") ||
+      inherits(crs, "crs") ||
+      inherits(crs, "numeric")))
+  ) {
     cli::cli_abort(c(
       "Invalid CRS supplied: {.arg {arg}}",
       "i" = "must be compatible with {.fn sf::st_crs}",
@@ -61,7 +69,6 @@ validate_crs <- function(crs, arg = rlang::caller_arg(crs), call = rlang::caller
     wkid <- NULL
     wkt <- crs$wkt
   }
-
 
   sr_components <- compact(list(wkid = wkid, wkt = wkt))
   list(spatialReference = sr_components)

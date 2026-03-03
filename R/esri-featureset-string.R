@@ -1,6 +1,10 @@
 #' @export
 #' @rdname featureset
-as_esri_featureset <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
+as_esri_featureset <- function(
+  x,
+  crs = sf::st_crs(x),
+  call = rlang::caller_env()
+) {
   # class check
   valid_sfg_classes <- c(
     "sf",
@@ -21,7 +25,8 @@ as_esri_featureset <- function(x, crs = sf::st_crs(x), call = rlang::caller_env(
   # store the class name to be used in a switch statement
   x_class <- inherits_which(x, valid_sfg_classes)[1]
 
-  switch(x_class,
+  switch(
+    x_class,
     "sf" = as_esri_featureset_sf(x, sr, call = call),
     "data.frame" = as_esri_featureset_sf(x, sr, call = call),
     "sfc" = as_esri_featureset_sfc(x, sr, call = call)
@@ -73,7 +78,8 @@ as_esri_featureset_sfc <- function(x, crs = NULL, call = rlang::caller_env()) {
 
   # switch based on dimensions
   if (three_dim) {
-    switch(sfc_class,
+    switch(
+      sfc_class,
       "sfc_POINT" = sfc_point_featureset_3d_string(x, sr),
       "sfc_MULTIPOINT" = sfc_multipoint_featureset_3d_string(x, sr),
       "sfc_LINESTRING" = sfc_linestring_featureset_3d_string(x, sr),
@@ -82,7 +88,8 @@ as_esri_featureset_sfc <- function(x, crs = NULL, call = rlang::caller_env()) {
       "sfc_MULTIPOLYGON" = sfc_multipolygon_featureset_3d_string(x, sr),
     )
   } else {
-    switch(sfc_class,
+    switch(
+      sfc_class,
       "sfc_POINT" = sfc_point_featureset_2d_string(x, sr),
       "sfc_MULTIPOINT" = sfc_multipoint_featureset_2d_string(x, sr),
       "sfc_LINESTRING" = sfc_linestring_featureset_2d_string(x, sr),

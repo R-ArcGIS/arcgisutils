@@ -21,3 +21,5 @@
 ^src/Makevars\.win$
 README.html
 justfile
+llms.txt
+CLAUDE.md
