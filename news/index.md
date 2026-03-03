@@ -1,6 +1,6 @@
 # Changelog
 
-## arcgisutils (development version)
+## arcgisutils 0.5.0
 
 - Adds
   [`from_envelope()`](https://github.com/R-ArcGIS/arcgisutils/reference/gp_params.md)

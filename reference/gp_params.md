@@ -70,6 +70,15 @@ from_envelope(x, error_call = rlang::caller_call())
 
   a scalar number of the measurement.
 
+- sr:
+
+  a list with fields `latestWkid`, `wkid`, or `wkt` representing a
+  spatial reference
+
+- error_call:
+
+  the caller environment to be used when propagating errors.
+
 ## Details
 
 **\[experimental\]**
