@@ -2,6 +2,10 @@
 
 ## arcgisutils 0.5.0
 
+CRAN release: 2026-03-04
+
+- [`from_spatial_reference()`](https://github.com/R-ArcGIS/arcgisutils/reference/gp_params.md)
+  handles CRS WKIDs from the ESRI authority
 - Adds
   [`from_envelope()`](https://github.com/R-ArcGIS/arcgisutils/reference/gp_params.md)
   and

@@ -14,6 +14,9 @@
 - **Eli Pousson**. Contributor.
   [](https://orcid.org/0000-0001-8280-1706)
 
+- **Ryan Zomorrodi**. Contributor.
+  [](https://orcid.org/0009-0003-6417-5985)
+
 ## Citation
 
 Source:

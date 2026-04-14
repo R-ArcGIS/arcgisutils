@@ -32,8 +32,10 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.0" id="arcgisutils-050">arcgisutils 0.5.0<a class="anchor" aria-label="anchor" href="#arcgisutils-050"></a></h2>
-<ul><li>Adds <code><a href="../reference/gp_params.html">from_envelope()</a></code> and <code><a href="../reference/gp_params.html">from_spatial_reference()</a></code> to handle processing lists that represent an Esri Envelope and Esri SpatialReference object converting them into sf <code>bbox</code> objects</li>
+<h2 class="pkg-version" data-toc-text="0.5.0" id="arcgisutils-050">arcgisutils 0.5.0<a class="anchor" aria-label="anchor" href="#arcgisutils-050"></a></h2><p class="text-muted">CRAN release: 2026-03-04</p>
+<ul><li>
+<code><a href="../reference/gp_params.html">from_spatial_reference()</a></code> handles CRS WKIDs from the ESRI authority</li>
+<li>Adds <code><a href="../reference/gp_params.html">from_envelope()</a></code> and <code><a href="../reference/gp_params.html">from_spatial_reference()</a></code> to handle processing lists that represent an Esri Envelope and Esri SpatialReference object converting them into sf <code>bbox</code> objects</li>
 <li>Adds <code><a href="../reference/auth_shiny.html">auth_shiny()</a></code> and <code><a href="../reference/auth_shiny.html">oauth_provider_arcgis()</a></code> to support authentication in a Shiny application. <a href="https://github.com/lukakoning/shinyOAuth/" class="external-link"><code>{shinyOAuth}</code></a> is now a suggested package <a href="https://github.com/R-ArcGIS/arcgisutils/pull/82" class="uri">https://github.com/R-ArcGIS/arcgisutils/pull/82</a>
 </li>
 <li>Adds <code><a href="../reference/gp_job_from_url.html">gp_job_from_url()</a></code> which creates a new <code>arc_gp_job</code> from a given URL</li>
