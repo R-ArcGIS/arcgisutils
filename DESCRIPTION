@@ -9,7 +9,9 @@ Authors@R: c(
     person("Martha", "Bass", role = "ctb",
            comment = c(ORCID = "0009-0004-0268-5426")),
     person("Eli", "Pousson", , "eli.pousson@gmail.com", role = "ctb",
-           comment = c(ORCID = "0000-0001-8280-1706"))
+           comment = c(ORCID = "0000-0001-8280-1706")),
+    person("Ryan", "Zomorrodi", , "ryanzomorrodi@gmail.com", role = "ctb",
+           comment = c(ORCID = "0009-0003-6417-5985"))
   )
 Description: Developer oriented utility functions designed to be used as
     the building blocks of R packages that work with ArcGIS Location

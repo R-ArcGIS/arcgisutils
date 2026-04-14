@@ -433,6 +433,11 @@ from_spatial_reference <- function(sr, error_call = rlang::caller_call()) {
   }
 
   crs <- sr[["latestWkid"]] %||% sr[["wkid"]] %||% sr[["wkt"]]
+
+  if (is.numeric(crs) && crs >= 32767) {
+    crs <- paste0("ESRI:", crs)
+  }
+
   sf::st_crs(crs)
 }
 
