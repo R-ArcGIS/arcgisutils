@@ -61,3 +61,7 @@ jobs:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
 
+      - name: Show install log
+        if: always()
+        run: cat check/arcgisutils.Rcheck/00install.out
+
