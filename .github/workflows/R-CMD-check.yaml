@@ -35,8 +35,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: r-lib/actions/setup-pandoc@v2
-
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
         with:

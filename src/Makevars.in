@@ -13,16 +13,16 @@ CARGOTMP = $(CURDIR)/.cargo
 VENDOR_DIR = $(CURDIR)/vendor
 
 
-# RUSTFLAGS appends --print=native-static-libs to ensure that 
-# the correct linkers are used. Use this for debugging if need. 
+# RUSTFLAGS appends --print=native-static-libs to ensure that
+# the correct linkers are used. Use this for debugging if need.
 #
 # CRAN note: Cargo and Rustc versions are reported during
 # configure via tools/msrv.R.
 #
-# vendor.tar.xz, if present, is unzipped and used for offline compilation.
+# vendor.tar.xz, if present and NOT_CRAN is unset, is unzipped and used for offline compilation.
 $(STATLIB):
 
-	if [ -f ./rust/vendor.tar.xz ]; then \
+	if [ "$(NOT_CRAN)" != "true" ] && [ -f ./rust/vendor.tar.xz ]; then \
 		tar xf rust/vendor.tar.xz && \
 		mkdir -p $(CARGOTMP) && \
 		cp rust/vendor-config.toml $(CARGOTMP)/config.toml; \
@@ -36,7 +36,9 @@ $(STATLIB):
 	rm -Rf $(CARGOTMP);
 
 rust_clean: $(SHLIB)
-	rm -Rf $(CARGOTMP) $(VENDOR_DIR) @CLEAN_TARGET@
+	if [ "$(NOT_CRAN)" != "true" ]; then \
+		rm -Rf $(CARGOTMP) $(VENDOR_DIR) @CLEAN_TARGET@; \
+	fi
 
 clean:
 	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS) $(TARGET_DIR) $(VENDOR_DIR)
