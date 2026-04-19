@@ -31,16 +31,14 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
       NOT_CRAN: false
-      SCCACHE_GHA_ENABLED: true
-      RUSTC_WRAPPER: sccache
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Setup sccache
-        uses: mozilla-actions/sccache-action@v0.0.9
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -61,5 +59,3 @@ jobs:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
 
-      - name: Print sccache stats
-        run: sccache --show-stats
