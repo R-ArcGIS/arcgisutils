@@ -56,12 +56,45 @@ jobs:
           needs: check
           dependencies: '"hard"'
 
-      - uses: r-lib/actions/check-r-package@v2
+      - name: Check R package
+        id: rcmdcheck
+        run: |
+          options(crayon.enabled = TRUE)
+          cat("LOGNAME=", Sys.info()[["user"]], "\n", sep = "", file = Sys.getenv("GITHUB_ENV"), append = TRUE)
+          if (Sys.getenv("_R_CHECK_FORCE_SUGGESTS_", "") == "") Sys.setenv("_R_CHECK_FORCE_SUGGESTS_" = "false")
+          if (Sys.getenv("_R_CHECK_CRAN_INCOMING_", "") == "") Sys.setenv("_R_CHECK_CRAN_INCOMING_" = "false")
+          cat("check-dir-path=", file.path(getwd(), "check"), "\n", file = Sys.getenv("GITHUB_OUTPUT"), sep = "", append = TRUE)
+          rcmdcheck::rcmdcheck(
+            args = c("--no-manual", "--as-cran"),
+            build_args = c("--no-manual", "--compact-vignettes=gs+qpdf"),
+            error_on = "warning",
+            check_dir = "check",
+            env = c(NOT_CRAN = "true")
+          )
+        shell: Rscript {0}
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          echo ::group::Show testthat output
+          find check -name 'testthat.Rout*' -exec cat '{}' \; || true
+          echo ::endgroup::
+        shell: bash
+
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@v4
         with:
-          upload-snapshots: true
-          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
-        env:
-          NOT_CRAN: true
+          name: ${{ format('{0}-{1}-r{2}-{3}-results', runner.os, runner.arch, matrix.config.r, strategy.job-index) }}
+          path: ${{ steps.rcmdcheck.outputs.check-dir-path }}
+
+      - name: Upload snapshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ format('{0}-{1}-r{2}-{3}-testthat-snapshots', runner.os, runner.arch, matrix.config.r, strategy.job-index) }}
+          path: ${{ steps.rcmdcheck.outputs.check-dir-path }}/**/tests*/testthat/_snaps
+          if-no-files-found: ignore
 
       - name: Show install log
         if: always()
