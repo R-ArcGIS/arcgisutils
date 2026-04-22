@@ -394,8 +394,9 @@ dependencies = [
 
 [[package]]
 name = "serde_esri"
-version = "0.3.1"
-source = "git+https://github.com/josiahparry/serde_esri#28502b3a07280f09b92b9bc129e4f46ec6b23af1"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "caf7a4596dcbd94ba3e41441c28c0d52096a672d9164fdb242c87b72fc41a481"
 dependencies = [
  "derive_builder",
  "serde",
