@@ -17,6 +17,7 @@
 ^README\.*$
 ^\.vscode$
 ^src/rust/target$
+^rust-target$
 ^src/Makevars$
 ^src/Makevars\.win$
 README.html
