@@ -41,8 +41,8 @@ jobs:
         uses: actions/cache/restore@v5
         with:
           path: |
-            rust-target/deps
-            rust-target/build
+            rust-target/release/deps
+            rust-target/release/build
           key: ${{ runner.os }}-${{ runner.arch }}-rust-${{ hashFiles('src/rust/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-${{ runner.arch }}-rust-
 
@@ -71,8 +71,8 @@ jobs:
         uses: actions/cache/save@v5
         with:
           path: |
-            rust-target/deps
-            rust-target/build
+            rust-target/release/deps
+            rust-target/release/build
           key: ${{ steps.rust-cache-restore.outputs.cache-primary-key }}
 
       - name: Show install log
