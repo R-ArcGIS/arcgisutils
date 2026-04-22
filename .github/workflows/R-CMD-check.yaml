@@ -40,7 +40,9 @@ jobs:
         id: rust-cache-restore
         uses: actions/cache/restore@v5
         with:
-          path: rust-target
+          path: |
+            rust-target/deps
+            rust-target/build
           key: ${{ runner.os }}-${{ runner.arch }}-rust-${{ hashFiles('src/rust/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-${{ runner.arch }}-rust-
 
@@ -68,7 +70,9 @@ jobs:
         if: always() && steps.rust-cache-restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v5
         with:
-          path: rust-target
+          path: |
+            rust-target/deps
+            rust-target/build
           key: ${{ steps.rust-cache-restore.outputs.cache-primary-key }}
 
       - name: Show install log

@@ -40,6 +40,7 @@ rust_clean: $(SHLIB)
 		rm -Rf $(CARGOTMP) $(VENDOR_DIR); \
 		find $(TARGET_DIR)/deps -name 'arcgisutils-*.rcgu.o' -delete 2>/dev/null || true; \
 		find $(TARGET_DIR)/deps -name 'arcgisutils-*.d' -delete 2>/dev/null || true; \
+		rm -f $(TARGET_DIR)/release/libarcgisutils.a 2>/dev/null || true; \
 	else \
 		rm -Rf $(CARGOTMP) $(VENDOR_DIR) @CLEAN_TARGET@; \
 	fi
