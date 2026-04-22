@@ -1,4 +1,4 @@
-TARGET_DIR = ./rust/target
+TARGET_DIR = @TARGET_DIR@
 LIBDIR = $(TARGET_DIR)/@LIBDIR@
 STATLIB = $(LIBDIR)/libarcgisutils.a
 PKG_LIBS = -L$(LIBDIR) -larcgisutils
