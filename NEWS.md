@@ -1,3 +1,5 @@
+# arcgisutils (development version)
+
 # arcgisutils 0.5.0
 
 - `from_spatial_reference()` handles CRS WKIDs from the ESRI authority
