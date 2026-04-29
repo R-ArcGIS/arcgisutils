@@ -24,7 +24,9 @@ pub fn df_to_attributes(x: List, n: usize) -> Vec<Map<String, Value>> {
                     let col_typed = Doubles::try_from(col).unwrap();
                     let v = &col_typed[i];
 
-                    if let false = v.is_na() {
+                    if v.is_na() {
+                        map.insert(name, Value::Null);
+                    } else {
                         let num = Number::from_f64(v.inner())
                             .expect("double can't be converted to serde_json::Number");
                         map.insert(name, Value::Number(num));
@@ -34,7 +36,9 @@ pub fn df_to_attributes(x: List, n: usize) -> Vec<Map<String, Value>> {
                     let col_typed = Integers::try_from(col).unwrap();
                     let v = &col_typed[i];
 
-                    if let false = v.is_na() {
+                    if v.is_na() {
+                        map.insert(name, Value::Null);
+                    } else {
                         let num = Number::from(v.inner());
                         map.insert(name, Value::Number(num));
                     }
@@ -42,7 +46,9 @@ pub fn df_to_attributes(x: List, n: usize) -> Vec<Map<String, Value>> {
                 Rtype::Strings => {
                     let col_typed = Strings::try_from(col).unwrap();
                     let rstr = &col_typed[i];
-                    if let false = rstr.is_na() {
+                    if rstr.is_na() {
+                        map.insert(name, Value::Null);
+                    } else {
                         map.insert(name, Value::String(rstr.to_string()));
                     }
                 }
@@ -50,7 +56,9 @@ pub fn df_to_attributes(x: List, n: usize) -> Vec<Map<String, Value>> {
                     let col_typed = Logicals::try_from(col).unwrap();
                     let v = &col_typed[i];
 
-                    if let false = v.is_na() {
+                    if v.is_na() {
+                        map.insert(name, Value::Null);
+                    } else {
                         map.insert(name, Value::Bool(v.to_bool()));
                     }
                 }

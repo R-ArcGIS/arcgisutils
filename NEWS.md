@@ -1,5 +1,9 @@
 # arcgisutils (development version)
 
+## Fixed
+
+- Fixes `as_esri_features()` to retain `null` values closes <https://github.com/R-ArcGIS/arcgisutils/issues/91>
+
 # arcgisutils 0.5.0
 
 - `from_spatial_reference()` handles CRS WKIDs from the ESRI authority
