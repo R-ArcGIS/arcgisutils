@@ -1,5 +1,14 @@
 # Changelog
 
+## arcgisutils (development version)
+
+### Fixed
+
+- Fixes
+  [`as_esri_features()`](https://github.com/R-ArcGIS/arcgisutils/reference/features.md)
+  to retain `null` values closes
+  <https://github.com/R-ArcGIS/arcgisutils/issues/91>
+
 ## arcgisutils 0.5.0
 
 CRAN release: 2026-03-04

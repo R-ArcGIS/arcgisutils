@@ -51,5 +51,5 @@ is_date(today)
 #> [1] TRUE
 
 date_to_ms(today)
-#> [1] 1.776816e+12
+#> [1] 1.777421e+12
 ```

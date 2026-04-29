@@ -57,5 +57,5 @@ arc_base_req("https://arcgis.com")
 #> GET https://arcgis.com
 #> Body: empty
 #> Options:
-#> * useragent: "arcgisutils v0.5.0"
+#> * useragent: "arcgisutils v0.5.0.9000"
 ```

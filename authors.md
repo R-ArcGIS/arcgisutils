@@ -23,12 +23,12 @@ Source:
 [`DESCRIPTION`](https://github.com/R-ArcGIS/arcgisutils/blob/main/DESCRIPTION)
 
 Parry J (2026). *arcgisutils: R-ArcGIS Bridge Utility Functions*. R
-package version 0.5.0, <https://github.com/R-ArcGIS/arcgisutils>.
+package version 0.5.0.9000, <https://github.com/R-ArcGIS/arcgisutils>.
 
     @Manual{,
       title = {arcgisutils: R-ArcGIS Bridge Utility Functions},
       author = {Josiah Parry},
       year = {2026},
-      note = {R package version 0.5.0},
+      note = {R package version 0.5.0.9000},
       url = {https://github.com/R-ArcGIS/arcgisutils},
     }

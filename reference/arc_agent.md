@@ -28,5 +28,5 @@ arc_agent(req)
 #> GET http://example.com
 #> Body: empty
 #> Options:
-#> * useragent: "arcgisutils v0.5.0"
+#> * useragent: "arcgisutils v0.5.0.9000"
 ```
