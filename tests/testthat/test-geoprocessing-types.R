@@ -16,7 +16,7 @@ test_that("from_spatial_reference works for ESRI WKIDs", {
   )
 })
 
-test_that("from_spatial_reference works for ESRI WKIDs", {
+test_that("from_spatial_reference works for NA WKIDs", {
   sr <- list(wkid = NA_integer_)
 
   expect_identical(
