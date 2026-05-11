@@ -56,6 +56,7 @@ data_frame(x, call = rlang::caller_call())
 ## Examples
 
 ``` r
+
 # remove null elements
 compact(list(a = NULL, b = 1))
 #> $b

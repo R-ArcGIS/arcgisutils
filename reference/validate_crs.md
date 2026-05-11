@@ -58,6 +58,7 @@ for more details on valid representations.
 ## Examples
 
 ``` r
+
 # using epsg code integer or string representation
 validate_crs(3857)
 #> $spatialReference

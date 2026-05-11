@@ -55,6 +55,7 @@ Reference](https://developers.arcgis.com/documentation/common-data-types/feature
 ## Examples
 
 ``` r
+
 library(sf)
 # POINT
 # create sfg points

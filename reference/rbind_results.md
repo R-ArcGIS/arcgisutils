@@ -58,6 +58,7 @@ indices that were `NULL`.
 ## Examples
 
 ``` r
+
 x <- head(iris)
 res <- rbind_results(list(x, NULL, x))
 attr(res, "null_elements")

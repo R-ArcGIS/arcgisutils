@@ -29,6 +29,7 @@ the geometry has a Z or M dimension.
 ## Examples
 
 ``` r
+
 geo <- sf::st_read(system.file("shape/nc.shp", package="sf"), quiet = TRUE)[["geometry"]]
 
 determine_dims(geo)

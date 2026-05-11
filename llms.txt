@@ -56,6 +56,7 @@ provides the complete R-ArcGIS Bridge toolkit. For most users,
 installing the metapackage is recommended:
 
 ``` r
+
 install.packages("arcgis")
 ```
 
@@ -64,12 +65,14 @@ You can also install
 CRAN:
 
 ``` r
+
 install.packages("arcgisutils")
 ```
 
 To install the development version:
 
 ``` r
+
 pak::pak("r-arcgis/arcgisutils")
 ```
 
@@ -105,6 +108,7 @@ can set the token globally or set multiple named environments. Here is a
 minimal example:
 
 ``` r
+
 library(arcgisutils)
 #> 
 #> Attaching package: 'arcgisutils'
@@ -114,6 +118,7 @@ library(arcgisutils)
 ```
 
 ``` r
+
 key <- auth_key()
 set_arc_token(key)
 ```
@@ -122,12 +127,14 @@ Alternatively, tokens can be set based on a key-value pair for multiple
 environments:
 
 ``` r
+
 set_arc_token("production" = prod_token, "development" = dev_token)
 ```
 
 And fetched based on their name via
 
 ``` r
+
 arc_token("production")
 ```
 
@@ -136,6 +143,7 @@ arc_token("production")
 Search and discover content across your ArcGIS organization:
 
 ``` r
+
 # Search for feature services containing "crime" data
 crime_items <- search_items(
   query = "crime", 
@@ -167,6 +175,7 @@ crime_items
 ```
 
 ``` r
+
 # Get detailed item information for a portal item
 arc_item(crime_items$id[1])
 #> <PortalItem<Feature Service>>
@@ -183,6 +192,7 @@ as this will handle setting the user agent and authorization token. The
 function creates a standardized `httr2` request object:
 
 ``` r
+
 # defaults to arcgis.com
 host <- arc_host() 
 
@@ -208,6 +218,7 @@ using
 directly from an `sf` object.
 
 ``` r
+
 library(sf)
 
 # load the NC SIDS dataset and extract centroids
@@ -256,6 +267,7 @@ Feature set json can also be parsed using
 [`parse_esri_json()`](https://github.com/R-ArcGIS/arcgisutils/reference/parse_esri_json.md).
 
 ``` r
+
 parse_esri_json(nc_json)
 #> Simple feature collection with 2 features and 3 fields
 #> Geometry type: POINT
@@ -274,6 +286,7 @@ JSON object using
 Convert these to json with `yyjsonr` or `jsonify`.
 
 ``` r
+
 crs <- validate_crs(27700)
 jsonify::pretty_json(crs, unbox = TRUE)
 #> {
@@ -294,6 +307,7 @@ to call the [Trace DownStream Elevation
 Service](https://developers.arcgis.com/rest/elevation-analysis/trace-downstream/)
 
 ``` r
+
 trace_downstream <- function(
   input_points,
   point_id_field = NULL,
@@ -324,6 +338,7 @@ trace_downstream <- function(
 This new function can be called to start a new job:
 
 ``` r
+
 # create input points
 input_points <- st_sfc(
   st_point(c(-159.548936, 21.955888)),
@@ -351,6 +366,7 @@ job$start()
 Jobs run asynchronously so we can check the status with `job$status`
 
 ``` r
+
 job$status
 #> <arcgisutils::arc_job_status>
 #>  @ status: chr "esriJobExecuting"
@@ -362,6 +378,7 @@ result function which is
 in this case.
 
 ``` r
+
 job$results
 #> $param_name
 #> [1] "OutputTraceLine"

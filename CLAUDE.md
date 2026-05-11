@@ -22,6 +22,7 @@ documentation.**
 to a function that already documents those parameters:
 
 ``` r
+
 # Correct
 #' @inheritParams arc_base_req
 
@@ -42,6 +43,7 @@ is the canonical source for `url`, `token`, `path`, `query`, and
 function. These are imported via `R/import-standalone-types-check.R`:
 
 ``` r
+
 check_string(x, allow_empty = FALSE)
 check_bool(x)
 check_number_whole(x, min = 1, max = 100)
@@ -170,12 +172,12 @@ which wraps
 
 ### Environment variables
 
-| Variable              | Purpose                                                                                            |
-|-----------------------|----------------------------------------------------------------------------------------------------|
-| `ARCGIS_HOST`         | Portal host (default: `https://www.arcgis.com`)                                                    |
-| `ARCGIS_CLIENT`       | OAuth2 client ID                                                                                   |
-| `ARCGIS_SECRET`       | OAuth2 client secret                                                                               |
-| `ARCGIS_API_KEY`      | API key for [`auth_key()`](https://github.com/R-ArcGIS/arcgisutils/reference/auth.md)              |
-| `ARCGIS_USER`         | Username for [`auth_user()`](https://github.com/R-ArcGIS/arcgisutils/reference/auth.md)            |
-| `ARCGIS_PASSWORD`     | Password for [`auth_user()`](https://github.com/R-ArcGIS/arcgisutils/reference/auth.md)            |
+| Variable | Purpose |
+|----|----|
+| `ARCGIS_HOST` | Portal host (default: `https://www.arcgis.com`) |
+| `ARCGIS_CLIENT` | OAuth2 client ID |
+| `ARCGIS_SECRET` | OAuth2 client secret |
+| `ARCGIS_API_KEY` | API key for [`auth_key()`](https://github.com/R-ArcGIS/arcgisutils/reference/auth.md) |
+| `ARCGIS_USER` | Username for [`auth_user()`](https://github.com/R-ArcGIS/arcgisutils/reference/auth.md) |
+| `ARCGIS_PASSWORD` | Password for [`auth_user()`](https://github.com/R-ArcGIS/arcgisutils/reference/auth.md) |
 | `ARCGIS_REDIRECT_URI` | Redirect URI for [`auth_shiny()`](https://github.com/R-ArcGIS/arcgisutils/reference/auth_shiny.md) |

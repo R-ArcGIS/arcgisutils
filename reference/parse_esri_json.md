@@ -45,6 +45,7 @@ A data.frame. If geometry is found, returns an sf object.
 ## Examples
 
 ``` r
+
 esri_json <- '{
     "geometryType": "esriGeometryPolygon",
     "spatialReference": {

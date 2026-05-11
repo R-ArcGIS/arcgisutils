@@ -45,11 +45,12 @@ from_esri_date(x)
 ## Examples
 
 ``` r
+
 today <- Sys.Date()
 
 is_date(today)
 #> [1] TRUE
 
 date_to_ms(today)
-#> [1] 1.777421e+12
+#> [1] 1.778458e+12
 ```
