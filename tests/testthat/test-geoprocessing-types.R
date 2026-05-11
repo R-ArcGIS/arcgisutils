@@ -15,3 +15,12 @@ test_that("from_spatial_reference works for ESRI WKIDs", {
     sf::st_crs(paste0("ESRI:", sr$wkid))
   )
 })
+
+test_that("from_spatial_reference works for NA WKIDs", {
+  sr <- list(wkid = NA_integer_)
+
+  expect_identical(
+    from_spatial_reference(sr),
+    sf::NA_crs_
+  )
+})
