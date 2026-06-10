@@ -1,8 +1,14 @@
 # arcgisutils (development version)
 
+## New Features
+
+- `arc_user_content()` now defaults `user` to the authenticated user via `arc_user_self()`
+- `arc_user_self()` returns a `PortalUser` object (subclass of `list`)
+
 ## Fixed
 
 - Fixes `as_esri_features()` to retain `null` values closes <https://github.com/R-ArcGIS/arcgisutils/issues/91>
+- Fixes `as_form_params()` double-encoding string scalars; elements that are already a single character string are passed through as-is instead of being wrapped in `yyjsonr::write_json_str()`
 
 # arcgisutils 0.5.0
 

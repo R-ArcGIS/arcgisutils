@@ -66,7 +66,7 @@ arc_group_content <- function(
 #' @name content
 #' @export
 arc_user_content <- function(
-  user,
+  user = arc_user_self(token = token),
   host = arc_host(),
   token = arc_token()
 ) {

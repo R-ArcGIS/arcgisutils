@@ -50,5 +50,5 @@ arc_user_self <- function(
     res[["groups"]][[field]] <- from_esri_date(col)
   }
 
-  res
+  structure(res, class = c("PortalUser", "list"))
 }

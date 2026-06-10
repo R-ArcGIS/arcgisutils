@@ -98,7 +98,10 @@ as_form_params <- function(x) {
     cli::cli_abort("{.arg x} must be a named list.")
   }
 
-  params <- lapply(x, \(.x) yyjsonr::write_json_str(.x, auto_unbox = TRUE))
+  params <- lapply(x, \(.x) {
+    if (rlang::is_string(.x)) .x else
+      yyjsonr::write_json_str(.x, auto_unbox = TRUE)
+  })
   arc_form_params(params)
 }
 
