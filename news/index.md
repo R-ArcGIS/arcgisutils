@@ -9,6 +9,8 @@
   [`arc_user_self()`](https://github.com/R-ArcGIS/arcgisutils/reference/arc_user_self.md)
 - [`arc_user_self()`](https://github.com/R-ArcGIS/arcgisutils/reference/arc_user_self.md)
   returns a `PortalUser` object (subclass of `list`)
+- `arc_gp_job` R6 object gains a `messages()` method to return the
+  geoprocessing messages
 
 ### Fixed
 

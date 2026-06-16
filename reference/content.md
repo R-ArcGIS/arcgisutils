@@ -8,7 +8,11 @@ owned by them.
 ``` r
 arc_group_content(group, host = arc_host(), token = arc_token())
 
-arc_user_content(user, host = arc_host(), token = arc_token())
+arc_user_content(
+  user = arc_user_self(token = token),
+  host = arc_host(),
+  token = arc_token()
+)
 ```
 
 ## Arguments

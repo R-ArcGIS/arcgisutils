@@ -4,7 +4,7 @@ A general function that takes a list of `data.frame`s and returns a
 single and combines them into a single object. It will use the fastest
 method available. In order this is `collapse::rowbind()`,
 `data.table::rbindlist()`,
-[`vctrs::list_unchop()`](https://vctrs.r-lib.org/reference/vec_chop.html),
+[`vctrs::list_unchop()`](https://vctrs.r-lib.org/reference/list_unchop.html),
 then `do.call(rbind.data.frame, x)`.
 
 ## Usage

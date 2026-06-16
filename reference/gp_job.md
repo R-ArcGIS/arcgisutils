@@ -97,6 +97,8 @@ Other geoprocessing:
 
 - [`arc_gp_job$await()`](#method-arc_gp_job-await)
 
+- [`arc_gp_job$messages()`](#method-arc_gp_job-messages)
+
 - [`arc_gp_job$clone()`](#method-arc_gp_job-clone)
 
 ------------------------------------------------------------------------
@@ -181,6 +183,16 @@ Waits for job completion and returns results.
 - `verbose`:
 
   whether to print status messages (default FALSE)
+
+------------------------------------------------------------------------
+
+### Method `messages()`
+
+Fetches Geoprocessing Messages
+
+#### Usage
+
+    arc_gp_job$messages()
 
 ------------------------------------------------------------------------
 
