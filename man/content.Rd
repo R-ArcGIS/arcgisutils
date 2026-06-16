@@ -8,7 +8,11 @@
 \usage{
 arc_group_content(group, host = arc_host(), token = arc_token())
 
-arc_user_content(user, host = arc_host(), token = arc_token())
+arc_user_content(
+  user = arc_user_self(token = token),
+  host = arc_host(),
+  token = arc_token()
+)
 }
 \arguments{
 \item{group}{a scalar character of the group ID or a \code{PortalGroup} object created using \code{\link[=arc_group]{arc_group()}}}

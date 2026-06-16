@@ -85,6 +85,7 @@ Other geoprocessing:
 \item \href{#method-arc_gp_job-start}{\code{arc_gp_job$start()}}
 \item \href{#method-arc_gp_job-cancel}{\code{arc_gp_job$cancel()}}
 \item \href{#method-arc_gp_job-await}{\code{arc_gp_job$await()}}
+\item \href{#method-arc_gp_job-messages}{\code{arc_gp_job$messages()}}
 \item \href{#method-arc_gp_job-clone}{\code{arc_gp_job$clone()}}
 }
 }
@@ -156,6 +157,16 @@ Waits for job completion and returns results.
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-arc_gp_job-messages"></a>}}
+\if{latex}{\out{\hypertarget{method-arc_gp_job-messages}{}}}
+\subsection{Method \code{messages()}}{
+Fetches Geoprocessing Messages
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{arc_gp_job$messages()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-arc_gp_job-clone"></a>}}

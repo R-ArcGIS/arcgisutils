@@ -32,7 +32,7 @@ see details.
 A general function that takes a list of \code{data.frame}s and returns a single
 and combines them into a single object. It will use the fastest method
 available. In order this is \code{\link[collapse:rowbind]{collapse::rowbind()}}, \code{\link[data.table:rbindlist]{data.table::rbindlist()}},
-\code{\link[vctrs:vec_chop]{vctrs::list_unchop()}}, then \code{do.call(rbind.data.frame, x)}.
+\code{\link[vctrs:list_unchop]{vctrs::list_unchop()}}, then \code{do.call(rbind.data.frame, x)}.
 }
 \details{
 If all items in the list are \code{data.frame}s, then the result will be a \code{data.frame}.

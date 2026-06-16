@@ -99,8 +99,11 @@ as_form_params <- function(x) {
   }
 
   params <- lapply(x, \(.x) {
-    if (rlang::is_string(.x)) .x else
+    if (rlang::is_string(.x)) {
+      .x
+    } else {
       yyjsonr::write_json_str(.x, auto_unbox = TRUE)
+    }
   })
   arc_form_params(params)
 }
@@ -258,6 +261,23 @@ arc_gp_job <- R6::R6Class(
         }
         Sys.sleep(interval)
       }
+    },
+
+    #' @description Fetches Geoprocessing Messages
+    messages = function() {
+      resp <- arc_base_req(
+        self$base_url,
+        token = private$token,
+        path = c("jobs", self$id),
+        query = c(f = "json")
+      ) |>
+        httr2::req_perform()
+
+      res <- RcppSimdJson::fparse(httr2::resp_body_string(resp))
+
+      # check for errors
+      detect_errors(res)
+      res
     }
   ),
   private = list(

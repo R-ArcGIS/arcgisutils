@@ -104,7 +104,7 @@ Search is quite nuanced and should be handled with care as you may get unexpecte
 }
 }
 \examples{
-\dontshow{if (curl::has_internet()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (curl::has_internet()) withAutoprint(\{ # examplesIf}
 crime_items <- search_items(
   query = "crime",
   item_type = "Feature Service",

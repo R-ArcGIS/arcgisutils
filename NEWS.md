@@ -4,6 +4,7 @@
 
 - `arc_user_content()` now defaults `user` to the authenticated user via `arc_user_self()`
 - `arc_user_self()` returns a `PortalUser` object (subclass of `list`)
+- `arc_gp_job` R6 object gains a `messages()` method to return the geoprocessing messages
 
 ## Fixed
 
