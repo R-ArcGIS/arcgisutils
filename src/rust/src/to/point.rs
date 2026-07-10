@@ -13,31 +13,31 @@ impl SfgPoint {
 
         match dim {
             SfgDim::XY => Some(EsriPoint {
-                x: self.0.elt(0).inner(),
-                y: self.0.elt(1).inner(),
+                x: self.0.elt(0).0,
+                y: self.0.elt(1).0,
                 z: None,
                 m: None,
                 spatialReference: sr,
             }),
             SfgDim::XYZ => Some(EsriPoint {
-                x: self.0.elt(0).inner(),
-                y: self.0.elt(1).inner(),
-                z: Some(self.0.elt(2).inner()),
+                x: self.0.elt(0).0,
+                y: self.0.elt(1).0,
+                z: Some(self.0.elt(2).0),
                 m: None,
                 spatialReference: sr,
             }),
             SfgDim::XYM => Some(EsriPoint {
-                x: self.0.elt(0).inner(),
-                y: self.0.elt(1).inner(),
+                x: self.0.elt(0).0,
+                y: self.0.elt(1).0,
                 z: None,
-                m: Some(self.0.elt(2).inner()),
+                m: Some(self.0.elt(2).0),
                 spatialReference: sr,
             }),
             SfgDim::XYZM => Some(EsriPoint {
-                x: self.0.elt(0).inner(),
-                y: self.0.elt(1).inner(),
-                z: Some(self.0.elt(2).inner()),
-                m: Some(self.0.elt(3).inner()),
+                x: self.0.elt(0).0,
+                y: self.0.elt(1).0,
+                z: Some(self.0.elt(2).0),
+                m: Some(self.0.elt(3).0),
                 spatialReference: sr,
             }),
         }

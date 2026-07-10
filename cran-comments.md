@@ -1,5 +1,7 @@
 ## R CMD check results
 
+This is a maintenance release of {arcgisutils} with minor bug fixes and one small feature.
+
 0 errors | 0 warnings | 0 notes
 
 Suggests or Enhances not in mainstream repositories:

@@ -1,5 +1,5 @@
 use crate::{deserialize_sr, sfc::*, sfg::SfgMultiLineString, to::AsEsriGeometry};
-use extendr_api::prelude::*;
+use extendr_api::{error::Result, prelude::*};
 use serde_esri::{
     features::Feature, features::FeatureSet, geometry::EsriGeometry, geometry::EsriPolyline,
     spatial_reference::SpatialReference,

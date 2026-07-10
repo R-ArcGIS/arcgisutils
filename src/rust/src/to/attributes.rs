@@ -18,7 +18,6 @@ pub fn df_to_attributes(x: List, n: usize) -> Vec<Map<String, Value>> {
         for j in 0..ncol {
             let name = col_names[j].clone();
             let col = &x[j];
-            // println!("column type: {:?}", col.rtype());
             match col.rtype() {
                 Rtype::Doubles => {
                     let col_typed = Doubles::try_from(col).unwrap();
@@ -27,7 +26,7 @@ pub fn df_to_attributes(x: List, n: usize) -> Vec<Map<String, Value>> {
                     if v.is_na() {
                         map.insert(name, Value::Null);
                     } else {
-                        let num = Number::from_f64(v.inner())
+                        let num = Number::from_f64(v.0)
                             .expect("double can't be converted to serde_json::Number");
                         map.insert(name, Value::Number(num));
                     }
@@ -39,7 +38,7 @@ pub fn df_to_attributes(x: List, n: usize) -> Vec<Map<String, Value>> {
                     if v.is_na() {
                         map.insert(name, Value::Null);
                     } else {
-                        let num = Number::from(v.inner());
+                        let num = Number::from(v.0);
                         map.insert(name, Value::Number(num));
                     }
                 }
