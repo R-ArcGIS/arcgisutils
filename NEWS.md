@@ -1,4 +1,4 @@
-# arcgisutils (development version)
+# arcgisutils 0.6.0
 
 ## New Features
 
@@ -10,6 +10,10 @@
 
 - Fixes `as_esri_features()` to retain `null` values closes <https://github.com/R-ArcGIS/arcgisutils/issues/91>
 - Fixes `as_form_params()` double-encoding string scalars; elements that are already a single character string are passed through as-is instead of being wrapped in `yyjsonr::write_json_str()`
+
+## Changed
+
+- Bumped extendr to v0.9.0
 
 # arcgisutils 0.5.0
 
