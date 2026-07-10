@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arcgisutils</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,9 +32,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="arcgisutils-development-version">arcgisutils (development version)<a class="anchor" aria-label="anchor" href="#arcgisutils-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.6.0" id="arcgisutils-060">arcgisutils 0.6.0<a class="anchor" aria-label="anchor" href="#arcgisutils-060"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-6-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-6-0"></a></h3>
 <ul><li>
 <code><a href="../reference/content.html">arc_user_content()</a></code> now defaults <code>user</code> to the authenticated user via <code><a href="../reference/arc_user_self.html">arc_user_self()</a></code>
 </li>
@@ -44,11 +44,15 @@
 <code>arc_gp_job</code> R6 object gains a <code>messages()</code> method to return the geoprocessing messages</li>
 </ul></div>
 <div class="section level3">
-<h3 id="fixed-development-version">Fixed<a class="anchor" aria-label="anchor" href="#fixed-development-version"></a></h3>
+<h3 id="fixed-0-6-0">Fixed<a class="anchor" aria-label="anchor" href="#fixed-0-6-0"></a></h3>
 <ul><li>Fixes <code><a href="../reference/features.html">as_esri_features()</a></code> to retain <code>null</code> values closes <a href="https://github.com/R-ArcGIS/arcgisutils/issues/91" class="uri">https://github.com/R-ArcGIS/arcgisutils/issues/91</a>
 </li>
 <li>Fixes <code><a href="../reference/arc_form_params.html">as_form_params()</a></code> double-encoding string scalars; elements that are already a single character string are passed through as-is instead of being wrapped in <code><a href="https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html" class="external-link">yyjsonr::write_json_str()</a></code>
 </li>
+</ul></div>
+<div class="section level3">
+<h3 id="changed-0-6-0">Changed<a class="anchor" aria-label="anchor" href="#changed-0-6-0"></a></h3>
+<ul><li>Bumped extendr to v0.9.0</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -193,7 +197,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

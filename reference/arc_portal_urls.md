@@ -377,7 +377,7 @@ arc_portal_urls()
 #> 
 #> $helperServices$aiAssistantServices
 #> $helperServices$aiAssistantServices$url
-#> [1] "https://aiservices-beta.arcgis.com"
+#> [1] "https://aiservices.arcgis.com"
 #> 
 #> $helperServices$aiAssistantServices$docChatAssistant
 #> [1] "/skills/doc_chat"
@@ -418,11 +418,17 @@ arc_portal_urls()
 #> $helperServices$aiUtilityServices$api$image_extract
 #> [1] "/api/image/extractText"
 #> 
+#> $helperServices$aiUtilityServices$api$file_analyze
+#> [1] "/api/file/analyze"
+#> 
 #> $helperServices$aiUtilityServices$api$embeddings
 #> [1] "/api/embeddings"
 #> 
 #> $helperServices$aiUtilityServices$api$audio_transcribe
 #> [1] "/api/audio/transcribe"
+#> 
+#> $helperServices$aiUtilityServices$api$audio_speech
+#> [1] "/api/audio/speech"
 #> 
 #> 
 #> $helperServices$aiUtilityServices$translateUtility
@@ -528,6 +534,6 @@ arc_portal_urls()
 #> [1] FALSE
 #> 
 #> $currentVersion
-#> [1] "2026.1"
+#> [1] "2026.2"
 #> 
 ```

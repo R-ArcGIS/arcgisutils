@@ -191,7 +191,7 @@ crime_items <- search_items(
   max_pages = 1
 )
 crime_items
-#> # A data frame: 50 × 46
+#> # A data frame: 50 × 48
 #>    id      owner created             modified            guid  name  title type 
 #>  * <chr>   <chr> <dttm>              <dttm>              <lgl> <chr> <chr> <chr>
 #>  1 ea0cfe… Toro… 2023-03-28 15:02:39 2026-02-02 17:45:21 NA    Neig… Neig… Feat…
@@ -205,7 +205,7 @@ crime_items
 #>  9 ab92f5… KASU… 2019-12-09 16:16:13 2019-12-10 18:55:20 NA    Prop… Prop… Feat…
 #> 10 94bc33… admi… 2023-08-11 20:09:35 2026-01-09 17:03:25 NA    NA    Crim… Feat…
 #> # ℹ 40 more rows
-#> # ℹ 38 more variables: typeKeywords <list>, description <chr>, tags <list>,
+#> # ℹ 40 more variables: typeKeywords <list>, description <chr>, tags <list>,
 #> #   snippet <chr>, thumbnail <chr>, documentation <lgl>, extent <list>,
 #> #   categories <list>, spatialReference <chr>, accessInformation <chr>,
 #> #   classification <lgl>, licenseInfo <chr>, culture <chr>, properties <list>,

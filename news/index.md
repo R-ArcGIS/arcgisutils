@@ -1,6 +1,6 @@
 # Changelog
 
-## arcgisutils (development version)
+## arcgisutils 0.6.0
 
 ### New Features
 
@@ -23,6 +23,10 @@
   double-encoding string scalars; elements that are already a single
   character string are passed through as-is instead of being wrapped in
   [`yyjsonr::write_json_str()`](https://coolbutuseless.github.io/package/yyjsonr/reference/write_json_str.html)
+
+### Changed
+
+- Bumped extendr to v0.9.0
 
 ## arcgisutils 0.5.0
 
