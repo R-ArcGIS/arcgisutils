@@ -181,6 +181,10 @@ arc_portal_urls()
 #>   suggest
 #> 1    TRUE
 #> 
+#> $helperServices$batchGeocode
+#>                                                                           url
+#> 1 https://geocode.arcgis.com/arcgis/rest/services/World/GPServer/BatchGeocode
+#> 
 #> $helperServices$defaultElevationLayers
 #>                                                                                          url
 #> 1 https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer
