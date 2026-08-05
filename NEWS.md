@@ -1,3 +1,7 @@
+# arcgisutils 0.6.1 (development)
+
+- Adds `arcgis.req_headers` option. If provided, the headers will be injected into all requested from `arc_base_req()` <https://github.com/R-ArcGIS/arcgisutils/issues/94>
+
 # arcgisutils 0.6.0
 
 ## New Features

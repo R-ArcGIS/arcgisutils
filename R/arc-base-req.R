@@ -65,5 +65,5 @@ arc_base_req <- function(
     )
   }
 
-  req
+  httr2::req_headers(req, !!!getOption("arcgis.req_headers"))
 }
