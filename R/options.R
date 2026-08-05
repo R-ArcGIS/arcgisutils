@@ -1,4 +1,6 @@
-#' Options
+#' Configuration Options
+#'
+#' @name opts
 #'
 #' @description
 #'
@@ -22,4 +24,4 @@
 #' )
 #' # see the headers
 #' arc_base_req("https://arcgis.com")
-
+NULL
