@@ -425,6 +425,10 @@ as_spatial_reference <- function(x) {
 #' sr <- list(wkid = 4326L)
 #' from_spatial_reference(sr)
 from_spatial_reference <- function(sr, error_call = rlang::caller_call()) {
+  if (isTRUE(is.na(sr)) || is.null(sr)) {
+    return(sf::st_crs(NA))
+  }
+
   if (!rlang::is_list(sr)) {
     cli::cli_abort(
       "spatial reference must be a bare list with fields {.code latestWkid}, {.code wkid}, or {.code wkt}",

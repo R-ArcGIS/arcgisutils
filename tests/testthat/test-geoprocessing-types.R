@@ -24,3 +24,15 @@ test_that("from_spatial_reference works for NA WKIDs", {
     sf::NA_crs_
   )
 })
+
+
+test_that("from_spatial_reference works for NA and NULL", {
+  expect_identical(
+    from_spatial_reference(NULL),
+    sf::NA_crs_
+  )
+  expect_identical(
+    from_spatial_reference(NA),
+    sf::NA_crs_
+  )
+})

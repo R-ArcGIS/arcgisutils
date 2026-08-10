@@ -1,0 +1,20 @@
+# Keep the DESCRIPTION Version field in sync with git tags.
+#
+# Tag a release with `git sv tag` (or by hand) and this writes the version
+# into DESCRIPTION and commits it.
+name: set-version
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+      - "v*.*.*.*"
+
+jobs:
+  set-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: JosiahParry/updatethis@v1
