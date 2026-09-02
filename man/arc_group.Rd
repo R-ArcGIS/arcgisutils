@@ -28,7 +28,7 @@ arc_group("2f0ec8cb03574128bd673cefab106f39")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other portal organization: 
-\code{\link{arc_user}()}
+Other portal organization:
+\code{\link[=arc_user]{arc_user()}}
 }
 \concept{portal organization}

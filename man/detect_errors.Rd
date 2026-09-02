@@ -12,7 +12,7 @@ catch_error(response, error_call = rlang::caller_env())
 \arguments{
 \item{response}{for \code{detect_errors()}, a list typically from \code{RcppSimdJson::fparse(httr2::resp_body_string(resp))}. For \code{catch_error()}, the string from \code{httr2::resp_body_string(resp)}.}
 
-\item{error_call}{default \code{\link[rlang:stack]{rlang::caller_env()}}. The environment from which
+\item{error_call}{default \code{\link[rlang:caller_env]{rlang::caller_env()}}. The environment from which
 to throw the error from.}
 }
 \value{

@@ -27,9 +27,9 @@ arc_portal_urls()
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other portal: 
-\code{\link{arc_portal_resources}()},
-\code{\link{arc_portal_users}()},
+Other portal:
+\code{\link[=arc_portal_resources]{arc_portal_resources()}},
+\code{\link[=arc_portal_users]{arc_portal_users()}},
 \code{\link{self}}
 }
 \concept{portal}

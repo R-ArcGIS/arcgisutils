@@ -1,5 +1,10 @@
 [source.crates-io]
 replace-with = "vendored-sources"
 
+[source."git+https://github.com/extendr/extendr?rev=74afddcbbe5a441ec187ce1d4010ba95e466ed2a"]
+git = "https://github.com/extendr/extendr"
+rev = "74afddcbbe5a441ec187ce1d4010ba95e466ed2a"
+replace-with = "vendored-sources"
+
 [source.vendored-sources]
 directory = "vendor"

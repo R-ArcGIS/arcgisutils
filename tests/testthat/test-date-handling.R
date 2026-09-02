@@ -10,7 +10,7 @@ test_that("date handling is correct", {
   l <- RcppSimdJson::fparse(as_esri_featureset(x))
   # l <- as_featureset(x)
   # add fields since they are not included by default
-  l[["fields"]] <- infer_esri_type(x)
+  l[["fields"]] <- as_fields(x)
 
   # create featurset geometry
   json <- jsonify::to_json(l)

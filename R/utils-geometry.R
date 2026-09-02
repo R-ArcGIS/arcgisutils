@@ -19,7 +19,9 @@
 #' determine_esri_geo_type(sf::st_point(c(0, 0)))
 determine_esri_geo_type <- function(x, call = rlang::caller_env()) {
   # if `geom` is a data.frame return NULL
-  if (inherits(x, "data.frame") && !inherits(x, "sf")) return(NULL)
+  if (inherits(x, "data.frame") && !inherits(x, "sf")) {
+    return(NULL)
+  }
 
   geom_type <- as.character(sf::st_geometry_type(x, by_geometry = FALSE))
 

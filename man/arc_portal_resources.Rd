@@ -44,9 +44,9 @@ The resources endpoint lists all file resources for the organization.
 \href{https://developers.arcgis.com/rest/users-groups-and-items/resources-portal/}{API Reference}
 }
 \seealso{
-Other portal: 
-\code{\link{arc_portal_urls}()},
-\code{\link{arc_portal_users}()},
+Other portal:
+\code{\link[=arc_portal_urls]{arc_portal_urls()}},
+\code{\link[=arc_portal_users]{arc_portal_users()}},
 \code{\link{self}}
 }
 \concept{portal}

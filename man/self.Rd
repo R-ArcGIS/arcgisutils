@@ -39,9 +39,9 @@ names(self)
 }
 }
 \seealso{
-Other portal: 
-\code{\link{arc_portal_resources}()},
-\code{\link{arc_portal_urls}()},
-\code{\link{arc_portal_users}()}
+Other portal:
+\code{\link[=arc_portal_resources]{arc_portal_resources()}},
+\code{\link[=arc_portal_urls]{arc_portal_urls()}},
+\code{\link[=arc_portal_users]{arc_portal_users()}}
 }
 \concept{portal}

@@ -10,7 +10,7 @@ as_layer(
   x,
   name,
   title,
-  layer_definition = as_layer_definition(x, name, "object_id", infer_esri_type(x)),
+  layer_definition = as_layer_definition(x, name, "object_id", as_fields(x)),
   id = NULL,
   layer_url = NULL,
   legend_url = NULL,
@@ -22,7 +22,7 @@ as_layer_definition(
   x,
   name,
   object_id_field,
-  fields = infer_esri_type(x),
+  fields = as_fields(x),
   display_field = NULL,
   drawing_info = NULL,
   has_attachments = FALSE,
@@ -84,7 +84,7 @@ For more information about error calls, see \ifelse{html}{\link[rlang:topic-erro
 object ID field in the dataset.}
 
 \item{fields}{a data.frame describing the fields in \code{x}. These values are inferred
-by default via \code{\link[=infer_esri_type]{infer_esri_type()}}.}
+by default via \code{\link[=as_fields]{as_fields()}}.}
 
 \item{display_field}{default \code{NULL}. A scalar character containing the name of the field that
 best summarizes the feature. Values from this field are used by default as

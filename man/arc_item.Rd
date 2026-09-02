@@ -30,7 +30,7 @@ arc_item("9df5e769bfe8412b8de36a2e618c7672")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other portal item: 
-\code{\link{arc_item_data}()}
+Other portal item:
+\code{\link[=arc_item_data]{arc_item_data()}}
 }
 \concept{portal item}

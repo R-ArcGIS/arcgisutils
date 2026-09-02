@@ -168,7 +168,7 @@ as_record_set <- function(x) {
   # this handles sf objects, data.frames, tbl, and tibble
   if (inherits(x, "data.frame")) {
     feats <- as_features(x)
-    fields <- infer_esri_type(x)
+    fields <- as_fields(x)
 
     record_set <- yyjsonr::write_json_str(
       list(fields = fields, features = feats),

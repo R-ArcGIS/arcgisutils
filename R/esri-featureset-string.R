@@ -154,11 +154,11 @@ as_esri_featureset_sf <- function(x, crs = NULL, call = rlang::caller_env()) {
 
   are_dates <- which(vapply(.data, is_date, logical(1)))
   for (col in are_dates) {
-    .data[[col]] <- date_to_ms(x[[col]])
+    .data[[col]] <- date_to_ms(.data[[col]])
   }
 
   # find columns that cannot be supported
-  esri_types <- infer_esri_type(.data)
+  esri_types <- as_fields(.data)
   invalid_types <- is.na(esri_types$type)
   bad_names <- esri_types$name[invalid_types]
 

@@ -54,7 +54,7 @@ as_layer <- function(
     x,
     name,
     "object_id",
-    infer_esri_type(x)
+    as_fields(x)
   ),
   id = NULL,
   layer_url = NULL,
@@ -119,7 +119,7 @@ as_layer <- function(
 #' @param object_id_field a scalar character vector indicating the name of the
 #'   object ID field in the dataset.
 #' @param fields a data.frame describing the fields in `x`. These values are inferred
-#'  by default via [`infer_esri_type()`].
+#'  by default via [`as_fields()`].
 #' @param display_field default `NULL`. A scalar character containing the name of the field that
 #'   best summarizes the feature. Values from this field are used by default as
 #'   the titles for pop-up windows.
@@ -144,7 +144,7 @@ as_layer_definition <- function(
   x,
   name,
   object_id_field,
-  fields = infer_esri_type(x),
+  fields = as_fields(x),
   display_field = NULL,
   drawing_info = NULL,
   has_attachments = FALSE,

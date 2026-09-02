@@ -373,7 +373,7 @@ arc_gp_job <- R6::R6Class(
 #'   token = auth_user()
 #' )
 #' }
-gp_job_from_url = function(url, token = arc_token()) {
+gp_job_from_url <- function(url, token = arc_token()) {
   obj_check_token(token)
   check_string(url, allow_empty = FALSE)
 

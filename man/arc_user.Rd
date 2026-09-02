@@ -28,7 +28,7 @@ arc_user("esri_en")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other portal organization: 
-\code{\link{arc_group}()}
+Other portal organization:
+\code{\link[=arc_group]{arc_group()}}
 }
 \concept{portal organization}

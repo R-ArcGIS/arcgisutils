@@ -7,8 +7,6 @@ source("tools/msrv.R")
 # check DEBUG and NOT_CRAN environment variables
 env_debug <- Sys.getenv("DEBUG")
 env_not_cran <- Sys.getenv("NOT_CRAN")
-env_target <- Sys.getenv("CARGO_TARGET_DIR")
-.target_dir <- if (nzchar(env_target)) env_target else "./rust/target"
 
 # check if the vendored zip file exists
 vendor_exists <- file.exists("src/rust/vendor.tar.xz")
@@ -37,7 +35,7 @@ if (!is_not_cran) {
 
 # when DEBUG env var is present we use `--debug` build
 .profile <- ifelse(is_debug, "", "--release")
-.clean_targets <- ifelse(is_debug || is_not_cran, "", "$(TARGET_DIR)")
+.clean_targets <- ifelse(is_debug, "", "$(TARGET_DIR)")
 
 # We specify this target when building for webR
 webr_target <- "wasm32-unknown-emscripten"
@@ -74,6 +72,15 @@ cfg <- if (is_debug) "debug" else "release"
 
 # read in the Makevars.in file checking
 is_windows <- .Platform[["OS.type"]] == "windows"
+.windows_target <- if (grepl("aarch", R.version$platform)) {
+  "aarch64-pc-windows-gnullvm"
+} else if (grepl("clang", Sys.getenv("R_COMPILED_BY"))) {
+  "x86_64-pc-windows-gnullvm"
+} else if (grepl("i386", R.version$platform)) {
+  "i686-pc-windows-gnu"
+} else {
+  "x86_64-pc-windows-gnu"
+}
 
 # if windows we replace in the Makevars.win.in
 mv_fp <- ifelse(
@@ -101,11 +108,11 @@ mv_txt <- readLines(mv_fp)
 # replace placeholder values
 new_txt <- gsub("@CRAN_FLAGS@", .cran_flags, mv_txt) |>
   gsub("@PROFILE@", .profile, x = _) |>
+  gsub("@WINDOWS_TARGET@", .windows_target, x = _) |>
   gsub("@CLEAN_TARGET@", .clean_targets, x = _) |>
   gsub("@LIBDIR@", .libdir, x = _) |>
   gsub("@TARGET@", .target, x = _) |>
-  gsub("@PANIC_EXPORTS@", .panic_exports, x = _) |>
-  gsub("@TARGET_DIR@", .target_dir, x = _)
+  gsub("@PANIC_EXPORTS@", .panic_exports, x = _)
 
 message("Writing `", mv_ofp, "`.")
 con <- file(mv_ofp, open = "wb")

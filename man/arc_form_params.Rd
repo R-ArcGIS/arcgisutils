@@ -37,16 +37,10 @@ arc_form_params(
 )
 }
 \seealso{
-Other geoprocessing: 
+Other geoprocessing:
 \code{\link{arc_gp_job}},
-\code{\link{arc_job_status}()},
-\code{\link{gp_job_from_url}()},
-\code{\link{gp_params}}
-
-Other geoprocessing: 
-\code{\link{arc_gp_job}},
-\code{\link{arc_job_status}()},
-\code{\link{gp_job_from_url}()},
+\code{\link[=arc_job_status]{arc_job_status()}},
+\code{\link[=gp_job_from_url]{gp_job_from_url()}},
 \code{\link{gp_params}}
 }
 \concept{geoprocessing}

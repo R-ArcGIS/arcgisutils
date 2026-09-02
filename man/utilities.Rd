@@ -24,7 +24,7 @@ data_frame(x, call = rlang::caller_call())
 
 \item{dots}{a list collected from dots via \code{rlang::list2(...)}}
 
-\item{call}{default \code{\link[rlang:stack]{rlang::caller_call()}}.}
+\item{call}{default \code{\link[rlang:caller_call]{rlang::caller_call()}}.}
 
 \item{x}{a data.frame}
 }

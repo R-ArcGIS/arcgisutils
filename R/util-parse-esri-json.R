@@ -63,7 +63,7 @@ parse_esri_json <- function(string, ..., call = rlang::caller_env()) {
     report_errors(b_parsed, error_call = call)
 
     # return an empty data.frame with the appropriate fields
-    return(ptype_tbl(b_parsed[["fields"]]))
+    return(fields_as_ptype_df(b_parsed[["fields"]]))
   }
 
   # if this is a logical vector of length one we need to abort

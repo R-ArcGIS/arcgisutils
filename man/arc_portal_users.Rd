@@ -70,9 +70,9 @@ arc_portal_users()
 \href{https://developers.arcgis.com/rest/users-groups-and-items/users/}{API Reference}
 }
 \seealso{
-Other portal: 
-\code{\link{arc_portal_resources}()},
-\code{\link{arc_portal_urls}()},
+Other portal:
+\code{\link[=arc_portal_resources]{arc_portal_resources()}},
+\code{\link[=arc_portal_urls]{arc_portal_urls()}},
 \code{\link{self}}
 }
 \concept{portal}
