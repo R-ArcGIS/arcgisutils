@@ -29,5 +29,4 @@ test_that("fetch_layer_metadata() works for private content", {
   token <- auth_code()
 
   expect_no_error(fetch_layer_metadata(req, token$access_token))
-
 })

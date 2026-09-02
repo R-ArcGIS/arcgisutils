@@ -4,10 +4,21 @@ test_that("parse_esri_json(): 0 feat. results", {
   expect_true(is.data.frame(res))
   expect_true(identical(nrow(res), 0L))
 
-  known_names <- c("OBJECTID", "permanent_identifier", "fdate", "resolution",
-    "gnis_id", "gnis_name", "lengthkm", "ftype", "fcode", "visibilityfilter",
-    "nhdplusid", "vpuid", "Shape_Length")
+  known_names <- c(
+    "OBJECTID",
+    "permanent_identifier",
+    "fdate",
+    "resolution",
+    "gnis_id",
+    "gnis_name",
+    "lengthkm",
+    "ftype",
+    "fcode",
+    "visibilityfilter",
+    "nhdplusid",
+    "vpuid",
+    "Shape_Length"
+  )
 
   expect_identical(names(res), known_names)
-
 })

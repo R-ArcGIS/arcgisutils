@@ -24,3 +24,4 @@ README.html
 justfile
 llms.txt
 CLAUDE.md
+jarl.toml

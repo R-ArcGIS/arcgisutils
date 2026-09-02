@@ -178,14 +178,3 @@ arc_content_types <- c(
   "webapp" = "webappviewer/index.html\\?id=[a-zA-Z0-9]+",
   "experience_builder" = "builder/\\?id=[a-zA-Z0-9]+"
 )
-
-#' @noRd
-str_extract_layer <- function(x) {
-  trailing_txt <- str_extract(
-    x,
-    "(?:\\/)([[:digit:]]+)(?:\\/?)$",
-    perl = FALSE
-  )
-
-  str_extract(trailing_txt, "[[:digit:]]+", perl = FALSE)
-}

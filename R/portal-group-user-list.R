@@ -81,8 +81,7 @@ arc_group_users <- function(
     sortField = sort_field,
     sortOrder = sort_order,
     joined = joined,
-    name = name,
-    joined = joined
+    name = name
   ))
 
   resps <- arc_base_req(

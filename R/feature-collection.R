@@ -94,7 +94,7 @@ as_layer <- function(
   # if not numeric error
   # if numeric & not integer cast to int
   if (!oid_field %in% colnames(x)) {
-    x[[oid_field]] <- 1:nrow(x)
+    x[[oid_field]] <- seq_len(nrow(x))
   } else if (!is.numeric(x[[oid_field]])) {
     cli::cli_abort("{.arg x} must have a numeric Object ID field", call = call)
   } else if (!is.integer(x[[oid_field]])) {

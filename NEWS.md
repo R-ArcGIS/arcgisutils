@@ -4,6 +4,8 @@
 - Fixes a bug where `sf` objects were assumed to have geometry in the last column position.
 - Adds `arcgis.req_headers` option. If provided, the headers will be injected into all requested from `arc_base_req()` <https://github.com/R-ArcGIS/arcgisutils/issues/94>
 - `from_spatial_reference()` gracefully handles `NA` and `NULL` <https://github.com/R-ArcGIS/arcgisutils/issues/95>
+- Fixes a bug where feature collections generated an invalid Object ID field for 0-row inputs
+- Fixes a duplicated `joined` query parameter in `arc_group_users()`
 
 # arcgisutils 0.6.0
 

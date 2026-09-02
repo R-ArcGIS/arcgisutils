@@ -47,10 +47,6 @@ search_bool <- function(query, bool = c("AND", "OR", "NOT"), term, value) {
   sprintf("%s %s %s", query, bool, search_term(term, value))
 }
 
-search_and <- function(query, term, value) {
-  search_bool(query, "AND", term, value)
-}
-
 search_or <- function(query, term, value) {
   search_bool(query, "OR", term, value)
 }
@@ -75,32 +71,6 @@ search_vals_or <- function(term, vals) {
     init = first_term
   )
 }
-
-# Helper to combine many items into one AND term
-search_vals_and <- function(term, vals) {
-  if (length(vals) == 0) {
-    return("")
-  }
-  if (length(vals) == 1) {
-    return(search_term(term, vals[1]))
-  }
-
-  first_term <- search_term(term, vals[1])
-  remaining_vals <- vals[-1]
-
-  Reduce(
-    function(.prev, .next) {
-      search_and(.prev, term, .next)
-    },
-    remaining_vals,
-    init = first_term
-  )
-}
-
-search_not <- function(query, term, value) {
-  search_bool(query, "NOT", term, value)
-}
-
 
 item_search_terms <- c(
   "id",

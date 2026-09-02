@@ -7,7 +7,6 @@ test_that("agent is arcgisutils", {
 })
 
 test_that("token is added as header", {
-
   token_value <- "my-secret-token"
 
   # create fake token
@@ -22,7 +21,6 @@ test_that("token is added as header", {
     paste0("Bearer ", token_value),
     req$headers[["X-Esri-Authorization"]]
   )
-
 })
 
 test_that("path is appended", {

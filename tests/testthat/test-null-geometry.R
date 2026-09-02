@@ -1,5 +1,4 @@
 test_that("multiplication works", {
-
   string <- paste(
     readLines("testdata/null-polyline.json", warn = FALSE),
     collapse = ""
