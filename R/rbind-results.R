@@ -52,6 +52,21 @@ rbind_results <- function(
     return(structure(data.frame(), null_elements = are_missing))
   }
 
+  present <- x[!missing_elements]
+
+  # a query for no fields yields rows without columns, which the backends below
+  # cannot row-bind
+  if (all(vapply(present, ncol, integer(1)) == 0L)) {
+    n <- sum(vapply(present, nrow, integer(1)))
+    res <- data.frame(row.names = seq_len(n))
+
+    if (length(are_missing) > 0) {
+      attr(res, "null_elements") <- are_missing
+    }
+
+    return(res)
+  }
+
   if (rlang::is_installed("collapse", version = "2.0.0")) {
     # ensure that a data.frame is always returned via return = 2L
     x <- collapse::rowbind(x, return = 2L, fill = TRUE)
