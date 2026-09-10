@@ -1,5 +1,7 @@
 # arcgisutils 0.6.1 (development)
 
+- `arc_base_req()` retries transient failures. Both HTTP status codes and Esri error codes in a `200` body of `429`, `500`, `502`, `503`, and `504` are retried, as are connection failures. Controlled by `max_tries` and the `arcgis.retries` option <https://github.com/R-ArcGIS/arcgisutils/issues/43>
+
 - Replaces deprecated functions.
 - Fixes a bug where `sf` objects were assumed to have geometry in the last column position.
 - Adds `arcgis.req_headers` option. If provided, the headers will be injected into all requested from `arc_base_req()` <https://github.com/R-ArcGIS/arcgisutils/issues/94>

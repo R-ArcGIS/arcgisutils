@@ -9,7 +9,8 @@ arc_base_req(
   token = NULL,
   path = NULL,
   query = NULL,
-  error_call = rlang::caller_env()
+  error_call = rlang::caller_env(),
+  max_tries = getOption("arcgis.retries", 3)
 )
 }
 \arguments{
@@ -23,6 +24,9 @@ or related function}
 \item{query}{a named vector or named list of query parameters to be appended to the url using \code{\link[httr2:req_url_query]{httr2::req_url_query()}}}
 
 \item{error_call}{the caller environment to be used when propagating errors.}
+
+\item{max_tries}{the maximum number of times to attempt the request. Defaults
+to the \code{arcgis.retries} option, or \code{3}. Use \code{1} to disable retrying.}
 }
 \value{
 an \code{httr2_request} with the \code{X-Esri-Authorization} header and \code{User-Agent} set.
@@ -31,6 +35,15 @@ an \code{httr2_request} with the \code{X-Esri-Authorization} header and \code{Us
 This function takes a url and creates a basic httr2 request that
 adds the user-agent and adds an authorization token to the
 \code{X-Esri-Authorization} header.
+}
+\details{
+Requests are retried when a service reports a transient failure—an HTTP
+status or a body error code of \code{429}, \code{500}, \code{502}, \code{503}, or \code{504}—and on
+connection failures. A \code{Retry-After} header is honored when present.
+
+Every request is retried, including those that modify a service such as
+\code{addFeatures} or \code{applyEdits}. Set \code{max_tries = 1} when a repeated request
+must not be applied twice.
 }
 \examples{
 arc_base_req("https://arcgis.com")
