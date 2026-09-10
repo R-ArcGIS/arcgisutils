@@ -91,12 +91,27 @@ as_featureset <- function(x, crs = sf::st_crs(x), call = rlang::caller_env()) {
   # store the class name to be used in a switch statement
   x_class <- inherits_which(x, valid_sfg_classes)[1]
 
-  switch(
+  res <- switch(
     x_class,
     "sf" = as_featureset_sf(x, sr, call = call),
     "data.frame" = as_featureset_sf(x, sr, call = call),
     "sfc" = as_featureset_sfc(x, sr, call = call)
   )
+
+  res[["spatialReference"]] <- restore_wkid(res[["spatialReference"]])
+  res
+}
+
+# extendr's serde serializer maps numbers onto R doubles because R has no
+# unsigned or 64 bit integer type. That turns the integer wkid into a double,
+# which serializes as e.g. `4326.0` instead of `4326`.
+# https://github.com/R-ArcGIS/arcgisutils/issues/87
+restore_wkid <- function(sr) {
+  wkid <- sr[["wkid"]]
+  if (!is.null(wkid)) {
+    sr[["wkid"]] <- as.integer(wkid)
+  }
+  sr
 }
 
 as_featureset_sfc <- function(x, crs = NULL, call = rlang::caller_env()) {
