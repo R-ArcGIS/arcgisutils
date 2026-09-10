@@ -1,18 +1,17 @@
 #' Portal enumerations
 #'
-#' Closed value sets used by the Portal sharing API. Each is an
-#' [`s7x::Enum`] which validates on construction and can be cast back to a
-#' character with [`as.character()`].
+#' Closed value sets used by the Portal sharing API. Each is an [`s7x::Enum`]
+#' which validates on construction. Cast back to a character with
+#' [`as.character()`] and list the allowed values with the `variants` property.
 #'
-#' @param value a scalar character. One of the variants listed for the class.
+#' @param value a scalar character. One of the class's variants.
 #' @name portal_enums
 #' @family portal item
 #' @returns An object inheriting from [`s7x::Enum`].
 #' @examples
 #' ItemAccess("org")
 #' as.character(ItemAccess("public"))
-#'
-#' RelationshipDirection("forward")
+#' RelationshipType("Map2Service")@variants
 #'
 #' try(ItemAccess("everyone"))
 NULL

@@ -26,21 +26,20 @@ ItemSortField(value)
 RelationshipType(value)
 }
 \arguments{
-\item{value}{a scalar character. One of the variants listed for the class.}
+\item{value}{a scalar character. One of the class's variants.}
 }
 \value{
 An object inheriting from \code{\link[s7x:Enum]{s7x::Enum}}.
 }
 \description{
-Closed value sets used by the Portal sharing API. Each is an
-\code{\link[s7x:Enum]{s7x::Enum}} which validates on construction and can be cast back to a
-character with \code{\link[=as.character]{as.character()}}.
+Closed value sets used by the Portal sharing API. Each is an \code{\link[s7x:Enum]{s7x::Enum}}
+which validates on construction. Cast back to a character with
+\code{\link[=as.character]{as.character()}} and list the allowed values with the \code{variants} property.
 }
 \examples{
 ItemAccess("org")
 as.character(ItemAccess("public"))
-
-RelationshipDirection("forward")
+RelationshipType("Map2Service")@variants
 
 try(ItemAccess("everyone"))
 }

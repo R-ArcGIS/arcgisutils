@@ -126,7 +126,28 @@ arc_related_items <- function(
 
 The docs list `relationshipTypes` as required, but that is wrong on two counts: the parameter is spelled `relationshipType`, and omitting it returns every relationship type in one request. So `relationship_type = NULL` is a legitimate and useful default rather than 45 calls. See `dev/rest-api-doc-issues.md`.
 
-`item_type` and `item_keyword` in `R/portal-types.R` are the same pattern written by hand, with `portal_item_types()` and `portal_item_keywords()` as the variant lists. They should migrate to `new_enum()` once the dependency is available, which deletes both validators.
+`item_type` and `item_keyword` in `R/portal-types.R` are the same pattern written by hand, with `portal_item_types()` and `portal_item_keywords()` as the variant lists. They are candidates to migrate to `new_enum()`, which would delete both validators, but the property would rename from `@item_type` / `@keyword` to `@value`. That is a breaking change for anyone reaching into the object, so it needs a deprecation cycle rather than a quiet swap.
+
+### `s7x::enum_roclet` is not enabled, and why
+
+The roclet generates excellent enum documentation. Enabled here it produced, with no hand-written text, a page per enum carrying the title, description, the full variant list in `@param value`, and the inherited `Enum` properties. For `RelationshipType` that is 45 values documented for free.
+
+It is not enabled because it also regressed three existing classes. `enum_roclet` replaces roxygen's `rd` roclet and gives every exported S7 class one `@param` per property. Its documentation says a tag written by hand wins, and `block_add_class_tags()` does compute `missing <- setdiff(intersect(names(props), args), documented)`. In practice the hand-written tag was overwritten anyway:
+
+```
+- \item{status}{a scalar character. Must be one of "esriJobSubmitted", ...}
++ \item{status}{String.}
+```
+
+The same happened to `item_type` and `keyword` in `R/portal-types.R`. Each lost a description naming the valid values, replaced by a bare type name. `@param status` sits on `arc_job_status`'s own block in `R/geoprocessing-class.R`, so this is not a case of the tag living elsewhere.
+
+This looks like a bug in `s7x`, not a misuse. Worth fixing there, since the roclet is otherwise a clear win. Once hand-written tags are genuinely respected, enable it with:
+
+```
+Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "s7x::enum_roclet"))
+```
+
+and drop the shared `@rdname portal_enums` block so each enum gets its own generated page.
 
 ## Sequencing
 
