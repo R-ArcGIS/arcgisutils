@@ -124,8 +124,10 @@ as_layer <- function(
 #'   best summarizes the feature. Values from this field are used by default as
 #'   the titles for pop-up windows.
 #' @param has_attachments default `FALSE`.
-#' @param drawing_info default `NULL`. See REST documentation in details for more.
-#'   There are no helpers or validators for `drawingInfo` objects.
+#' @param drawing_info default `NULL`, which derives a simple renderer from the
+#'   geometry type. A layer published without one draws nothing. See REST
+#'   documentation in details for more. There are no helpers or validators for
+#'   `drawingInfo` objects.
 #' @param max_scale default `NULL`. A number representing the maximum scale at
 #'   which the layer definition will be applied. The number is the scale's
 #'   denominator; thus, a value of 2400 represents a scale of 1/2,400. A value
@@ -224,7 +226,7 @@ as_layer_definition <- function(
     name = name,
     displayField = display_field,
     # https://developers.arcgis.com/documentation/common-data-types/drawinginfo.htm
-    drawingInfo = drawing_info,
+    drawingInfo = drawing_info %||% default_drawing_info(geo_type),
     # https://developers.arcgis.com/documentation/common-data-types/field.htm
     objectIdField = object_id_field,
     geometryType = geo_type,
@@ -269,4 +271,56 @@ as_feature_collection <- function(
     )
   }
   c(list(layers = layers), showLegend = show_legend)
+}
+
+# A feature collection published without a renderer has data and a correct
+# extent but draws nothing
+default_drawing_info <- function(geo_type) {
+  if (is.null(geo_type)) {
+    return(NULL)
+  }
+
+  blue <- c(0L, 122L, 194L, 255L)
+  white <- c(255L, 255L, 255L, 255L)
+
+  symbol <- switch(
+    geo_type,
+    esriGeometryPoint = ,
+    esriGeometryMultipoint = list(
+      type = "esriSMS",
+      style = "esriSMSCircle",
+      color = blue,
+      size = 8L,
+      outline = list(
+        type = "esriSLS",
+        style = "esriSLSSolid",
+        color = white,
+        width = 1L
+      )
+    ),
+    esriGeometryPolyline = list(
+      type = "esriSLS",
+      style = "esriSLSSolid",
+      color = blue,
+      width = 1L
+    ),
+    esriGeometryPolygon = list(
+      type = "esriSFS",
+      style = "esriSFSSolid",
+      color = c(0L, 122L, 194L, 130L),
+      outline = list(
+        type = "esriSLS",
+        style = "esriSLSSolid",
+        color = blue,
+        width = 1L
+      )
+    ),
+    NULL
+  )
+
+  if (is.null(symbol)) {
+    return(NULL)
+  }
+
+  list(renderer = list(type = "simple", symbol = symbol))
 }

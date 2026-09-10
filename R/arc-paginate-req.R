@@ -27,7 +27,7 @@ arc_paginate_req <- function(
     )
   }
   check_bool(.progress)
-  check_number_whole(page_size, 1, 100)
+  check_number_whole(page_size, min = 1, max = 100)
   check_number_whole(max_pages, min = 1, allow_infinite = TRUE)
   httr2::req_perform_iterative(
     httr2::req_url_query(req, num = page_size),

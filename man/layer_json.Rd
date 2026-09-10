@@ -90,8 +90,10 @@ by default via \code{\link[=as_fields]{as_fields()}}.}
 best summarizes the feature. Values from this field are used by default as
 the titles for pop-up windows.}
 
-\item{drawing_info}{default \code{NULL}. See REST documentation in details for more.
-There are no helpers or validators for \code{drawingInfo} objects.}
+\item{drawing_info}{default \code{NULL}, which derives a simple renderer from the
+geometry type. A layer published without one draws nothing. See REST
+documentation in details for more. There are no helpers or validators for
+\code{drawingInfo} objects.}
 
 \item{has_attachments}{default \code{FALSE}.}
 

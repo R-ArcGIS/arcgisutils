@@ -199,11 +199,7 @@ arc_user <- function(username, host = arc_host(), token = arc_token()) {
     RcppSimdJson::fparse() |>
     detect_errors()
 
-  for (field in c("created", "modified")) {
-    user[[field]] <- from_esri_date(user[[field]])
-  }
-
-  structure(user, class = c("PortalUser", "list"))
+  as_portal_user(user)
 }
 
 #' @export

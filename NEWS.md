@@ -6,6 +6,22 @@
 - `from_spatial_reference()` gracefully handles `NA` and `NULL` <https://github.com/R-ArcGIS/arcgisutils/issues/95>
 - Fixes a bug where feature collections generated an invalid Object ID field for 0-row inputs
 - Fixes a duplicated `joined` query parameter in `arc_group_users()`
+- Exports `report_errors()`, the warning-level counterpart to `detect_errors()` <https://github.com/R-ArcGIS/arcgisutils/issues/39>
+- `obj_check_token()` names the `auth_*` functions and `set_arc_token()` when given an invalid token <https://github.com/R-ArcGIS/arcgisutils/issues/37>
+- `arc_user_content()` and `arc_group_content()` gain `page_size`, `max_pages`, and `.progress` <https://github.com/R-ArcGIS/arcgisutils/issues/77>
+- `arc_paginate_req()` now enforces the documented `page_size` bounds. They were passed positionally into `...` and silently ignored
+- `is_url()` reports errors against its caller rather than an unused positional argument
+- `arc_user()` parses `lastLogin` and `emailStatusDate`, and returns `groups` as a tbl with parsed dates, matching `arc_user_self()` <https://github.com/R-ArcGIS/arcgisutils/issues/75>
+- Unsupported columns now report `cannot be converted into EsriJSON` naming the column and its type. `as_fields()` aborted first with `row names contain missing values`, making that message unreachable <https://github.com/R-ArcGIS/arcgisutils/issues/49>
+- `rbind_results()` combines zero column `data.frame`s, which arise when a query asks for no fields <https://github.com/R-ArcGIS/arcgislayers/issues/248>
+- `as_layer_definition()` derives a simple renderer from the geometry type when `drawing_info` is not supplied. Layers published without one had data and a correct extent but drew nothing <https://github.com/R-ArcGIS/arcgislayers/issues/278>
+- Adds `share_item()` and `unshare_item()` to set an item's access level and share it with groups. A published item previously could not be shared from R
+- Adds `arc_related_items()` to fetch items related to a portal item <https://github.com/R-ArcGIS/arcgislayers/issues/204>
+- Adds `s7x` backed enumerations for portal value sets: `ItemAccess`, `GroupAccess`, `RelationshipType`, `RelationshipDirection`, `SortOrder`, `GroupRole`, and `ItemSortField`
+- `as_fields()` maps `logical` columns to `esriFieldTypeSmallInteger`. An all-`NA` column is `logical` in R and previously aborted with `row names contain missing values` <https://github.com/R-ArcGIS/arcgisutils/issues/83>
+- `arc_gp_job$await()` reports failed and cancelled jobs instead of erroring with `unused argument` <https://github.com/R-ArcGIS/arcgisutils/issues/88>
+- `arc_gp_job$cancel()` no longer assigns to the read-only `status` active binding
+- `as_featureset()` returns an integer `wkid` instead of a double that serialized as `4326.0`. Requires serde_esri 1.0 <https://github.com/R-ArcGIS/arcgisutils/issues/87>
 
 # arcgisutils 0.6.0
 

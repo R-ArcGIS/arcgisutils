@@ -5,6 +5,7 @@
 #' @param group a scalar character of the group ID or a `PortalGroup` object created using [`arc_group()`]
 #' @param user a scalar character of the username or a `PortalUser` object created using [`arc_user()`]
 #' @inheritParams arc_item
+#' @inheritParams arc_paginate_req
 #' @keywords content portal
 #' @export
 #' @examples
@@ -28,6 +29,9 @@
 #' @returns a `data.frame` of content item metadata
 arc_group_content <- function(
   group,
+  page_size = 50,
+  max_pages = Inf,
+  .progress = TRUE,
   host = arc_host(),
   token = arc_token()
 ) {
@@ -41,25 +45,14 @@ arc_group_content <- function(
     )
   }
 
-  req <- arc_base_req(
+  fetch_content(
+    c("sharing", "rest", "content", "groups", group),
+    page_size,
+    max_pages,
+    .progress,
     host,
-    path = c("sharing", "rest", "content", "groups", group),
-    query = c("f" = "json"),
-    token = token
+    token
   )
-
-  all_resps <- arc_paginate_req(req)
-
-  results <- lapply(all_resps, function(.resp) {
-    RcppSimdJson::fparse(httr2::resp_body_string(.resp))[["items"]]
-  })
-
-  res <- data_frame(rbind_results(results))
-
-  res[["created"]] <- from_esri_date(res[["created"]])
-  res[["modified"]] <- from_esri_date(res[["modified"]])
-  res[["lastViewed"]] <- from_esri_date(res[["lastViewed"]])
-  res
 }
 
 
@@ -67,6 +60,9 @@ arc_group_content <- function(
 #' @export
 arc_user_content <- function(
   user = arc_user_self(token = token),
+  page_size = 50,
+  max_pages = Inf,
+  .progress = TRUE,
   host = arc_host(),
   token = arc_token()
 ) {
@@ -80,23 +76,45 @@ arc_user_content <- function(
     )
   }
 
-  req <- arc_base_req(
+  fetch_content(
+    c("sharing", "rest", "content", "users", user),
+    page_size,
+    max_pages,
+    .progress,
     host,
-    path = c("sharing", "rest", "content", "users", user),
+    token
+  )
+}
+
+fetch_content <- function(
+  path,
+  page_size,
+  max_pages,
+  .progress,
+  host,
+  token
+) {
+  resps <- arc_base_req(
+    host,
+    path = path,
     query = c("f" = "json"),
     token = token
-  )
+  ) |>
+    arc_paginate_req(
+      page_size = page_size,
+      max_pages = max_pages,
+      .progress = .progress
+    )
 
-  all_resps <- arc_paginate_req(req)
-
-  results <- lapply(all_resps, function(.resp) {
+  items <- lapply(resps, function(.resp) {
     RcppSimdJson::fparse(httr2::resp_body_string(.resp))[["items"]]
   })
 
-  res <- data_frame(rbind_results(results))
+  res <- data_frame(rbind_results(items))
 
-  res[["created"]] <- from_esri_date(res[["created"]])
-  res[["modified"]] <- from_esri_date(res[["modified"]])
-  res[["lastViewed"]] <- from_esri_date(res[["lastViewed"]])
+  for (col in c("created", "modified", "lastViewed")) {
+    res[[col]] <- from_esri_date(res[[col]])
+  }
+
   res
 }

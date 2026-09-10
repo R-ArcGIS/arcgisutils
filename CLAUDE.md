@@ -49,6 +49,21 @@ Use `cli::cli_abort()` with `call = error_call` (or `call = rlang::caller_env()`
 ### Version bumping
 Use `usethis::use_version()` to increment the version. Do not edit `DESCRIPTION` manually.
 
+### Bumping a Rust dependency
+The package builds offline from `src/rust/vendor.tar.xz`, so editing `src/rust/Cargo.toml` is not enough. Run all four steps or the build fails with `failed to select a version for the requirement`, which never mentions the vendor:
+
+```r
+# 1. edit src/rust/Cargo.toml, then from src/rust/: cargo update
+rextendr::vendor_crates()   # 2. regenerate src/rust/vendor.tar.xz
+devtools::load_all()        # 3. rebuild src/arcgisutils.so
+devtools::test()            # 4. confirm
+```
+
+`src/vendor/` is gitignored scratch unpacked from the tarball; the tarball is the committed source of truth.
+
+### R types across the extendr boundary
+`extendr` maps `u32`, `u64`, `usize` and `i64` to `REALSXP` (double) because they can exceed `i32::MAX`; only `i32` and smaller map to `INTSXP`. A Rust struct field typed `u32` therefore reaches R as a double and serializes as `4326.0`. The `*_string` conversions go through `serde_json` and are unaffected, so a type discrepancy between the list and string variants points here.
+
 ## Architecture
 
 ### Request pattern

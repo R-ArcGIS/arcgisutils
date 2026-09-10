@@ -6,16 +6,32 @@
 \alias{arc_user_content}
 \title{Portal Content Items}
 \usage{
-arc_group_content(group, host = arc_host(), token = arc_token())
+arc_group_content(
+  group,
+  page_size = 50,
+  max_pages = Inf,
+  .progress = TRUE,
+  host = arc_host(),
+  token = arc_token()
+)
 
 arc_user_content(
   user = arc_user_self(token = token),
+  page_size = 50,
+  max_pages = Inf,
+  .progress = TRUE,
   host = arc_host(),
   token = arc_token()
 )
 }
 \arguments{
 \item{group}{a scalar character of the group ID or a \code{PortalGroup} object created using \code{\link[=arc_group]{arc_group()}}}
+
+\item{page_size}{a scalar integer between 1 and 100 indicating the number of responses per page.}
+
+\item{max_pages}{the maximum number of pages to fetch. By default fetches all pages.}
+
+\item{.progress}{default \code{TRUE}. Whether to display a progress bar for requests.}
 
 \item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
 

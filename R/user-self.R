@@ -35,19 +35,26 @@ arc_user_self <- function(
     RcppSimdJson::fparse() |>
     detect_errors()
 
-  date_fields <- c("created", "modified", "emailStatusDate", "lastLogin")
+  as_portal_user(res)
+}
 
-  for (field in date_fields) {
-    res[[field]] <- from_esri_date(res[[field]])
+as_portal_user <- function(res) {
+  for (field in c("created", "modified", "emailStatusDate", "lastLogin")) {
+    if (!is.null(res[[field]])) {
+      res[[field]] <- from_esri_date(res[[field]])
+    }
   }
 
-  # make into a tbl
-  res[["groups"]] <- data_frame(res[["groups"]])
-  # process dates
+  if (!is.null(res[["groups"]])) {
+    groups <- data_frame(res[["groups"]])
 
-  for (field in c("modified", "created")) {
-    col <- res[["groups"]][[field]]
-    res[["groups"]][[field]] <- from_esri_date(col)
+    for (field in c("created", "modified")) {
+      if (!is.null(groups[[field]])) {
+        groups[[field]] <- from_esri_date(groups[[field]])
+      }
+    }
+
+    res[["groups"]] <- groups
   }
 
   structure(res, class = c("PortalUser", "list"))

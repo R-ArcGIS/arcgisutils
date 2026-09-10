@@ -118,7 +118,7 @@ is_url <- function(
   url,
   error_call = rlang::caller_call()
 ) {
-  check_character(url, call)
+  check_character(url, call = error_call)
   if (!rlang::is_vector(url) || rlang::is_empty(url)) {
     return(FALSE)
   }
