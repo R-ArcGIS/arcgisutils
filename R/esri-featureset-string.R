@@ -163,7 +163,7 @@ as_esri_featureset_sf <- function(x, crs = NULL, call = rlang::caller_env()) {
   bad_names <- esri_types$name[invalid_types]
 
   # here we extract the friendly label for error printing
-  bad_types <- lapply(.data[, invalid_types], obj_type_friendly)
+  bad_types <- lapply(.data[invalid_types], obj_type_friendly)
 
   # report an error in the case that theres a list column or something else weird
   if (!rlang::is_empty(bad_types)) {

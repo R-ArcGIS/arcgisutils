@@ -12,6 +12,7 @@
 - `arc_paginate_req()` now enforces the documented `page_size` bounds. They were passed positionally into `...` and silently ignored
 - `is_url()` reports errors against its caller rather than an unused positional argument
 - `arc_user()` parses `lastLogin` and `emailStatusDate`, and returns `groups` as a tbl with parsed dates, matching `arc_user_self()` <https://github.com/R-ArcGIS/arcgisutils/issues/75>
+- Unsupported columns now report `cannot be converted into EsriJSON` naming the column and its type. `as_fields()` aborted first with `row names contain missing values`, making that message unreachable <https://github.com/R-ArcGIS/arcgisutils/issues/49>
 - `as_fields()` maps `logical` columns to `esriFieldTypeSmallInteger`. An all-`NA` column is `logical` in R and previously aborted with `row names contain missing values` <https://github.com/R-ArcGIS/arcgisutils/issues/83>
 - `arc_gp_job$await()` reports failed and cancelled jobs instead of erroring with `unused argument` <https://github.com/R-ArcGIS/arcgisutils/issues/88>
 - `arc_gp_job$cancel()` no longer assigns to the read-only `status` active binding

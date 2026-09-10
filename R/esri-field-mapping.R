@@ -90,7 +90,7 @@ as_fields <- function(
 
   data.frame(
     name = colnames(.data),
-    type = vec_mapping[field_base_types],
+    type = unname(vec_mapping[field_base_types]),
     alias = colnames(.data),
     length = ifelse(factor_check, 255L, NA),
     nullable = TRUE,
