@@ -251,9 +251,11 @@ arc_gp_job <- R6::R6Class(
           c("esriJobFailed", "esriJobCancelled", "esriJobSucceeded")
 
         if (cur_status %in% c("esriJobCancelled", "esriJobFailed")) {
-          cli::cli_alert_danger(
-            "Job ID {.val {self$id}} ended with {.val {cur_status}}",
-            ">" = "Returning GP results"
+          cli::cli_bullets(
+            c(
+              "x" = "Job ID {.val {self$id}} ended with {.val {cur_status}}",
+              ">" = "Returning GP results"
+            )
           )
           return(self$results)
         } else if (is_complete) {
