@@ -7,6 +7,7 @@
 - Fixes a bug where feature collections generated an invalid Object ID field for 0-row inputs
 - Fixes a duplicated `joined` query parameter in `arc_group_users()`
 - Exports `report_errors()`, the warning-level counterpart to `detect_errors()` <https://github.com/R-ArcGIS/arcgisutils/issues/39>
+- `obj_check_token()` names the `auth_*` functions and `set_arc_token()` when given an invalid token <https://github.com/R-ArcGIS/arcgisutils/issues/37>
 - `as_fields()` maps `logical` columns to `esriFieldTypeSmallInteger`. An all-`NA` column is `logical` in R and previously aborted with `row names contain missing values` <https://github.com/R-ArcGIS/arcgisutils/issues/83>
 - `arc_gp_job$await()` reports failed and cancelled jobs instead of erroring with `unused argument` <https://github.com/R-ArcGIS/arcgisutils/issues/88>
 - `arc_gp_job$cancel()` no longer assigns to the read-only `status` active binding

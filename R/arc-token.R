@@ -124,7 +124,10 @@ obj_check_token <- function(token, call = rlang::caller_env()) {
   # if object is not a httr2 token
   if (!rlang::inherits_only(token, "httr2_token")) {
     cli::cli_abort(
-      "{.arg token} must be an {.cls httr2_token} not {.cls {class(token)}}",
+      c(
+        "{.arg token} must be an {.cls httr2_token} not {.cls {class(token)}}",
+        "i" = "Create one with {.fn auth_code}, {.fn auth_client}, {.fn auth_user}, or {.fn auth_key}, then {.fn set_arc_token}."
+      ),
       call = call
     )
   }
