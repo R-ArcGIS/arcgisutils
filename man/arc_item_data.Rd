@@ -30,6 +30,7 @@ arc_item_data("9df5e769bfe8412b8de36a2e618c7672")
 }
 \seealso{
 Other portal item:
-\code{\link[=arc_item]{arc_item()}}
+\code{\link[=arc_item]{arc_item()}},
+\code{\link[=share_item]{share_item()}}
 }
 \concept{portal item}
