@@ -53,4 +53,4 @@ Encoding: UTF-8
 Language: en
 Roxygen: list(markdown = TRUE)
 SystemRequirements: Cargo (Rust's package manager), rustc >= 1.67, xz
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.0.9000

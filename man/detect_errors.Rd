@@ -2,10 +2,13 @@
 % Please edit documentation in R/utils-requests.R
 \name{detect_errors}
 \alias{detect_errors}
+\alias{report_errors}
 \alias{catch_error}
 \title{Detect errors in parsed json response}
 \usage{
 detect_errors(response, error_call = rlang::caller_env())
+
+report_errors(response, error_call = rlang::caller_env())
 
 catch_error(response, error_call = rlang::caller_env())
 }
@@ -16,8 +19,7 @@ catch_error(response, error_call = rlang::caller_env())
 to throw the error from.}
 }
 \value{
-Nothing. Used for it's side effect. If an error code is encountered in the
-response an error is thrown with the error code and the error message.
+\code{detect_errors()} aborts on an error, otherwise returns \code{response}. \code{report_errors()} warns instead, returning \code{NULL} invisibly.
 }
 \description{
 The requests responses from ArcGIS don't return the status code
@@ -36,6 +38,7 @@ response <- list(
 )
 
 detect_errors(response)
+report_errors(response)
 }
 }
 \concept{requests}

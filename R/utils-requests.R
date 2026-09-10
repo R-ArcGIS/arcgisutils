@@ -57,10 +57,7 @@ fetch_layer_metadata <- function(
 #' @param response for `detect_errors()`, a list typically from `RcppSimdJson::fparse(httr2::resp_body_string(resp))`. For `catch_error()`, the string from `httr2::resp_body_string(resp)`.
 #' @param error_call default [`rlang::caller_env()`]. The environment from which
 #'  to throw the error from.
-#' @returns
-#'
-#' Nothing. Used for it's side effect. If an error code is encountered in the
-#' response an error is thrown with the error code and the error message.
+#' @returns `detect_errors()` aborts on an error, otherwise returns `response`. `report_errors()` warns instead, returning `NULL` invisibly.
 #' @export
 #' @family requests
 #' @examples
@@ -74,6 +71,7 @@ fetch_layer_metadata <- function(
 #' )
 #'
 #' detect_errors(response)
+#' report_errors(response)
 #' }
 detect_errors <- function(response, error_call = rlang::caller_env()) {
   e_msg <- capture_message(response)
@@ -88,8 +86,8 @@ detect_errors <- function(response, error_call = rlang::caller_env()) {
   )
 }
 
-#' @keywords internal
-#' @noRd
+#' @rdname detect_errors
+#' @export
 report_errors <- function(response, error_call = rlang::caller_env()) {
   e_msg <- capture_message(response)
 
