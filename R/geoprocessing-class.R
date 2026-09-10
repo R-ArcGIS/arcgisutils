@@ -224,7 +224,6 @@ arc_gp_job <- R6::R6Class(
       # check for errors
       detect_errors(res)
 
-      self$status <- arc_job_status(status = res$jobStatus)
       self$id <- res$jobId
       self
     },
