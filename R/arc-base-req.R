@@ -10,6 +10,8 @@
 #' @param path a character vector of paths to be appended to url using [`httr2::req_url_path_append()`]
 #' @param query a named vector or named list of query parameters to be appended to the url using [`httr2::req_url_query()`]
 #' @param error_call the caller environment to be used when propagating errors.
+#' @param max_tries the maximum number of times to attempt the request. Defaults
+#'  to the `arcgis.retries` option, or `3`. Use `1` to disable retrying.
 #' @export
 #' @examples
 #' arc_base_req("https://arcgis.com")
@@ -19,8 +21,11 @@ arc_base_req <- function(
   token = NULL,
   path = NULL,
   query = NULL,
-  error_call = rlang::caller_env()
+  error_call = rlang::caller_env(),
+  max_tries = getOption("arcgis.retries", 3)
 ) {
+  check_number_whole(max_tries, min = 1, call = error_call)
+
   # set the user agent
   req <- arc_agent(httr2::request(url))
 
@@ -65,5 +70,16 @@ arc_base_req <- function(
     )
   }
 
-  httr2::req_headers(req, !!!getOption("arcgis.req_headers"))
+  req <- httr2::req_headers(req, !!!getOption("arcgis.req_headers"))
+
+  if (max_tries == 1) {
+    return(req)
+  }
+
+  httr2::req_retry(
+    req,
+    max_tries = max_tries,
+    retry_on_failure = TRUE,
+    is_transient = esri_is_transient
+  )
 }
