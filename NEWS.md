@@ -16,6 +16,8 @@
 - `rbind_results()` combines zero column `data.frame`s, which arise when a query asks for no fields <https://github.com/R-ArcGIS/arcgislayers/issues/248>
 - `as_layer_definition()` derives a simple renderer from the geometry type when `drawing_info` is not supplied. Layers published without one had data and a correct extent but drew nothing <https://github.com/R-ArcGIS/arcgislayers/issues/278>
 - Adds `share_item()` and `unshare_item()` to set an item's access level and share it with groups. A published item previously could not be shared from R
+- Adds `arc_related_items()` to fetch items related to a portal item <https://github.com/R-ArcGIS/arcgislayers/issues/204>
+- Adds `s7x` backed enumerations for portal value sets: `ItemAccess`, `GroupAccess`, `RelationshipType`, `RelationshipDirection`, `SortOrder`, `GroupRole`, and `ItemSortField`
 - `as_fields()` maps `logical` columns to `esriFieldTypeSmallInteger`. An all-`NA` column is `logical` in R and previously aborted with `row names contain missing values` <https://github.com/R-ArcGIS/arcgisutils/issues/83>
 - `arc_gp_job$await()` reports failed and cancelled jobs instead of erroring with `unused argument` <https://github.com/R-ArcGIS/arcgisutils/issues/88>
 - `arc_gp_job$cancel()` no longer assigns to the read-only `status` active binding

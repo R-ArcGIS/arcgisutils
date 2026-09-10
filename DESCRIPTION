@@ -33,11 +33,15 @@ Imports:
     R6,
     RcppSimdJson,
     rlang,
-    S7,
+    S7 (>= 0.2.2.9000),
+    s7x (>= 1.0.1),
     sf,
     utils,
     yyjsonr,
     lifecycle
+Remotes:
+    RConsortium/S7,
+    josiahparry/s7x
 Suggests:
     arcgisbinding,
     collapse (>= 2.0.0),

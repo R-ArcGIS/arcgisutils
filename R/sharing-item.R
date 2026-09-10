@@ -89,14 +89,7 @@ unshare_item <- function(
 }
 
 share_access <- function(access, call = rlang::caller_env()) {
-  levels <- c("private", "org", "public")
-
-  if (!rlang::is_string(access) || !access %in% levels) {
-    cli::cli_abort(
-      "{.arg access} must be one of {.val {levels}}, not {.val {access}}.",
-      call = call
-    )
-  }
+  access <- enum_arg(ItemAccess, access, arg = "access", call = call)
 
   list(
     everyone = tolower(as.character(access == "public")),

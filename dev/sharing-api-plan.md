@@ -88,7 +88,7 @@ ItemSortField <- new_enum("ItemSortField", c(
 ))
 ```
 
-`RelationshipType` is the one that earns its keep. There are 46 valid values, they are easy to mistype, and a typo returns an empty result rather than an error:
+`RelationshipType` is the one that earns its keep. There are 45 valid values, they are easy to mistype, and a typo returns an empty result rather than an error:
 
 ```r
 RelationshipType <- new_enum("RelationshipType", c(
@@ -124,20 +124,15 @@ arc_related_items <- function(
 }
 ```
 
-`relationship_type` is required because the endpoint requires it. Enumerating everything related to an item therefore means 46 requests, so if that is wanted it should be an explicit separate helper rather than a silent default.
+The docs list `relationshipTypes` as required, but that is wrong on two counts: the parameter is spelled `relationshipType`, and omitting it returns every relationship type in one request. So `relationship_type = NULL` is a legitimate and useful default rather than 45 calls. See `dev/rest-api-doc-issues.md`.
 
 `item_type` and `item_keyword` in `R/portal-types.R` are the same pattern written by hand, with `portal_item_types()` and `portal_item_keywords()` as the variant lists. They should migrate to `new_enum()` once the dependency is available, which deletes both validators.
 
 ## Sequencing
 
-**`s7x` cannot be a dependency yet.** It requires `S7 (>= 0.2.2.9000)`, a development version, via `Remotes: RConsortium/S7`. `arcgisutils` is on CRAN, so taking that dependency blocks its next release until S7's dev version reaches CRAN and `s7x` is published. This is the same chain that blocks `arcgisviz`, recorded in the roadmap.
+`s7x` is now a hard dependency, declared with `Remotes: RConsortium/S7, josiahparry/s7x`. It requires `S7 (>= 0.2.2.9000)`, a development version, so **`arcgisutils` cannot go to CRAN until S7's dev release lands and `s7x` is published**. That is the same chain already blocking `arcgisviz`, recorded in the roadmap, so it does not add a new blocker so much as join an existing one.
 
-So:
-
-1. Build the Tier 1 functions now with plain validated character arguments. They are the value; the enums are ergonomics.
-2. Land `s7x` when the S7 chain clears, then swap the validators for enums. Only the argument-checking lines change, so the swap is mechanical and the public signatures stay identical.
-
-Doing it in this order means the sharing gap closes on the next `arcgisutils` release instead of waiting on CRAN timing outside our control.
+The tradeoff was taken deliberately: the enums replace hand-written validators everywhere, and writing them twice to avoid a dependency that is landing anyway is wasted work.
 
 ## Verification
 
