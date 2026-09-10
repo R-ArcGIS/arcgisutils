@@ -634,9 +634,9 @@ dependencies = [
 
 [[package]]
 name = "serde_esri"
-version = "0.5.0"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "caf7a4596dcbd94ba3e41441c28c0d52096a672d9164fdb242c87b72fc41a481"
+checksum = "5b9a65fd29e3a9c9af14c8dc99cd9cb9c9b62da35959df57a908133d5dd21a9a"
 dependencies = [
  "derive_builder",
  "serde",

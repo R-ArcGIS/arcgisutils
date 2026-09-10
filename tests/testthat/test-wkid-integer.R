@@ -1,9 +1,4 @@
 # Regression tests for https://github.com/R-ArcGIS/arcgisutils/issues/87
-#
-# as_featureset() builds its result with extendr's serde serializer, which maps
-# numbers onto R doubles because R has no unsigned or 64 bit integer type. The
-# integer wkid came back as a double and serialized as `4326.0` instead of
-# `4326`. The string variant uses serde_json directly and was never affected.
 
 test_that("as_featureset() returns an integer wkid (#87)", {
   x <- sf::st_sf(
