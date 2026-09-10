@@ -190,6 +190,7 @@ vec_mapping <- c(
   "integer" = "esriFieldTypeInteger",
   "character" = "esriFieldTypeString",
   "factor" = "esriFieldTypeString",
+  "logical" = "esriFieldTypeSmallInteger",
   # date will be manually defined as being Date or POSIX
   "date" = "esriFieldTypeDate",
   # FIXME actually should be `blob::blob.`
