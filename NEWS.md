@@ -14,6 +14,7 @@
 - `arc_user()` parses `lastLogin` and `emailStatusDate`, and returns `groups` as a tbl with parsed dates, matching `arc_user_self()` <https://github.com/R-ArcGIS/arcgisutils/issues/75>
 - Unsupported columns now report `cannot be converted into EsriJSON` naming the column and its type. `as_fields()` aborted first with `row names contain missing values`, making that message unreachable <https://github.com/R-ArcGIS/arcgisutils/issues/49>
 - `rbind_results()` combines zero column `data.frame`s, which arise when a query asks for no fields <https://github.com/R-ArcGIS/arcgislayers/issues/248>
+- `as_layer_definition()` derives a simple renderer from the geometry type when `drawing_info` is not supplied. Layers published without one had data and a correct extent but drew nothing <https://github.com/R-ArcGIS/arcgislayers/issues/278>
 - `as_fields()` maps `logical` columns to `esriFieldTypeSmallInteger`. An all-`NA` column is `logical` in R and previously aborted with `row names contain missing values` <https://github.com/R-ArcGIS/arcgisutils/issues/83>
 - `arc_gp_job$await()` reports failed and cancelled jobs instead of erroring with `unused argument` <https://github.com/R-ArcGIS/arcgisutils/issues/88>
 - `arc_gp_job$cancel()` no longer assigns to the read-only `status` active binding
