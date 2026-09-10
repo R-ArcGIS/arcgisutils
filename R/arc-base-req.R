@@ -12,17 +12,6 @@
 #' @param error_call the caller environment to be used when propagating errors.
 #' @param max_tries the maximum number of times to attempt the request. Defaults
 #'  to the `arcgis.retries` option, or `3`. Use `1` to disable retrying.
-#'
-#' @details
-#'
-#' Requests are retried when a service reports a transient failure—an HTTP
-#' status or a body error code of `429`, `500`, `502`, `503`, or `504`—and on
-#' connection failures. A `Retry-After` header is honored when present.
-#'
-#' Every request is retried, including those that modify a service such as
-#' `addFeatures` or `applyEdits`. Set `max_tries = 1` when a repeated request
-#' must not be applied twice.
-#'
 #' @export
 #' @examples
 #' arc_base_req("https://arcgis.com")
