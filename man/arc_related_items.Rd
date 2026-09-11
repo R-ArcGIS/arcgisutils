@@ -50,6 +50,7 @@ arc_related_items("9df5e769bfe8412b8de36a2e618c7672")
 Other portal item:
 \code{\link[=arc_item]{arc_item()}},
 \code{\link[=arc_item_data]{arc_item_data()}},
+\code{\link[=delete_items]{delete_items()}},
 \code{\link{portal_enums}},
 \code{\link[=share_item]{share_item()}},
 \code{\link[=upload_file]{upload_file()}}

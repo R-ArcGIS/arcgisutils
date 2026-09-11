@@ -81,6 +81,8 @@ Tokens are `httr2_token` objects that must carry an `arcgis_host` field (set by 
 
 Tokens are stored in a package-level environment via `set_arc_token()` / `arc_token()`. The default token name is `"ARCGIS_TOKEN"`. Multiple named tokens are supported.
 
+The token carries both the host and the username. `obj_check_token()` guarantees `token[["arcgis_host"]]` and `check_token_has_user()` guarantees `token[["username"]]`. Never add a `host` or `user` argument to a function that already requires an authenticated user. Read them off the token instead, or the function will use the `ARCGIS_HOST` env var and silently disagree with the token it is authenticating with.
+
 ### EsriJSON serialization
 - `as_esri_geometry(sfg)` → geometry JSON string (single geometry)
 - `as_features(sf/data.frame/sfc)` → list of feature objects

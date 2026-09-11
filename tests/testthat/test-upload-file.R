@@ -144,6 +144,7 @@ test_that("upload_file() uploads a parquet file to a portal", {
   nanoparquet::write_parquet(datasets::penguins, path)
 
   item <- upload_file(path, "penguins")
+  on.exit(delete_items(item), add = TRUE)
 
   expect_s3_class(item, "PortalItem")
   expect_identical(item[["title"]], "penguins")

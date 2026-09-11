@@ -28,6 +28,7 @@ reference:
       - arc_group_users
       - arc_item_data
       - upload_file
+      - delete_items
       - arc_portal_urls
       - arc_portal_users
       - arc_user_self

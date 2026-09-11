@@ -9,7 +9,6 @@
 #' @param description String. Description of the item.
 #' @param snippet String. Summary of the item.
 #' @param folder String. Folder to upload into. Defaults to the root folder.
-#' @inheritParams arc_item
 #' @inheritParams arc_base_req
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/add-item/)
 #' @export
@@ -29,7 +28,6 @@ upload_file <- function(
   description = NULL,
   snippet = NULL,
   folder = NULL,
-  host = arc_host(),
   token = arc_token(),
   error_call = rlang::caller_env()
 ) {
@@ -69,7 +67,7 @@ upload_file <- function(
   ))
 
   resp <- arc_base_req(
-    host,
+    token[["arcgis_host"]],
     token,
     path = paste0(req_path, collapse = "/"),
     query = c("f" = "json"),
@@ -81,7 +79,7 @@ upload_file <- function(
   res <- RcppSimdJson::fparse(httr2::resp_body_string(resp))
   detect_errors(res)
 
-  arc_item(res[["id"]], host = host, token = token)
+  arc_item(res[["id"]], host = token[["arcgis_host"]], token = token)
 }
 
 # https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types/
