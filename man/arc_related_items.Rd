@@ -51,6 +51,7 @@ Other portal item:
 \code{\link[=arc_item]{arc_item()}},
 \code{\link[=arc_item_data]{arc_item_data()}},
 \code{\link{portal_enums}},
-\code{\link[=share_item]{share_item()}}
+\code{\link[=share_item]{share_item()}},
+\code{\link[=upload_file]{upload_file()}}
 }
 \concept{portal item}

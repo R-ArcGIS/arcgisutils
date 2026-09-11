@@ -1,5 +1,7 @@
 # arcgisutils 0.6.1 (development)
 
+- Adds `upload_file()` which uploads a local file to a portal as a new content item.
+- `portal_item_types()` no longer returns `"Layer"` and `"Pro Map"` twice.
 - `arc_base_req()` retries transient failures. Both HTTP status codes and Esri error codes in a `200` body of `429`, `500`, `502`, `503`, and `504` are retried, as are connection failures. Controlled by `max_tries` and the `arcgis.retries` option <https://github.com/R-ArcGIS/arcgisutils/issues/43>
 
 - Replaces deprecated functions.

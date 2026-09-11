@@ -36,15 +36,6 @@ This function takes a url and creates a basic httr2 request that
 adds the user-agent and adds an authorization token to the
 \code{X-Esri-Authorization} header.
 }
-\details{
-Requests are retried when a service reports a transient failure—an HTTP
-status or a body error code of \code{429}, \code{500}, \code{502}, \code{503}, or \code{504}—and on
-connection failures. A \code{Retry-After} header is honored when present.
-
-Every request is retried, including those that modify a service such as
-\code{addFeatures} or \code{applyEdits}. Set \code{max_tries = 1} when a repeated request
-must not be applied twice.
-}
 \examples{
 arc_base_req("https://arcgis.com")
 }

@@ -2,24 +2,26 @@
 % Please edit documentation in R/portal-types.R
 \name{portal_types}
 \alias{portal_types}
-\alias{item_type}
 \alias{item_keyword}
 \alias{portal_item_keywords}
 \alias{portal_item_types}
+\alias{item_type}
 \title{Portal Item Types}
 \usage{
-item_type(item_type = character(0))
-
 item_keyword(keyword = character(0))
 
 portal_item_keywords()
 
 portal_item_types()
+
+item_type(value)
 }
 \arguments{
-\item{item_type}{a scalar character of the item type. See \code{\link[=portal_item_types]{portal_item_types()}} for valid item types.}
-
 \item{keyword}{a scalar character of the item type keyword. See \code{\link[=portal_item_keywords]{portal_item_keywords()}}.}
+
+\item{value}{Scalar character. One of the values returned by \code{\link[=portal_item_types]{portal_item_types()}}.}
+
+\item{item_type}{a scalar character of the item type. See \code{\link[=portal_item_types]{portal_item_types()}} for valid item types.}
 }
 \description{
 Every portal item has an associated item type. Each of those item types have keywords which cna be used to help narrow down search further.

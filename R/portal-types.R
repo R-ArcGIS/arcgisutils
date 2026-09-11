@@ -3,23 +3,9 @@
 #' Every portal item has an associated item type. Each of those item types have keywords which cna be used to help narrow down search further.
 #'
 #' @references [REST API Documentation](https://developers.arcgis.com/rest/users-groups-and-items/items-and-item-types)
-#' @export
 #' @name portal_types
 #' @param item_type a scalar character of the item type. See [`portal_item_types()`] for valid item types.
-item_type <- S7::new_class(
-  "ItemType",
-  package = "arcgisutils",
-  properties = list(item_type = S7::class_character),
-  validator = function(self) {
-    check_string(self@item_type, allow_empty = FALSE)
-
-    if (!tolower(self@item_type) %in% tolower(portal_item_types())) {
-      cli::cli_abort(
-        "{.arg item_type} is not a valid item type. See {.fn portal_item_types}"
-      )
-    }
-  }
-)
+NULL
 
 #' @export
 #' @name portal_types
@@ -509,7 +495,6 @@ portal_item_types <- function() {
     "Mobile Basemap Package",
     "Mobile Map Package",
     "Mobile Scene Package",
-    "Pro Map",
     "Project Package",
     "Project Template",
     "Published Map",
@@ -519,7 +504,6 @@ portal_item_types <- function() {
     "Vector Tile Package",
     "Explorer Layer",
     "Image Collection",
-    "Layer",
     "Layer",
     "Layer Package",
     "Pro Report",
@@ -559,3 +543,13 @@ portal_item_types <- function() {
 #   html_text() |>
 #   unique() |>
 #   sort()
+
+#' @rdname portal_types
+#' @param value Scalar character. One of the values returned by [`portal_item_types()`].
+#' @export
+item_type <- s7x::new_enum(
+  "ItemType",
+  portal_item_types(),
+  package = "arcgisutils",
+  allow_na = FALSE
+)

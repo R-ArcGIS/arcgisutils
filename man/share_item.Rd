@@ -73,6 +73,7 @@ Other portal item:
 \code{\link[=arc_item]{arc_item()}},
 \code{\link[=arc_item_data]{arc_item_data()}},
 \code{\link[=arc_related_items]{arc_related_items()}},
-\code{\link{portal_enums}}
+\code{\link{portal_enums}},
+\code{\link[=upload_file]{upload_file()}}
 }
 \concept{portal item}
