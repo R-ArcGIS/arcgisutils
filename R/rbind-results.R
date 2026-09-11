@@ -67,7 +67,24 @@ rbind_results <- function(
     return(res)
   }
 
-  if (rlang::is_installed("collapse", version = "2.0.0")) {
+  # the row binding backends see the geometry column as an ordinary column, so
+  # they refuse pieces whose geometry classes disagree and carry the first
+  # piece's bbox through. binding the attributes and concatenating the geometry
+  # separately avoids both, and is faster than binding the geometry as a column.
+  geometry_name <- NULL
+
+  if (return_sf) {
+    geometry_name <- attr(present[[1L]], "sf_column")
+    geometries <- lapply(present, function(p) p[[geometry_name]])
+
+    x <- lapply(x, drop_geometry_column, geometry_name = geometry_name)
+    present <- x[!missing_elements]
+  }
+
+  if (all(vapply(present, ncol, integer(1)) == 0L)) {
+    # the geometry was the only column, so there is nothing left to bind
+    x <- data.frame(row.names = seq_len(sum(vapply(present, nrow, integer(1)))))
+  } else if (rlang::is_installed("collapse", version = "2.0.0")) {
     # ensure that a data.frame is always returned via return = 2L
     x <- collapse::rowbind(x, return = 2L, fill = TRUE)
   } else if (rlang::is_installed("data.table")) {
@@ -80,9 +97,10 @@ rbind_results <- function(
     x <- do.call(rbind.data.frame, x)
   }
 
-  # cast to sf if not already (the case with collapse)
-  if (return_sf && !rlang::inherits_any(x, "sf")) {
-    x <- sf::st_as_sf(x)
+  if (return_sf) {
+    # c() promotes a mixed set of geometry types and recomputes the bbox
+    x[[geometry_name]] <- rlang::exec(c, !!!geometries)
+    x <- sf::st_sf(x, sf_column_name = geometry_name)
   }
 
   if (length(are_missing) > 0) {
@@ -103,4 +121,17 @@ inherits_or_null <- function(x, class) {
   } else {
     rlang::inherits_any(x, class)
   }
+}
+
+#' Remove the geometry column without dropping the sf class handling
+#' @keywords internal
+#' @noRd
+drop_geometry_column <- function(x, geometry_name) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+
+  x[[geometry_name]] <- NULL
+  class(x) <- "data.frame"
+  x
 }

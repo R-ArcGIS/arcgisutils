@@ -1,5 +1,7 @@
 # arcgisutils 0.6.1 (development)
 
+- `rbind_results()` now binds the geometry column separately from the attribute columns when the inputs are `sf`. This fixes two bugs that only appeared with the `collapse` backend: the result kept the first element's bounding box rather than the bounding box of the combined geometry, and binding failed outright when the pieces' geometry classes differed, for example `LINESTRING` with `MULTILINESTRING`.
+
 - Adds `as_bbox()` which coerces an extent to a [`wk::rct()`]. It accepts a `wk_rct`, an `sf` `bbox`, a length four numeric, or any geometry `wk::wk_bbox()` understands, and reprojects when a different `crs` is requested.
 - `fetch_layer_metadata()` gains `path` and `query` arguments, passed through to `arc_base_req()`, so sub-resources can be fetched without assembling a URL by hand.
 
