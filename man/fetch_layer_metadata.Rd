@@ -4,12 +4,22 @@
 \alias{fetch_layer_metadata}
 \title{Retrieve metadata}
 \usage{
-fetch_layer_metadata(url, token = NULL, call = rlang::caller_env())
+fetch_layer_metadata(
+  url,
+  token = NULL,
+  path = NULL,
+  query = NULL,
+  call = rlang::caller_env()
+)
 }
 \arguments{
 \item{url}{the url of the item.}
 
 \item{token}{an \code{httr2_token} from one of the provided \code{auth_} functions}
+
+\item{path}{a character vector of paths to be appended to url using \code{\link[httr2:req_url_path_append]{httr2::req_url_path_append()}}}
+
+\item{query}{a named vector or named list of query parameters to be appended to the url using \code{\link[httr2:req_url_query]{httr2::req_url_query()}}}
 
 \item{call}{default \code{\link[rlang:caller_env]{rlang::caller_env()}}. The calling environment passed to \code{detect_errors()}.}
 }

@@ -9,6 +9,7 @@
 #'
 #' @param url the url of the item.
 #' @param token an `httr2_token` from one of the provided `auth_` functions
+#' @inheritParams arc_base_req
 #' @param call default [`rlang::caller_env()`]. The calling environment passed to `detect_errors()`.
 #' @export
 #' @examples
@@ -25,9 +26,11 @@
 fetch_layer_metadata <- function(
   url,
   token = NULL,
+  path = NULL,
+  query = NULL,
   call = rlang::caller_env()
 ) {
-  req <- arc_base_req(url, token, error_call = call)
+  req <- arc_base_req(url, token, path = path, query = query, error_call = call)
 
   # add f=json to the url for querying
   req <- httr2::req_url_query(req, f = "json")

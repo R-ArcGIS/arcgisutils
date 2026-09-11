@@ -1,5 +1,8 @@
 # arcgisutils 0.6.1 (development)
 
+- Adds `as_bbox()` which coerces an extent to a [`wk::rct()`]. It accepts a `wk_rct`, an `sf` `bbox`, a length four numeric, or any geometry `wk::wk_bbox()` understands, and reprojects when a different `crs` is requested.
+- `fetch_layer_metadata()` gains `path` and `query` arguments, passed through to `arc_base_req()`, so sub-resources can be fetched without assembling a URL by hand.
+
 - Adds `upload_file()` which uploads a local file to a portal as a new content item.
 - Adds `delete_items()` which deletes portal items.
 - `portal_item_types()` no longer returns `"Layer"` and `"Pro Map"` twice.
