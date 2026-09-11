@@ -8,15 +8,21 @@ esri_is_transient <- function(resp) {
   isTRUE(esri_body_error_code(resp) %in% esri_transient_codes)
 }
 
-# esri reports errors in a 200 body; only parse when `error` is the first key
+# FIXME rename, `esri_body_error_code()` is a code smell
 esri_body_error_code <- function(resp) {
   if (!httr2::resp_has_body(resp)) {
     return(NULL)
   }
 
   body <- httr2::resp_body_raw(resp)
+  head <- body[seq_len(min(32L, length(body)))]
 
-  if (!grepl('^\\s*\\{\\s*"error"', rawToChar(body[seq_len(min(32L, length(body)))]))) {
+  # a binary body cannot be an error body and cannot be coerced to a string
+  if (any(head == as.raw(0L))) {
+    return(NULL)
+  }
+
+  if (!grepl('^\\s*\\{\\s*"error"', rawToChar(head))) {
     return(NULL)
   }
 

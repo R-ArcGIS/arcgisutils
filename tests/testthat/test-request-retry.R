@@ -87,3 +87,15 @@ test_that("max_tries = 1 performs a transient response without retrying", {
   expect_identical(n, 1L)
   expect_identical(httr2::resp_body_string(resp), esri_error(500))
 })
+
+test_that("a binary body is not treated as an error body", {
+  zip <- as.raw(c(0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x00, 0x00, 0x08, 0x00))
+  resp <- httr2::response(
+    status_code = 200L,
+    headers = list(`Content-Type` = "application/zip"),
+    body = zip
+  )
+
+  expect_null(esri_body_error_code(resp))
+  expect_false(esri_is_transient(resp))
+})
