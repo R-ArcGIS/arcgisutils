@@ -1,5 +1,11 @@
 # arcgisutils 0.6.1 (development)
 
+- `arc_gp_job` gains `submit_path` and `results_path`, so services that are not `GPServer` endpoints can use it. A tile export submits to `exportTiles` and reads its download URL off the job resource, and no longer needs a parallel job class of its own.
+
+- `arc_gp_job$await()` gains a `timeout` argument, defaulting to `Inf`.
+
+- `arc_gp_job$token` returns the token the job was created with, for follow up requests such as downloading a result.
+
 - `rbind_results()` now binds the geometry column separately from the attribute columns when the inputs are `sf`. This fixes two bugs that only appeared with the `collapse` backend: the result kept the first element's bounding box rather than the bounding box of the combined geometry, and binding failed outright when the pieces' geometry classes differed, for example `LINESTRING` with `MULTILINESTRING`.
 
 - Adds `as_bbox()` which coerces an extent to a [`wk::rct()`]. It accepts a `wk_rct`, an `sf` `bbox`, a length four numeric, or any geometry `wk::wk_bbox()` understands, and reprojects when a different `crs` is requested.

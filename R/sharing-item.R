@@ -10,6 +10,7 @@
 #'   groups that have item update capability.
 #' @param user the username that owns `item`. Taken from `item` when it is a
 #'   `PortalItem`.
+#' @param ... these dots are for future extensions and must be empty.
 #' @inheritParams arc_item
 #' @details
 #'

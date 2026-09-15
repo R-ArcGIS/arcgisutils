@@ -22,6 +22,8 @@ Otherwise one of \code{\link{RelationshipType}}.}
 \item{direction}{one of \code{\link{RelationshipDirection}}. \code{"forward"} returns
 destinations of the relationship, \code{"reverse"} returns origins.}
 
+\item{...}{these dots are for future extensions and must be empty.}
+
 \item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}

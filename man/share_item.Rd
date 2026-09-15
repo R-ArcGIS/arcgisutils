@@ -36,6 +36,8 @@ unshare_item(
 \item{confirm_item_control}{default \code{FALSE}. Set to \code{TRUE} to share with
 groups that have item update capability.}
 
+\item{...}{these dots are for future extensions and must be empty.}
+
 \item{user}{the username that owns \code{item}. Taken from \code{item} when it is a
 \code{PortalItem}.}
 

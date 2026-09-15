@@ -5,12 +5,25 @@
 \alias{new_gp_job}
 \title{Create a Geoprocessing Service Job}
 \usage{
-new_gp_job(base_url, params = list(), token = arc_token())
+new_gp_job(
+  base_url,
+  params = list(),
+  result_fn = NULL,
+  submit_path = "submitJob",
+  results_path = NULL,
+  token = arc_token()
+)
 }
 \arguments{
 \item{base_url}{the URL of the job service (without \verb{/submitJob})}
 
 \item{params}{a named list where each element is a scalar character}
+
+\item{result_fn}{Default \code{NULL}. An optional function to apply to the results JSON.}
+
+\item{submit_path}{default \code{"submitJob"}. The path the job is submitted to.}
+
+\item{results_path}{default \code{NULL}, meaning \code{jobs/{job-id}/results}. A function taking the job ID and returning the path to read results from.}
 
 \item{token}{default \code{\link[=arc_token]{arc_token()}}. The token to be used with the job.}
 }
@@ -72,6 +85,8 @@ Other geoprocessing:
   \describe{
     \item{\code{params}}{returns an S7 object of class \code{arc_form_params} (see \code{\link[=arc_form_params]{arc_form_params()}}) the list can be accessed via \code{self$params@params}.}
 
+    \item{\code{token}}{the token the job was created with, for follow up requests such as downloading a result.}
+
     \item{\code{status}}{returns the status of the geoprocessing job as an S7 object of class \code{gp_job_status} (see \code{\link[=arc_job_status]{arc_job_status()}}) by querying the \verb{/jobs/\{job-id\}} endpoint.}
 
     \item{\code{results}}{returns the current results of the job by querying the \verb{/jobs/\{job-id\}/results} endpoint.}
@@ -99,6 +114,8 @@ Other geoprocessing:
   base_url,
   params = list(),
   result_fn = NULL,
+  submit_path = "submitJob",
+  results_path = NULL,
   token = arc_token(),
   error_call = rlang::caller_call()
 )}
@@ -110,6 +127,8 @@ Other geoprocessing:
       \item{\code{base_url}}{the URL of the job service (without \verb{/submitJob})}
       \item{\code{params}}{a named list where each element is a scalar character}
       \item{\code{result_fn}}{Default \code{NULL}. An optional function to apply to the results JSON. By default parses results using \code{RcppSimdJson::fparse()}.}
+      \item{\code{submit_path}}{default \code{"submitJob"}. The path the job is submitted to. Services that are not \code{GPServer} endpoints use their own, such as \code{"exportTiles"}.}
+      \item{\code{results_path}}{default \code{NULL}, meaning \code{jobs/{job-id}/results}. A function taking the job ID and returning the path to read results from.}
       \item{\code{token}}{default \code{\link[=arc_token]{arc_token()}}. The token to be used with the job.}
       \item{\code{error_call}}{default \code{rlang::caller_call()} the calling environment.}
     }
@@ -121,7 +140,7 @@ Other geoprocessing:
 \if{html}{\out{<a id="method-arc_gp_job-start"></a>}}
 \if{latex}{\out{\hypertarget{method-arc_gp_job-start}{}}}
 \subsection{\code{arc_gp_job$start()}}{
-  Starts the job by calling the \verb{/submitJob} endpoint. This also sets the public field \code{id}.
+  Starts the job by calling the submit endpoint, \verb{/submitJob} unless \code{submit_path} says otherwise. This also sets the public field \code{id}.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
     \preformatted{arc_gp_job$start()}
@@ -148,7 +167,7 @@ Other geoprocessing:
   Waits for job completion and returns results.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
-    \preformatted{arc_gp_job$await(interval = 0.1, verbose = FALSE)}
+    \preformatted{arc_gp_job$await(interval = 0.1, verbose = FALSE, timeout = Inf)}
     \if{html}{\out{</div>}}
   }
   \subsection{Arguments}{
@@ -156,6 +175,7 @@ Other geoprocessing:
     \describe{
       \item{\code{interval}}{polling interval in seconds (default 0.1)}
       \item{\code{verbose}}{whether to print status messages (default FALSE)}
+      \item{\code{timeout}}{seconds to wait before giving up (default \code{Inf})}
     }
     \if{html}{\out{</div>}}
   }

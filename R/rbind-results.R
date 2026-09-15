@@ -67,18 +67,33 @@ rbind_results <- function(
     return(res)
   }
 
-  # the row binding backends see the geometry column as an ordinary column, so
-  # they refuse pieces whose geometry classes disagree and carry the first
-  # piece's bbox through. binding the attributes and concatenating the geometry
-  # separately avoids both, and is faster than binding the geometry as a column.
+  # the row binding backends treat the geometry column as an ordinary column.
+  # they bind it quickly but compare its class attribute, so pieces whose
+  # geometry types differ have to be held back and concatenated separately.
   geometry_name <- NULL
+  mixed_geometry <- FALSE
 
   if (return_sf) {
     geometry_name <- attr(present[[1L]], "sf_column")
     geometries <- lapply(present, function(p) p[[geometry_name]])
+    filled <- geometries[lengths(geometries) > 0L]
 
-    x <- lapply(x, drop_geometry_column, geometry_name = geometry_name)
-    present <- x[!missing_elements]
+    classes <- unique(vapply(filled, function(g) class(g)[1L], character(1)))
+    mixed_geometry <- length(classes) > 1L
+
+    if (mixed_geometry) {
+      x <- lapply(x, function(p) {
+        if (is.null(p)) {
+          return(NULL)
+        }
+
+        p[[geometry_name]] <- NULL
+        class(p) <- "data.frame"
+        p
+      })
+
+      present <- x[!missing_elements]
+    }
   }
 
   if (all(vapply(present, ncol, integer(1)) == 0L)) {
@@ -98,8 +113,60 @@ rbind_results <- function(
   }
 
   if (return_sf) {
-    # c() promotes a mixed set of geometry types and recomputes the bbox
-    x[[geometry_name]] <- rlang::exec(c, !!!geometries)
+    # results from one service share a crs object, so compare the attribute
+    # directly and only fall back to the semantic comparison when it differs
+    crs <- attr(geometries[[1L]], "crs")
+    same <- vapply(geometries, function(g) identical(attr(g, "crs"), crs), logical(1))
+
+    if (!all(same)) {
+      equal <- vapply(
+        geometries[!same],
+        function(g) sf::st_crs(g) == sf::st_crs(crs),
+        logical(1)
+      )
+
+      if (!all(equal)) {
+        cli::cli_abort("All results must share a CRS.", call = call)
+      }
+    }
+
+    geometry <- if (mixed_geometry) {
+      out <- unlist(lapply(geometries, unclass), recursive = FALSE)
+      attributes(out) <- attributes(geometries[[1L]])
+      class(out) <- c("sfc_GEOMETRY", "sfc")
+      out
+    } else {
+      # already bound by the backend, only its attributes are stale
+      x[[geometry_name]]
+    }
+
+    # every piece already carries a correct bbox, so the combined one is the
+    # bbox of those bboxes. that is O(pieces), where rescanning every geometry
+    # the way c.sfc() does is O(features)
+    corners <- vapply(filled, function(g) as.double(attr(g, "bbox")), double(4))
+
+    # an sfc stores its bbox without a crs attribute, the crs lives on the sfc
+    attr(geometry, "bbox") <- structure(
+      c(
+        xmin = min(corners[1L, ]),
+        ymin = min(corners[2L, ]),
+        xmax = max(corners[3L, ]),
+        ymax = max(corners[4L, ])
+      ),
+      class = "bbox"
+    )
+
+    attr(geometry, "n_empty") <- sum(vapply(
+      geometries,
+      function(g) as.integer(attr(g, "n_empty")),
+      integer(1)
+    ))
+
+    if (inherits(geometry, "sfc_GEOMETRY")) {
+      attr(geometry, "classes") <- vapply(geometry, class, character(3))[2L, ]
+    }
+
+    x[[geometry_name]] <- geometry
     x <- sf::st_sf(x, sf_column_name = geometry_name)
   }
 
@@ -121,17 +188,4 @@ inherits_or_null <- function(x, class) {
   } else {
     rlang::inherits_any(x, class)
   }
-}
-
-#' Remove the geometry column without dropping the sf class handling
-#' @keywords internal
-#' @noRd
-drop_geometry_column <- function(x, geometry_name) {
-  if (is.null(x)) {
-    return(NULL)
-  }
-
-  x[[geometry_name]] <- NULL
-  class(x) <- "data.frame"
-  x
 }

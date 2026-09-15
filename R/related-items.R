@@ -8,6 +8,7 @@
 #'   Otherwise one of [`RelationshipType`].
 #' @param direction one of [`RelationshipDirection`]. `"forward"` returns
 #'   destinations of the relationship, `"reverse"` returns origins.
+#' @param ... these dots are for future extensions and must be empty.
 #' @inheritParams arc_item
 #' @details
 #'

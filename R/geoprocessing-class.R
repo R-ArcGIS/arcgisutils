@@ -152,6 +152,7 @@ arc_gp_job <- R6::R6Class(
   #' @field base_url the URL of the job service (without `/submitJob`)
   #' @field id the ID of the started job. `NULL` `self$start()` has not been called.
   #' @field params returns an S7 object of class `arc_form_params` (see [`arc_form_params()`]) the list can be accessed via `self$params@params`.
+  #' @field token the token the job was created with, for follow up requests such as downloading a result.
   #' @field status returns the status of the geoprocessing job as an S7 object of class `gp_job_status` (see [arc_job_status()]) by querying the `/jobs/{job-id}` endpoint.
   #' @field results returns the current results of the job by querying the `/jobs/{job-id}/results` endpoint.
   public = list(
@@ -160,12 +161,16 @@ arc_gp_job <- R6::R6Class(
     #' @param base_url the URL of the job service (without `/submitJob`)
     #' @param params a named list where each element is a scalar character
     #' @param result_fn Default `NULL`. An optional function to apply to the results JSON. By default parses results using `RcppSimdJson::fparse()`.
+    #' @param submit_path default `"submitJob"`. The path the job is submitted to. Services that are not `GPServer` endpoints use their own, such as `"exportTiles"`.
+    #' @param results_path default `NULL`, meaning `jobs/{job-id}/results`. A function taking the job ID and returning the path to read results from.
     #' @param token default [arc_token()]. The token to be used with the job.
     #' @param error_call default `rlang::caller_call()` the calling environment.
     initialize = function(
       base_url,
       params = list(),
       result_fn = NULL,
+      submit_path = "submitJob",
+      results_path = NULL,
       token = arc_token(),
       error_call = rlang::caller_call()
     ) {
@@ -179,6 +184,14 @@ arc_gp_job <- R6::R6Class(
         private$.result_fn <- result_fn
       }
 
+      check_character(submit_path, call = error_call)
+      private$.submit_path <- submit_path
+
+      if (!rlang::is_null(results_path)) {
+        check_function(results_path, call = error_call)
+        private$.results_path <- results_path
+      }
+
       self$base_url <- base_url
       if (inherits(params, "arcgisutils::arc_form_params")) {
         private$.params <- params
@@ -186,16 +199,16 @@ arc_gp_job <- R6::R6Class(
         private$.params <- arc_form_params(params)
       }
 
-      private$token <- token
+      private$.token <- token
       self
     },
-    #' @description  Starts the job by calling the `/submitJob` endpoint. This also sets the public field `id`.
+    #' @description  Starts the job by calling the submit endpoint, `/submitJob` unless `submit_path` says otherwise. This also sets the public field `id`.
     start = function() {
       # TODO make it possible to only do this once
       resp <- arc_base_req(
         self$base_url,
-        token = private$token,
-        path = "submitJob"
+        token = private$.token,
+        path = private$.submit_path
       ) |>
         httr2::req_body_form(!!!private$.params@params) |>
         httr2::req_error(is_error = function(e) FALSE) |>
@@ -211,7 +224,7 @@ arc_gp_job <- R6::R6Class(
     cancel = function() {
       resp <- arc_base_req(
         self$base_url,
-        token = private$token,
+        token = private$.token,
         path = c("jobs", self$id, "cancel"),
         query = c(f = "json")
       ) |>
@@ -230,10 +243,14 @@ arc_gp_job <- R6::R6Class(
     #' @description Waits for job completion and returns results.
     #' @param interval polling interval in seconds (default 0.1)
     #' @param verbose whether to print status messages (default FALSE)
-    await = function(interval = 0.1, verbose = FALSE) {
+    #' @param timeout seconds to wait before giving up (default `Inf`)
+    await = function(interval = 0.1, verbose = FALSE, timeout = Inf) {
       if (is.null(self$id)) {
         cli::cli_abort("Job has not been started.")
       }
+
+      check_number_decimal(timeout, min = 0, allow_infinite = TRUE)
+      deadline <- Sys.time() + timeout
 
       is_complete <- FALSE
       Sys.sleep(0.5) # initial sleep 500ms
@@ -260,6 +277,13 @@ arc_gp_job <- R6::R6Class(
         } else if (is_complete) {
           return(self$results)
         }
+
+        if (Sys.time() > deadline) {
+          cli::cli_abort(
+            "Job {.val {self$id}} did not finish within {timeout} seconds."
+          )
+        }
+
         Sys.sleep(interval)
       }
     },
@@ -268,7 +292,7 @@ arc_gp_job <- R6::R6Class(
     messages = function() {
       resp <- arc_base_req(
         self$base_url,
-        token = private$token,
+        token = private$.token,
         path = c("jobs", self$id),
         query = c(f = "json")
       ) |>
@@ -290,7 +314,7 @@ arc_gp_job <- R6::R6Class(
       # check the status
       resp <- arc_base_req(
         self$base_url,
-        token = private$token,
+        token = private$.token,
         path = c("jobs", self$id),
         query = c(f = "json")
       ) |>
@@ -306,12 +330,15 @@ arc_gp_job <- R6::R6Class(
       arc_job_status(res[["jobStatus"]])
     },
     .result_fn = NULL,
-    token = NULL
+    .submit_path = "submitJob",
+    .results_path = NULL,
+    .token = NULL
   ),
   active = list(
     params = function() {
       private$.params
     },
+    token = function() private$.token,
     status = function() private$.status(),
     results = function() {
       # if there is a NULL job ID we abort
@@ -324,11 +351,16 @@ arc_gp_job <- R6::R6Class(
         )
       }
 
-      # check the status
+      path <- if (rlang::is_null(private$.results_path)) {
+        c("jobs", self$id, "results")
+      } else {
+        private$.results_path(self$id)
+      }
+
       resp <- arc_base_req(
         self$base_url,
-        token = private$token,
-        path = c("jobs", self$id, "results"),
+        token = private$.token,
+        path = path,
         query = c(f = "json")
       ) |>
         httr2::req_error(is_error = function(e) FALSE) |>
@@ -408,17 +440,30 @@ gp_job_from_url <- function(url, token = arc_token()) {
 #' @rdname gp_job
 #' @param base_url the URL of the job service (without `/submitJob`)
 #' @param params a named list where each element is a scalar character
+#' @param result_fn Default `NULL`. An optional function to apply to the results JSON.
+#' @param submit_path default `"submitJob"`. The path the job is submitted to.
+#' @param results_path default `NULL`, meaning `jobs/{job-id}/results`. A function taking the job ID and returning the path to read results from.
 #' @param token default [arc_token()]. The token to be used with the job.
 new_gp_job <- function(
   base_url,
   params = list(),
+  result_fn = NULL,
+  submit_path = "submitJob",
+  results_path = NULL,
   token = arc_token()
 ) {
   check_string(base_url)
   if (!rlang::is_null(token)) {
     obj_check_token(token)
   }
-  arc_gp_job$new(base_url, params = params, token = token)
+  arc_gp_job$new(
+    base_url,
+    params = params,
+    result_fn = result_fn,
+    submit_path = submit_path,
+    results_path = results_path,
+    token = token
+  )
 }
 
 #' @export

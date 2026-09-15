@@ -4,6 +4,7 @@
 #'
 #' @param items A character vector of item IDs, a `PortalItem`, or a list of them.
 #' @param permanent Boolean. Skip the recycle bin. ArcGIS Online only.
+#' @param ... these dots are for future extensions and must be empty.
 #' @inheritParams arc_base_req
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/delete-items/)
 #' @export
