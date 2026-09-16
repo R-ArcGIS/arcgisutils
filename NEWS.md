@@ -1,5 +1,8 @@
 # arcgisutils 0.6.1 (development)
 
+- Shiny authentication now identifies the signed-in user by their user ID instead of the organization ID.
+- Shiny login and refresh accept ArcGIS token responses that omit `token_type`. This integration now requires shinyOAuth 0.6.0 or later.
+
 - `arc_gp_job` gains `submit_path` and `results_path`, so services that are not `GPServer` endpoints can use it. A tile export submits to `exportTiles` and reads its download URL off the job resource, and no longer needs a parallel job class of its own.
 
 - `arc_gp_job$await()` gains a `timeout` argument, defaulting to `Inf`.

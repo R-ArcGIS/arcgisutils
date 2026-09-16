@@ -52,7 +52,7 @@ Suggests:
     jsonify,
     testthat (>= 3.0.0),
     vctrs,
-    shinyOAuth,
+    shinyOAuth (>= 0.6.0),
     nanoparquet
 Config/rextendr/version: 0.4.2
 Config/testthat/edition: 3
