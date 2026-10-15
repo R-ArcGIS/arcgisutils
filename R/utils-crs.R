@@ -47,7 +47,7 @@ validate_crs <- function(
   if (
     !(inherits(crs, "character") ||
       inherits(crs, "crs") ||
-      is.numeric(crs))
+      rlang::is_integerish(crs))
   ) {
     cli::cli_abort(
       c(
