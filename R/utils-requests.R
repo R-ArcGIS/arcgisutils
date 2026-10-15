@@ -127,7 +127,10 @@ capture_message <- function(error) {
       paste0(err_msg, collapse = "\n")
     )
 
-    c(paste0(full_msg, collapse = ""), "i" = e$details)
+    c(
+      paste0(full_msg, collapse = ""),
+      "i" = unlist(e$details)
+    )
   } else {
     invisible(NULL)
   }
