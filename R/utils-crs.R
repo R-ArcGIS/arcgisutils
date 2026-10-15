@@ -45,16 +45,18 @@ validate_crs <- function(
     return(list(spatialReference = c()))
   }
   if (
-    !((inherits(crs, "character") ||
+    !(inherits(crs, "character") ||
       inherits(crs, "crs") ||
-      inherits(crs, "numeric")))
+      rlang::is_integerish(crs))
   ) {
-    cli::cli_abort(c(
-      "Invalid CRS supplied: {.arg {arg}}",
-      "i" = "must be compatible with {.fn sf::st_crs}",
+    cli::cli_abort(
+      c(
+        "Invalid CRS supplied: {.arg {arg}}",
+        "i" = "must be compatible with {.fn sf::st_crs}"
+      ),
       arg = arg,
       call = call
-    ))
+    )
   }
 
   crs <- sf::st_crs(crs)
