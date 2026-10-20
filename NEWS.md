@@ -2,6 +2,7 @@
 
 - Adds `search_groups()`, `search_users()`, and `search_group_content()`, which search a portal for groups, users, and the items shared with one group <https://github.com/R-ArcGIS/arcgis/issues/61>
 - Adds `add_relationship()` and `delete_relationship()`, which create and remove relationships between items, `set_content_status()`, which marks an item as authoritative or deprecated, and `set_item_categories()`, which assigns content categories to items. Adds the `ContentStatus` enum <https://github.com/R-ArcGIS/arcgis/issues/61>
+- Adds item lifecycle functions: `update_item()` changes metadata or replaces the file, `delete_item()` deletes one item, `move_items()` moves items between folders, `copy_item()` copies an item, `reassign_item()` transfers ownership, `protect_item()` and `unprotect_item()` guard against deletion, and `update_thumbnail()` replaces the thumbnail <https://github.com/R-ArcGIS/arcgis/issues/61>
 
 - Shiny authentication now identifies the signed-in user by their user ID instead of the organization ID.
 - Shiny login and refresh accept ArcGIS token responses that omit `token_type`. This integration now requires shinyOAuth 0.6.0 or later.

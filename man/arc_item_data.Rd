@@ -33,11 +33,18 @@ Other portal item:
 \code{\link[=add_relationship]{add_relationship()}},
 \code{\link[=arc_item]{arc_item()}},
 \code{\link[=arc_related_items]{arc_related_items()}},
+\code{\link[=copy_item]{copy_item()}},
+\code{\link[=delete_item]{delete_item()}},
 \code{\link[=delete_items]{delete_items()}},
+\code{\link[=move_items]{move_items()}},
 \code{\link{portal_enums}},
+\code{\link[=protect_item]{protect_item()}},
+\code{\link[=reassign_item]{reassign_item()}},
 \code{\link[=set_content_status]{set_content_status()}},
 \code{\link[=set_item_categories]{set_item_categories()}},
 \code{\link[=share_item]{share_item()}},
+\code{\link[=update_item]{update_item()}},
+\code{\link[=update_thumbnail]{update_thumbnail()}},
 \code{\link[=upload_file]{upload_file()}}
 }
 \concept{portal item}
