@@ -70,6 +70,7 @@ Other portal item:
 \code{\link[=share_item]{share_item()}},
 \code{\link[=update_item]{update_item()}},
 \code{\link[=update_thumbnail]{update_thumbnail()}},
-\code{\link[=upload_file]{upload_file()}}
+\code{\link[=upload_file]{upload_file()}},
+\code{\link[=upload_large_file]{upload_large_file()}}
 }
 \concept{portal item}

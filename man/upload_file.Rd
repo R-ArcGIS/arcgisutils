@@ -69,6 +69,7 @@ Other portal item:
 \code{\link[=set_item_categories]{set_item_categories()}},
 \code{\link[=share_item]{share_item()}},
 \code{\link[=update_item]{update_item()}},
-\code{\link[=update_thumbnail]{update_thumbnail()}}
+\code{\link[=update_thumbnail]{update_thumbnail()}},
+\code{\link[=upload_large_file]{upload_large_file()}}
 }
 \concept{portal item}
