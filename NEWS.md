@@ -1,5 +1,7 @@
 # arcgisutils 0.6.1 (development)
 
+- Adds `search_groups()`, `search_users()`, and `search_group_content()`, which search a portal for groups, users, and the items shared with one group <https://github.com/R-ArcGIS/arcgis/issues/61>
+
 - Shiny authentication now identifies the signed-in user by their user ID instead of the organization ID.
 - Shiny login and refresh accept ArcGIS token responses that omit `token_type`. This integration now requires shinyOAuth 0.6.0 or later.
 
