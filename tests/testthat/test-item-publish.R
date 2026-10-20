@@ -1,7 +1,6 @@
 host <- "https://www.arcgis.com"
 token <- httr2::oauth_token("1234", arcgis_host = host, username = "jdoe")
 
-# answers successive requests with successive bodies, repeating the last one
 mock_sequence <- function(..., env = parent.frame()) {
   bodies <- list(...)
   captured <- new.env(parent = emptyenv())
@@ -36,8 +35,7 @@ test_that("analyze_file() analyzes an item and keeps arrays as lists", {
   res <- analyze_file(
     csv_item,
     analyze_parameters = list(locationType = "coordinates"),
-    host = host,
-    token = NULL
+    token = token
   )
 
   q <- httr2::url_parse(captured$reqs[[1]]$url)$query
@@ -54,7 +52,7 @@ test_that("analyze_file() uploads a local file", {
   path <- tempfile(fileext = ".xlsx")
   writeBin(as.raw(1:10), path)
 
-  analyze_file(path = path, host = host, token = NULL)
+  analyze_file(path = path, token = token)
 
   body <- captured$reqs[[1]]$body
   expect_identical(body$type, "multipart")
@@ -63,13 +61,13 @@ test_that("analyze_file() uploads a local file", {
 })
 
 test_that("analyze_file() validates its inputs", {
-  expect_error(analyze_file(), "exactly one")
-  expect_error(analyze_file(csv_item, path = "x.csv"), "exactly one")
-  expect_error(analyze_file("i1"), "infer")
-  expect_error(analyze_file("i1", file_type = "pdf"), "file_type")
-  expect_error(analyze_file(path = "x.txt"), "infer")
+  expect_error(analyze_file(token = token), "exactly one")
+  expect_error(analyze_file(csv_item, path = "x.csv", token = token), "exactly one")
+  expect_error(analyze_file("i1", token = token), "infer")
+  expect_error(analyze_file("i1", file_type = "pdf", token = token), "file_type")
+  expect_error(analyze_file(path = "x.txt", token = token), "infer")
   expect_error(
-    analyze_file(csv_item, analyze_parameters = list("address")),
+    analyze_file(csv_item, analyze_parameters = list("address"), token = token),
     "named list"
   )
 })
@@ -77,7 +75,7 @@ test_that("analyze_file() validates its inputs", {
 test_that("analyze_file() surfaces portal errors", {
   mock_sequence(list(error = list(code = 400, message = "File too large")))
   expect_error(
-    analyze_file(csv_item, host = host, token = NULL),
+    analyze_file(csv_item, token = token),
     "File too large"
   )
 })
@@ -85,7 +83,7 @@ test_that("analyze_file() surfaces portal errors", {
 test_that("item_status() defaults to the signed in user for a bare ID", {
   captured <- mock_sequence(list(status = "processing", itemId = "i1"))
 
-  res <- item_status("i1", "job-1", "export", host = host, token = token)
+  res <- item_status("i1", "job-1", "export", token = token)
 
   url <- captured$reqs[[1]]$url
   expect_match(url, "/content/users/jdoe/items/i1/status\\?")
@@ -98,7 +96,7 @@ test_that("item_status() defaults to the signed in user for a bare ID", {
 test_that("item_status() validates the job arguments", {
   expect_error(item_status("i1", "job-1", token = token), "job_type")
   expect_error(item_status("i1", "job-1", "upload", token = token), "job_type")
-  expect_error(item_status("i1", token = NULL), "user")
+  expect_error(item_status("i1", token = NULL), "token")
 })
 
 test_that("await_item() polls until the job completes", {
@@ -113,7 +111,6 @@ test_that("await_item() polls until the job completes", {
     "job-1",
     "publish",
     interval = 0,
-    host = host,
     token = token
   )
 
@@ -124,13 +121,13 @@ test_that("await_item() polls until the job completes", {
 test_that("await_item() errors when the job fails or times out", {
   mock_sequence(list(status = "failed", statusMessage = "Bad geometry"))
   expect_error(
-    await_item("i1", interval = 0, host = host, token = token),
+    await_item("i1", interval = 0, token = token),
     "Bad geometry"
   )
 
   mock_sequence(list(status = "processing"))
   expect_error(
-    await_item("i1", interval = 0.01, timeout = 0, host = host, token = token),
+    await_item("i1", interval = 0.01, timeout = 0, token = token),
     "did not finish"
   )
 })

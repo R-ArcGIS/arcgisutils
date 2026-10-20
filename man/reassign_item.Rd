@@ -10,8 +10,8 @@ reassign_item(
   target_folder = "/",
   ...,
   user = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 )
 }
 \arguments{
@@ -28,16 +28,16 @@ exist.}
 \item{user}{the username that owns \code{item}. Taken from \code{item} when it is a
 \code{PortalItem}.}
 
-\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
-
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
+
+\item{error_call}{the caller environment to be used when propagating errors.}
 }
 \value{
-The item ID, invisibly.
+A list with the elements \code{success} and \code{itemId}.
 }
 \description{
-Transfers ownership of an item to another user. Requires administrator
-privileges.
+\code{reassign_item()} transfers ownership of an item to another user. You must
+be an administrator.
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

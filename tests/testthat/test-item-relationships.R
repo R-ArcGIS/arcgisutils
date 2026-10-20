@@ -1,3 +1,6 @@
+host <- "https://www.arcgis.com"
+token <- httr2::oauth_token("1234", arcgis_host = host, username = "jdoe")
+
 mock_portal <- function(body, env = parent.frame()) {
   captured <- new.env(parent = emptyenv())
   httr2::local_mocked_responses(
@@ -25,11 +28,10 @@ test_that("add_relationship() posts to the origin owner's addRelationship", {
     portal_item(),
     "d1",
     "Map2Service",
-    host = "https://www.arcgis.com",
-    token = NULL
+    token = token
   )
 
-  expect_true(res)
+  expect_true(res$success)
   expect_match(
     captured$req$url,
     "/sharing/rest/content/users/jdoe/addRelationship$"
@@ -48,8 +50,7 @@ test_that("delete_relationship() posts to deleteRelationship", {
     portal_item("d1"),
     "Service2Data",
     user = "asmith",
-    host = "https://www.arcgis.com",
-    token = NULL
+    token = token
   )
 
   expect_match(
@@ -60,12 +61,12 @@ test_that("delete_relationship() posts to deleteRelationship", {
 })
 
 test_that("relationship functions validate their arguments", {
-  expect_error(add_relationship("o1", "d1", "Map2Service"), "user")
+  expect_error(add_relationship("o1", "d1", "Map2Service", token = token), "user")
   expect_error(
-    add_relationship(portal_item(), "d1", "NotAType"),
-    "relationship_type"
+    add_relationship(portal_item(), "d1", "NotAType", token = token),
+    "RelationshipType"
   )
-  expect_error(add_relationship(portal_item(), 1, "Map2Service"), "item")
+  expect_error(add_relationship(portal_item(), 1, "Map2Service", token = token), "item")
 })
 
 test_that("relationship functions surface portal errors", {
@@ -76,8 +77,7 @@ test_that("relationship functions surface portal errors", {
       portal_item(),
       "d1",
       "Map2Service",
-      host = "https://www.arcgis.com",
-      token = NULL
+      token = token
     ),
     "Relationship exists"
   )
@@ -89,11 +89,10 @@ test_that("set_content_status() sets and clears the status", {
   res <- set_content_status(
     "i1",
     "deprecated",
-    host = "https://www.arcgis.com",
-    token = NULL
+    token = token
   )
 
-  expect_identical(res, "i1")
+  expect_identical(res$itemId, "i1")
   expect_match(captured$req$url, "/content/items/i1/setContentStatus$")
   expect_identical(form_of(captured$req)$status, "deprecated")
   expect_null(form_of(captured$req)$clearEmptyFields)
@@ -102,13 +101,12 @@ test_that("set_content_status() sets and clears the status", {
   set_content_status(
     "i1",
     "none",
-    host = "https://www.arcgis.com",
-    token = NULL
+    token = token
   )
   expect_identical(form_of(captured$req)$status, "")
   expect_identical(form_of(captured$req)$clearEmptyFields, "true")
 
-  expect_error(set_content_status("i1", "authoritative"), "status")
+  expect_error(set_content_status("i1", "authoritative", token = token), "ContentStatus")
 })
 
 test_that("set_item_categories() sends one entry per item", {
@@ -122,8 +120,7 @@ test_that("set_item_categories() sends one entry per item", {
   res <- set_item_categories(
     c("a1", "b2"),
     "/Categories/Water",
-    host = "https://www.arcgis.com",
-    token = NULL
+    token = token
   )
 
   expect_match(captured$req$url, "/sharing/rest/content/updateItems$")
@@ -143,8 +140,7 @@ test_that("set_item_categories() clears with character(0) and warns on failure",
     set_item_categories(
       "a1",
       character(0),
-      host = "https://www.arcgis.com",
-      token = NULL
+      token = token
     ),
     "a1"
   )
@@ -156,7 +152,7 @@ test_that("set_item_categories() clears with character(0) and warns on failure",
 
 test_that("set_item_categories() rejects more than 100 items", {
   expect_error(
-    set_item_categories(paste0("i", 1:101), "/Categories/Water"),
+    set_item_categories(paste0("i", 1:101), "/Categories/Water", token = token),
     "100 or fewer"
   )
 })

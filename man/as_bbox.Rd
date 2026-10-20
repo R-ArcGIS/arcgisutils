@@ -22,9 +22,7 @@ Converts an extent to a \code{\link[wk:rct]{wk::rct()}}, optionally in a differe
 }
 \details{
 Accepts a \code{wk_rct}, an \code{sf} \code{bbox}, a length four numeric
-\code{c(xmin, ymin, xmax, ymax)}, or anything \code{\link[wk:wk_bbox]{wk::wk_bbox()}} understands, such as
-an \code{sf} or \code{sfc} object. \code{wk} carries a CRS but does not reproject, so when
-\code{crs} differs from the extent's own the transform goes through \code{sf}.
+\code{c(xmin, ymin, xmax, ymax)}, or must be parsed by \code{\link[wk:wk_bbox]{wk::wk_bbox()}}`.
 }
 \examples{
 as_bbox(c(-104, 35.6, -94.32, 41), crs = 4326)

@@ -1,26 +1,26 @@
 #' Analyze a File for Publishing
 #'
-#' Asks the portal to inspect a CSV, Excel, shapefile, GeoPackage, GeoJSON,
-#' or service definition file and to derive the parameters needed to publish
-#' it as a hosted layer.
+#' `analyze_file()` asks the portal to inspect a CSV, Excel, shapefile,
+#' GeoPackage, GeoJSON, or service definition file. The portal returns the
+#' parameters you need to publish the file as a hosted layer.
 #'
 #' @param item optional. A `PortalItem` from [`arc_item()`] or a scalar
 #'   character item ID of a file already in the portal.
 #' @param path optional. A scalar character path to a local file.
 #' @param file_type optional. One of `"csv"`, `"excel"`, `"shapefile"`,
-#'   `"geoPackage"`, `"geojson"`, or `"Service Definition"`. Inferred from the
-#'   item type or the file extension when `NULL`.
+#'   `"geoPackage"`, `"geojson"`, or `"Service Definition"`. When `NULL`,
+#'   `analyze_file()` infers it from the item type or the file extension.
 #' @param analyze_parameters optional. A named list of analysis settings, such
-#'   as `list(locationType = "address", sourceCountry = "US")`. See the API
-#'   reference for the full list.
-#' @inheritParams arc_item
+#'   as `list(locationType = "address", sourceCountry = "US")`. The API
+#'   reference lists every setting.
+#' @inheritParams upload_file
 #' @details
 #' `r lifecycle::badge("experimental")`
 #'
 #' Supply exactly one of `item` or `path`. When you supply `path`, the
 #' portal analyzes the uploaded file without adding it to your content.
-#' The portal limits shapefiles to 4,000 records and 2 MB and other files to
-#' 10 MB.
+#' The portal accepts shapefiles of up to 4,000 records and 2 MB and other
+#' files of up to 10 MB.
 #'
 #' Pass the `publishParameters` element of the result to
 #' `arcgislayers::publish_item()`.
@@ -44,21 +44,69 @@ analyze_file <- function(
   path = NULL,
   file_type = NULL,
   analyze_parameters = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 ) {
+  obj_check_token(token, call = error_call)
+
   if (is.null(item) == is.null(path)) {
-    cli::cli_abort("Supply exactly one of {.arg item} or {.arg path}.")
+    cli::cli_abort(
+      "Supply exactly one of {.arg item} or {.arg path}.",
+      call = error_call
+    )
   }
 
-  check_string(path, allow_null = TRUE, allow_empty = FALSE)
-  check_string(file_type, allow_null = TRUE, allow_empty = FALSE)
+  check_string(path, allow_null = TRUE, allow_empty = FALSE, call = error_call)
+  check_string(
+    file_type,
+    allow_null = TRUE,
+    allow_empty = FALSE,
+    call = error_call
+  )
 
   if (!is.null(analyze_parameters) && !rlang::is_named(analyze_parameters)) {
-    cli::cli_abort("{.arg analyze_parameters} must be a named list.")
+    cli::cli_abort(
+      "{.arg analyze_parameters} must be a named list.",
+      call = error_call
+    )
   }
 
-  file_type <- analyze_file_type(file_type, item, path)
+  if (!is.null(file_type)) {
+    file_type <- rlang::arg_match(
+      file_type,
+      c("csv", "excel", "shapefile", "geoPackage", "geojson", "Service Definition"),
+      error_call = error_call
+    )
+  } else if (!is.null(path)) {
+    file_type <- switch(
+      tolower(tools::file_ext(path)),
+      csv = "csv",
+      xls = "excel",
+      xlsx = "excel",
+      zip = "shapefile",
+      gpkg = "geoPackage",
+      geojson = "geojson",
+      json = "geojson",
+      sd = "Service Definition"
+    )
+  } else if (inherits(item, "PortalItem")) {
+    file_type <- switch(
+      item[["type"]] %||% "",
+      "CSV" = "csv",
+      "Microsoft Excel" = "excel",
+      "Shapefile" = "shapefile",
+      "GeoPackage" = "geoPackage",
+      "GeoJson" = "geojson",
+      "Service Definition" = "Service Definition"
+    )
+  }
+
+  if (is.null(file_type)) {
+    cli::cli_abort(
+      "Can't infer {.arg file_type}. Supply it, or pass a {.cls PortalItem}.",
+      call = error_call
+    )
+  }
 
   params <- compact(list(
     f = "json",
@@ -69,72 +117,33 @@ analyze_file <- function(
   ))
 
   req <- arc_base_req(
-    host,
+    token[["arcgis_host"]],
     token,
-    path = c("sharing", "rest", "content", "features", "analyze")
+    path = c("sharing", "rest", "content", "features", "analyze"),
+    error_call = error_call
   )
 
   req <- if (is.null(path)) {
-    httr2::req_url_query(req, itemid = item_id(item), !!!params)
+    httr2::req_url_query(
+      req,
+      itemid = item_id(item, call = error_call),
+      !!!params
+    )
   } else {
-    check_file_exists(path)
+    if (!file.exists(path)) {
+      cli::cli_abort(
+        "{.arg path} does not exist: {.file {path}}",
+        call = error_call
+      )
+    }
     httr2::req_body_multipart(req, file = curl::form_file(path), !!!params)
   }
 
-  # keep arrays of objects as lists so publishParameters round trips to JSON
   req |>
     httr2::req_perform() |>
     httr2::resp_body_string() |>
     yyjsonr::read_json_str(arr_of_objs_to_df = FALSE) |>
-    detect_errors()
-}
-
-analyze_file_types <- c(
-  csv = "csv",
-  xls = "excel",
-  xlsx = "excel",
-  zip = "shapefile",
-  gpkg = "geoPackage",
-  geojson = "geojson",
-  json = "geojson",
-  sd = "Service Definition"
-)
-
-analyze_item_types <- c(
-  "CSV" = "csv",
-  "Microsoft Excel" = "excel",
-  "Shapefile" = "shapefile",
-  "GeoPackage" = "geoPackage",
-  "GeoJson" = "geojson",
-  "Service Definition" = "Service Definition"
-)
-
-analyze_file_type <- function(file_type, item, path, call = rlang::caller_env()) {
-  if (!is.null(file_type)) {
-    return(rlang::arg_match(
-      file_type,
-      unique(unname(analyze_file_types)),
-      error_arg = "file_type",
-      error_call = call
-    ))
-  }
-
-  inferred <- if (!is.null(path)) {
-    analyze_file_types[tolower(tools::file_ext(path))]
-  } else if (inherits(item, "PortalItem")) {
-    analyze_item_types[item[["type"]] %||% ""]
-  } else {
-    NA_character_
-  }
-
-  if (rlang::is_empty(inferred) || is.na(inferred)) {
-    cli::cli_abort(
-      "Can't infer {.arg file_type}. Supply it, or pass a {.cls PortalItem}.",
-      call = call
-    )
-  }
-
-  unname(inferred)
+    detect_errors(error_call = error_call)
 }
 
 #' Check the Status of an Item Job
@@ -143,27 +152,25 @@ analyze_file_type <- function(file_type, item, path, call = rlang::caller_env())
 #' such as a publish, an export, or an upload. `await_item()` checks the
 #' status repeatedly until the operation finishes.
 #'
-#' @param job_id optional. A scalar character job ID returned by a publish,
-#'   export, or generate features request.
+#' @param job_id optional. A scalar character job ID from a publish, export,
+#'   or generate features request.
 #' @param job_type optional. One of `"publish"`, `"export"`,
 #'   `"generateFeatures"`, or `"createService"`. Required with `job_id`.
 #' @param interval default `2`. The number of seconds to wait between checks.
 #' @param timeout default `Inf`. The maximum number of seconds to wait.
-#' @param user the username that owns `item`. Taken from `item` when it is a
-#'   `PortalItem`, otherwise from `token`.
 #' @inheritParams share_item
+#' @inheritParams upload_file
 #' @details
 #' `r lifecycle::badge("experimental")`
 #'
-#' The status is one of `"processing"`, `"partial"`, `"completed"`, or
-#' `"failed"`. `"partial"` means a multipart upload has not been committed.
-#' `await_item()` returns when the status is `"completed"` and raises an error
-#' when it is `"failed"` or when `timeout` elapses.
+#' The portal reports one of `"processing"`, `"partial"`, `"completed"`, or
+#' `"failed"`. `"partial"` means that nobody has committed a multipart upload
+#' yet. `await_item()` returns when the status is `"completed"` and raises an
+#' error when the status is `"failed"` or when `timeout` elapses.
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/status/)
 #' @export
 #' @family portal publish
 #' @returns A list with the elements `status`, `statusMessage`, and `itemId`.
-#'   `await_item()` returns it invisibly.
 #' @examples
 #' \dontrun{
 #' set_arc_token(auth_user())
@@ -178,34 +185,59 @@ item_status <- function(
   job_type = NULL,
   ...,
   user = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 ) {
   rlang::check_dots_empty()
-  parts <- item_owner(item, own_item_user(item, user, token))
-  check_string(job_id, allow_null = TRUE, allow_empty = FALSE)
+  obj_check_token(token, call = error_call)
+  if (is.null(user) && !inherits(item, "PortalItem")) {
+    user <- token[["username"]]
+  }
+
+  parts <- item_owner(item, user, call = error_call)
+  check_string(job_id, allow_null = TRUE, allow_empty = FALSE, call = error_call)
 
   if (!is.null(job_type)) {
     job_type <- rlang::arg_match(
       job_type,
-      c("publish", "export", "generateFeatures", "createService")
+      c("publish", "export", "generateFeatures", "createService"),
+      error_call = error_call
     )
   }
 
   if (!is.null(job_id) && is.null(job_type)) {
-    cli::cli_abort("Supply {.arg job_type} with {.arg job_id}.")
+    cli::cli_abort(
+      "Supply {.arg job_type} with {.arg job_id}.",
+      call = error_call
+    )
   }
 
-  item_owner_req(parts, "status", host, token) |>
-    httr2::req_url_query(!!!compact(list(
-      f = "json",
-      jobId = job_id,
-      jobType = job_type
-    ))) |>
+  arc_base_req(
+    token[["arcgis_host"]],
+    token,
+    path = c(
+      "sharing",
+      "rest",
+      "content",
+      "users",
+      parts$owner,
+      "items",
+      parts$id,
+      "status"
+    ),
+    error_call = error_call
+  ) |>
+    httr2::req_url_query(
+      !!!compact(list(
+        f = "json",
+        jobId = job_id,
+        jobType = job_type
+      ))
+    ) |>
     httr2::req_perform() |>
     httr2::resp_body_string() |>
     RcppSimdJson::fparse() |>
-    detect_errors()
+    detect_errors(error_call = error_call)
 }
 
 #' @export
@@ -218,12 +250,17 @@ await_item <- function(
   timeout = Inf,
   ...,
   user = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 ) {
   rlang::check_dots_empty()
-  check_number_decimal(interval, min = 0)
-  check_number_decimal(timeout, min = 0, allow_infinite = TRUE)
+  check_number_decimal(interval, min = 0, call = error_call)
+  check_number_decimal(
+    timeout,
+    min = 0,
+    allow_infinite = TRUE,
+    call = error_call
+  )
 
   started <- Sys.time()
 
@@ -233,25 +270,29 @@ await_item <- function(
       job_id,
       job_type,
       user = user,
-      host = host,
-      token = token
+      token = token,
+      error_call = error_call
     )
 
     if (identical(status[["status"]], "completed")) {
-      return(invisible(status))
+      return(status)
     }
 
     if (identical(status[["status"]], "failed")) {
-      cli::cli_abort(c(
-        "The item job failed.",
-        "i" = "{status[['statusMessage']] %||% 'The portal gave no reason.'}"
-      ))
+      cli::cli_abort(
+        c(
+          "The item job failed.",
+          "i" = "{status[['statusMessage']] %||% 'The portal gave no reason.'}"
+        ),
+        call = error_call
+      )
     }
 
     elapsed <- as.numeric(difftime(Sys.time(), started, units = "secs"))
     if (elapsed + interval > timeout) {
       cli::cli_abort(
-        "The item job did not finish within {timeout} second{?s}."
+        "The item job did not finish within {timeout} second{?s}.",
+        call = error_call
       )
     }
 
@@ -261,25 +302,26 @@ await_item <- function(
 
 #' Export a Hosted Layer
 #'
-#' Exports a hosted feature layer or table to a new file item, such as a CSV,
-#' GeoPackage, shapefile, or file geodatabase.
+#' `export_item()` exports a hosted feature layer or table to a new file item,
+#' such as a CSV, GeoPackage, shapefile, or file geodatabase.
 #'
 #' @param export_format one of `"csv"`, `"excel"`, `"shapefile"`,
 #'   `"file geodatabase"`, `"geoPackage"`, `"geojson"`, `"kml"`,
 #'   `"feature collection"`, `"mobile geodatabase"`, `"Scene Package"`, or
 #'   `"Vector Tile Package"`.
-#' @param title optional. A scalar character title for the exported item.
-#' @param export_parameters optional. A list describing which layers to export
-#'   and how, such as `list(layers = list(list(id = 0, where = "pop > 1000")))`.
-#'   The portal exports every layer when `NULL`.
+#' @param export_parameters optional. A list that names the layers to export
+#'   and how to export them, such as
+#'   `list(layers = list(list(id = 0, where = "pop > 1000")))`. When `NULL`,
+#'   the portal exports every layer.
+#' @inheritParams upload_file
 #' @inheritParams share_item
 #' @details
 #' `r lifecycle::badge("experimental")`
 #'
-#' The export runs in the background and creates a new item in the signed in
-#' user's content. Pass `exportItemId` and `jobId` from the result to
-#' [`await_item()`] with `job_type = "export"` to wait for it, then download
-#' the file with [`arc_item_data()`].
+#' The portal runs the export in the background and creates a new item in the
+#' signed in user's content. Pass `exportItemId` and `jobId` from the result
+#' to [`await_item()`] with `job_type = "export"` to wait for it, then
+#' download the file with [`arc_item_data()`].
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/export-item/)
 #' @export
 #' @family portal publish
@@ -302,12 +344,13 @@ export_item <- function(
   title = NULL,
   export_parameters = NULL,
   ...,
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 ) {
   rlang::check_dots_empty()
-  check_token_has_user(token)
-  id <- item_id(item)
-  check_string(title, allow_null = TRUE, allow_empty = FALSE)
+  check_token_has_user(token, call = error_call)
+  id <- item_id(item, call = error_call)
+  check_string(title, allow_null = TRUE, allow_empty = FALSE, call = error_call)
 
   export_format <- rlang::arg_match(
     export_format,
@@ -323,11 +366,12 @@ export_item <- function(
       "mobile geodatabase",
       "Scene Package",
       "Vector Tile Package"
-    )
+    ),
+    error_call = error_call
   )
 
   if (!is.null(export_parameters) && !is.list(export_parameters)) {
-    cli::cli_abort("{.arg export_parameters} must be a list.")
+    cli::cli_abort("{.arg export_parameters} must be a list.", call = error_call)
   }
 
   body <- compact(list(
@@ -350,19 +394,12 @@ export_item <- function(
       "users",
       token[["username"]],
       "export"
-    )
+    ),
+    error_call = error_call
   ) |>
     httr2::req_body_form(!!!body) |>
     httr2::req_perform() |>
     httr2::resp_body_string() |>
     RcppSimdJson::fparse() |>
-    detect_errors()
-}
-
-# a bare item ID is most often the signed in user's own item
-own_item_user <- function(item, user, token) {
-  if (!is.null(user) || inherits(item, "PortalItem")) {
-    return(user)
-  }
-  token[["username"]]
+    detect_errors(error_call = error_call)
 }

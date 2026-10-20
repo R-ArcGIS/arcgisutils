@@ -11,8 +11,8 @@ item_status(
   job_type = NULL,
   ...,
   user = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 )
 
 await_item(
@@ -23,15 +23,15 @@ await_item(
   timeout = Inf,
   ...,
   user = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 )
 }
 \arguments{
 \item{item}{a \code{PortalItem} from \code{\link[=arc_item]{arc_item()}} or a scalar character item ID.}
 
-\item{job_id}{optional. A scalar character job ID returned by a publish,
-export, or generate features request.}
+\item{job_id}{optional. A scalar character job ID from a publish, export,
+or generate features request.}
 
 \item{job_type}{optional. One of \code{"publish"}, \code{"export"},
 \code{"generateFeatures"}, or \code{"createService"}. Required with \code{job_id}.}
@@ -39,11 +39,11 @@ export, or generate features request.}
 \item{...}{these dots are for future extensions and must be empty.}
 
 \item{user}{the username that owns \code{item}. Taken from \code{item} when it is a
-\code{PortalItem}, otherwise from \code{token}.}
-
-\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
+\code{PortalItem}.}
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
+
+\item{error_call}{the caller environment to be used when propagating errors.}
 
 \item{interval}{default \code{2}. The number of seconds to wait between checks.}
 
@@ -51,7 +51,6 @@ export, or generate features request.}
 }
 \value{
 A list with the elements \code{status}, \code{statusMessage}, and \code{itemId}.
-\code{await_item()} returns it invisibly.
 }
 \description{
 \code{item_status()} reports the status of an asynchronous operation on an item,
@@ -61,10 +60,10 @@ status repeatedly until the operation finishes.
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-The status is one of \code{"processing"}, \code{"partial"}, \code{"completed"}, or
-\code{"failed"}. \code{"partial"} means a multipart upload has not been committed.
-\code{await_item()} returns when the status is \code{"completed"} and raises an error
-when it is \code{"failed"} or when \code{timeout} elapses.
+The portal reports one of \code{"processing"}, \code{"partial"}, \code{"completed"}, or
+\code{"failed"}. \code{"partial"} means that nobody has committed a multipart upload
+yet. \code{await_item()} returns when the status is \code{"completed"} and raises an
+error when the status is \code{"failed"} or when \code{timeout} elapses.
 }
 \examples{
 \dontrun{

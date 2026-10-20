@@ -11,8 +11,8 @@ add_relationship(
   relationship_type,
   ...,
   user = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 )
 
 delete_relationship(
@@ -21,8 +21,8 @@ delete_relationship(
   relationship_type,
   ...,
   user = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 )
 }
 \arguments{
@@ -37,15 +37,15 @@ item ID. The destination of the relationship.}
 
 \item{...}{these dots are for future extensions and must be empty.}
 
-\item{user}{the username that owns \code{origin}. Taken from \code{origin} when it is
-a \code{PortalItem}.}
-
-\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
+\item{user}{the username that owns \code{item}. Taken from \code{item} when it is a
+\code{PortalItem}.}
 
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
+
+\item{error_call}{the caller environment to be used when propagating errors.}
 }
 \value{
-\code{TRUE}, invisibly.
+A list with the element \code{success}.
 }
 \description{
 \code{add_relationship()} creates a relationship from an origin item to a

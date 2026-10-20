@@ -9,8 +9,8 @@ delete_item(
   permanent = FALSE,
   ...,
   user = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 )
 }
 \arguments{
@@ -23,23 +23,23 @@ delete_item(
 \item{user}{the username that owns \code{item}. Taken from \code{item} when it is a
 \code{PortalItem}.}
 
-\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
-
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
+
+\item{error_call}{the caller environment to be used when propagating errors.}
 }
 \value{
-The item ID, invisibly.
+A list with the elements \code{success} and \code{itemId}.
 }
 \description{
-Deletes a single item. Use \code{\link[=delete_items]{delete_items()}} to delete up to 100 of your
-own items in one request.
+\code{delete_item()} deletes a single item. \code{\link[=delete_items]{delete_items()}} deletes up to 100
+of your own items in one request.
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-Unlike \code{\link[=delete_items]{delete_items()}}, \code{delete_item()} acts on the item's owner, so an
-administrator can delete another member's item. The portal refuses to
-delete a protected item. Call \code{\link[=unprotect_item]{unprotect_item()}} first.
+Unlike \code{\link[=delete_items]{delete_items()}}, \code{delete_item()} sends the request as the item's
+owner, so an administrator can delete another member's item. The portal
+refuses to delete a protected item. Call \code{\link[=unprotect_item]{unprotect_item()}} first.
 }
 \examples{
 \dontrun{

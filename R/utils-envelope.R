@@ -45,9 +45,7 @@ from_envelope <- function(x, error_call = rlang::caller_call()) {
 #' @details
 #'
 #' Accepts a `wk_rct`, an `sf` `bbox`, a length four numeric
-#' `c(xmin, ymin, xmax, ymax)`, or anything [wk::wk_bbox()] understands, such as
-#' an `sf` or `sfc` object. `wk` carries a CRS but does not reproject, so when
-#' `crs` differs from the extent's own the transform goes through `sf`.
+#' `c(xmin, ymin, xmax, ymax)`, or must be parsed by [wk::wk_bbox()]`.
 #'
 #' @param x An extent. See details.
 #' @param crs Coordinate reference system to return. Anything [wk::wk_crs()]

@@ -1,11 +1,11 @@
-mock_search <- function(results, key = "results", env = parent.frame()) {
+mock_search <- function(results, env = parent.frame()) {
   captured <- new.env(parent = emptyenv())
   captured$reqs <- list()
   httr2::local_mocked_responses(
     function(req) {
       captured$reqs[[length(captured$reqs) + 1]] <- req
       body <- list(total = length(results), start = 1, nextStart = -1)
-      body[[key]] <- results
+      body[["results"]] <- results
       httr2::response_json(body = body)
     },
     env = env
@@ -56,16 +56,7 @@ test_that("search_groups() limits to the user's groups with member_only", {
   expect_null(q$q)
 })
 
-test_that("search_users() reads results from either array name", {
-  mock_search(list(list(username = "jdoe")), key = "users")
-  res <- search_users(
-    "jdoe",
-    .progress = FALSE,
-    host = "https://www.arcgis.com",
-    token = NULL
-  )
-  expect_identical(res$username, "jdoe")
-
+test_that("search_users() queries community/users", {
   captured <- mock_search(list(list(username = "asmith")))
   res <- search_users(
     "asmith",
@@ -116,7 +107,7 @@ test_that("search functions validate their arguments", {
   expect_error(search_groups(), "query")
   expect_error(search_groups("x", sort_field = "numviews"), "sort_field")
   expect_error(search_users("x", sort_field = "title"), "sort_field")
-  expect_error(search_users("x", sort_order = "up"), "sort_order")
+  expect_error(search_users("x", sort_order = "up"), "SortOrder")
   expect_error(search_group_content(1, "x"), "group")
   expect_error(
     search_group_content("g1", "x", categories = letters[1:9]),

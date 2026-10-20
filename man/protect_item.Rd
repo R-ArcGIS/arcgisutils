@@ -5,9 +5,21 @@
 \alias{unprotect_item}
 \title{Protect a Portal Item}
 \usage{
-protect_item(item, ..., user = NULL, host = arc_host(), token = arc_token())
+protect_item(
+  item,
+  ...,
+  user = NULL,
+  token = arc_token(),
+  error_call = rlang::caller_env()
+)
 
-unprotect_item(item, ..., user = NULL, host = arc_host(), token = arc_token())
+unprotect_item(
+  item,
+  ...,
+  user = NULL,
+  token = arc_token(),
+  error_call = rlang::caller_env()
+)
 }
 \arguments{
 \item{item}{a \code{PortalItem} from \code{\link[=arc_item]{arc_item()}} or a scalar character item ID.}
@@ -17,16 +29,16 @@ unprotect_item(item, ..., user = NULL, host = arc_host(), token = arc_token())
 \item{user}{the username that owns \code{item}. Taken from \code{item} when it is a
 \code{PortalItem}.}
 
-\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
-
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
+
+\item{error_call}{the caller environment to be used when propagating errors.}
 }
 \value{
-The item ID, invisibly.
+A list with the element \code{success}.
 }
 \description{
-\code{protect_item()} prevents anyone from deleting an item until
-\code{unprotect_item()} removes the protection.
+\code{protect_item()} prevents anyone from deleting an item. \code{unprotect_item()}
+removes the protection.
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

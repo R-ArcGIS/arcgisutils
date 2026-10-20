@@ -9,9 +9,8 @@
 #'   item ID. The destination of the relationship.
 #' @param relationship_type one of [`RelationshipType`], such as
 #'   `"Map2Service"`.
-#' @param user the username that owns `origin`. Taken from `origin` when it is
-#'   a `PortalItem`.
 #' @inheritParams share_item
+#' @inheritParams upload_file
 #' @details
 #' `r lifecycle::badge("experimental")`
 #'
@@ -23,7 +22,7 @@
 #' - [Delete Relationship API Reference](https://developers.arcgis.com/rest/users-groups-and-items/delete-relationship/)
 #' @export
 #' @family portal item
-#' @returns `TRUE`, invisibly.
+#' @returns A list with the element `success`.
 #' @examples
 #' \dontrun{
 #' set_arc_token(auth_user())
@@ -38,70 +37,27 @@ add_relationship <- function(
   relationship_type,
   ...,
   user = NULL,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 ) {
   rlang::check_dots_empty()
-  relationship_req(
-    "addRelationship",
-    origin,
-    destination,
-    relationship_type,
-    user,
-    host,
-    token
-  )
-}
-
-#' @export
-#' @rdname add_relationship
-delete_relationship <- function(
-  origin,
-  destination,
-  relationship_type,
-  ...,
-  user = NULL,
-  host = arc_host(),
-  token = arc_token()
-) {
-  rlang::check_dots_empty()
-  relationship_req(
-    "deleteRelationship",
-    origin,
-    destination,
-    relationship_type,
-    user,
-    host,
-    token
-  )
-}
-
-# the REST reference names the type parameter `relationshipTypes`, but
-# the related items endpoint and the ArcGIS Python API both use the singular
-relationship_req <- function(
-  operation,
-  origin,
-  destination,
-  relationship_type,
-  user,
-  host,
-  token,
-  call = rlang::caller_env()
-) {
-  parts <- item_owner(origin, user, call = call)
-  destination <- item_id(destination, call = call)
-  relationship_type <- enum_arg(
-    RelationshipType,
-    relationship_type,
-    arg = "relationship_type",
-    call = call
-  )
+  obj_check_token(token, call = error_call)
+  parts <- item_owner(origin, user, call = error_call)
+  destination <- item_id(destination, call = error_call)
+  relationship_type <- RelationshipType(relationship_type)@value
 
   arc_base_req(
-    host,
+    token[["arcgis_host"]],
     token,
-    path = c("sharing", "rest", "content", "users", parts$owner, operation),
-    error_call = call
+    path = c(
+      "sharing",
+      "rest",
+      "content",
+      "users",
+      parts$owner,
+      "addRelationship"
+    ),
+    error_call = error_call
   ) |>
     httr2::req_body_form(
       f = "json",
@@ -112,21 +68,61 @@ relationship_req <- function(
     httr2::req_perform() |>
     httr2::resp_body_string() |>
     RcppSimdJson::fparse() |>
-    detect_errors(error_call = call)
+    detect_errors(error_call = error_call)
+}
 
-  invisible(TRUE)
+#' @export
+#' @rdname add_relationship
+delete_relationship <- function(
+  origin,
+  destination,
+  relationship_type,
+  ...,
+  user = NULL,
+  token = arc_token(),
+  error_call = rlang::caller_env()
+) {
+  rlang::check_dots_empty()
+  obj_check_token(token, call = error_call)
+  parts <- item_owner(origin, user, call = error_call)
+  destination <- item_id(destination, call = error_call)
+  relationship_type <- RelationshipType(relationship_type)@value
+
+  arc_base_req(
+    token[["arcgis_host"]],
+    token,
+    path = c(
+      "sharing",
+      "rest",
+      "content",
+      "users",
+      parts$owner,
+      "deleteRelationship"
+    ),
+    error_call = error_call
+  ) |>
+    httr2::req_body_form(
+      f = "json",
+      originItemId = parts$id,
+      destinationItemId = destination,
+      relationshipType = relationship_type
+    ) |>
+    httr2::req_perform() |>
+    httr2::resp_body_string() |>
+    RcppSimdJson::fparse() |>
+    detect_errors(error_call = error_call)
 }
 
 #' Set an Item's Content Status
 #'
-#' Marks an item as authoritative or deprecated, or clears its status.
+#' `set_content_status()` marks an item as authoritative or deprecated, or
+#' clears its status.
 #'
-#' @param item a `PortalItem` from [`arc_item()`] or a scalar character item ID.
 #' @param status one of [`ContentStatus`]: `"org_authoritative"`,
 #'   `"public_authoritative"`, `"deprecated"`, or `"none"`. `"none"` clears
 #'   the status.
-#' @param ... these dots are for future extensions and must be empty.
-#' @inheritParams arc_item
+#' @inheritParams share_item
+#' @inheritParams upload_file
 #' @details
 #' `r lifecycle::badge("experimental")`
 #'
@@ -136,7 +132,7 @@ relationship_req <- function(
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/set-content-status/)
 #' @export
 #' @family portal item
-#' @returns The item ID, invisibly.
+#' @returns A list with the elements `success` and `itemId`.
 #' @examples
 #' \dontrun{
 #' set_arc_token(auth_user())
@@ -148,12 +144,13 @@ set_content_status <- function(
   item,
   status,
   ...,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 ) {
   rlang::check_dots_empty()
-  id <- item_id(item)
-  status <- enum_arg(ContentStatus, status)
+  obj_check_token(token, call = error_call)
+  id <- item_id(item, call = error_call)
+  status <- ContentStatus(status)@value
 
   body <- if (status == "none") {
     list(status = "", clearEmptyFields = "true")
@@ -161,35 +158,36 @@ set_content_status <- function(
     list(status = status)
   }
 
-  resp <- arc_base_req(
-    host,
+  arc_base_req(
+    token[["arcgis_host"]],
     token,
-    path = c("sharing", "rest", "content", "items", id, "setContentStatus")
+    path = c("sharing", "rest", "content", "items", id, "setContentStatus"),
+    error_call = error_call
   ) |>
     httr2::req_body_form(f = "json", !!!body) |>
     httr2::req_perform() |>
     httr2::resp_body_string() |>
     RcppSimdJson::fparse() |>
-    detect_errors()
-
-  invisible(resp[["itemId"]] %||% id)
+    detect_errors(error_call = error_call)
 }
 
 #' Assign Content Categories to Items
 #'
-#' Replaces the organization content categories of up to 100 items.
+#' `set_item_categories()` replaces the organization content categories of up
+#' to 100 items.
 #'
-#' @param items a character vector of item IDs, a `PortalItem`, or a list of
-#'   them. At most 100.
 #' @param categories a character vector of full category paths, such as
 #'   `"/Categories/Water"`. `character(0)` removes every category from
 #'   `items`.
-#' @inheritParams set_content_status
+#' @inheritParams delete_items
+#' @inheritParams share_item
+#' @inheritParams upload_file
 #' @details
 #' `r lifecycle::badge("experimental")`
 #'
-#' Every item in `items` receives the same `categories`, replacing any
-#' categories it had. The function warns about each item it could not update.
+#' `set_item_categories()` gives every item in `items` the same `categories`
+#' and replaces the categories it had. It warns about each item it could not
+#' update.
 #' ArcGIS Enterprise allows at most 20 categories per item.
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/update-items-with-content-categories/)
 #' @export
@@ -208,15 +206,19 @@ set_item_categories <- function(
   items,
   categories,
   ...,
-  host = arc_host(),
-  token = arc_token()
+  token = arc_token(),
+  error_call = rlang::caller_env()
 ) {
   rlang::check_dots_empty()
-  ids <- item_ids(items)
-  check_character(categories)
+  obj_check_token(token, call = error_call)
+  ids <- item_ids(items, call = error_call)
+  check_character(categories, call = error_call)
 
   if (length(ids) > 100L) {
-    cli::cli_abort("{.arg items} must be 100 or fewer, not {length(ids)}.")
+    cli::cli_abort(
+      "{.arg items} must be 100 or fewer, not {length(ids)}.",
+      call = error_call
+    )
   }
 
   payload <- lapply(ids, function(id) {
@@ -224,9 +226,10 @@ set_item_categories <- function(
   })
 
   resp <- arc_base_req(
-    host,
+    token[["arcgis_host"]],
     token,
-    path = c("sharing", "rest", "content", "updateItems")
+    path = c("sharing", "rest", "content", "updateItems"),
+    error_call = error_call
   ) |>
     httr2::req_body_form(
       f = "json",
@@ -235,19 +238,14 @@ set_item_categories <- function(
     httr2::req_perform() |>
     httr2::resp_body_string() |>
     RcppSimdJson::fparse() |>
-    detect_errors()
+    detect_errors(error_call = error_call)
 
   res <- data_frame(resp[["results"]])
-  warn_failed_items(res, "update")
-  res
-}
-
-warn_failed_items <- function(res, action) {
   failed <- res[!res[["success"]], "itemId", drop = TRUE]
 
   if (length(failed) > 0L) {
-    cli::cli_warn("Could not {action} {.val {failed}}.")
+    cli::cli_warn("Could not update {.val {failed}}.")
   }
 
-  invisible(res)
+  res
 }

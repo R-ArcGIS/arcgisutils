@@ -7,13 +7,45 @@
 The package uses Rust (via `extendr`) for performance-critical geometry serialization. The Rust source lives in `src/`.
 ## Coding Standards
 
+### Use the s7x skill
+**Always read and follow the s7x skill before writing code:** https://github.com/JosiahParry/s7x/blob/main/inst/skills/SKILL.md. Build classes, enums, and JSON params with s7x and the existing GP param types. Never write custom serializers or JSON helpers.
+
+Closed value sets are s7x enums, not `rlang::arg_match()`. Use the enum directly, as in `Enum(x)@value`, with no wrapper function.
+
+### No helpers
+- Don't write internal helper functions. Inline the logic in the exported function.
+- Never create a helper with only one caller. Inline it.
+- Don't wrap a request in a thin helper. Each function builds its own `arc_base_req()` call.
+- Don't put endpoint-specific parsing in a shared helper. Parse inline per endpoint, as `search_items()` does.
+- Before writing anything, check whether arcgisutils already has it, such as `rbind_results()`, `data_frame()` or `infer_item_type()`.
+- An asynchronous job (submit, poll, results) uses the `arc_gp_job` structure. Never write a second polling loop.
+
+### Function signatures
+- A function that requires a signed-in user takes no `host` argument. It uses `token[["arcgis_host"]]`.
+- Every function takes `error_call = rlang::caller_env()` and passes it to every `check_*()`, `cli::cli_abort()`, `arc_base_req()` and `detect_errors()`.
+- Never use `invisible()`. Return the parsed response, not `TRUE` or an ID.
+
+### Style
+- Never write a one-line `if`. Always use braces, including `x = if (cond) { ... }` inside a list.
+- No code comments.
+
+### Documentation voice
+- Write docs in active voice, with a named subject doing the action. No middle voice such as "carries" or "receives", and no subjectless "Deletes ...".
+- Never edit docs the maintainer wrote.
+
+### Process
+- A question is not an instruction. Answer it and stop.
+- Never change core classes such as `arc_gp_job` without explicit approval of the exact change.
+- Verify API parameter and response names against the Esri docs. Don't guess and add a fallback such as `x %||% y`.
+- Implement only what was asked. No extra functions.
+
 ### The em dash rule
 
 **` – ` (space–en/em dash–space) is banned in all code, strings, and documentation.**
 
 ### Parameter documentation
 
-**Never duplicate parameter docs.** Always use `@inheritParams` pointing to a function that already documents those parameters:
+**Never duplicate parameter docs.** Before writing any `@param`, grep `R/` for `@param <name>`. If it exists anywhere, use `@inheritParams` from that function. Write a new `@param` only when nothing documents it, or when the inherited text would be wrong for that function. Never reword an existing param:
 
 ```r
 # Correct

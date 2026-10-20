@@ -1,5 +1,3 @@
-# answers item metadata requests from arc_item() with `item` and every other
-# request with `body`
 mock_item_ops <- function(body, item = list(id = "i1", owner = "jdoe"), env = parent.frame()) {
   captured <- new.env(parent = emptyenv())
   captured$reqs <- list()
@@ -24,11 +22,16 @@ owned_item <- function(id = "i1", owner = "jdoe") {
 
 form_values <- function(req) {
   lapply(req$body$data, function(x) {
-    if (inherits(x, "form_file")) x else utils::URLdecode(as.character(x))
+    if (inherits(x, "form_file")) {
+      x
+    } else {
+      utils::URLdecode(as.character(x))
+    }
   })
 }
 
 host <- "https://www.arcgis.com"
+token <- httr2::oauth_token("1234", arcgis_host = host, username = "jdoe")
 
 test_that("update_item() sends only the fields supplied", {
   captured <- mock_item_ops(list(success = TRUE, id = "i1"))
@@ -37,8 +40,7 @@ test_that("update_item() sends only the fields supplied", {
     owned_item(),
     title = "Penguins",
     tags = c("a", "b"),
-    host = host,
-    token = NULL
+    token = token
   )
 
   expect_match(captured$req$url, "/content/users/jdoe/items/i1/update$")
@@ -55,7 +57,7 @@ test_that("update_item() replaces the file", {
   path <- tempfile(fileext = ".csv")
   writeLines("a,b", path)
 
-  update_item(owned_item(), path = path, host = host, token = NULL)
+  update_item(owned_item(), path = path, token = token)
 
   expect_s3_class(form_values(captured$req)$file, "form_file")
 })
@@ -69,20 +71,20 @@ test_that("update_item() requires a field and an existing file", {
 test_that("delete_item() posts permanentDelete to the owner's item", {
   captured <- mock_item_ops(list(success = TRUE, itemId = "i1"))
 
-  res <- delete_item(owned_item(), permanent = TRUE, host = host, token = NULL)
+  res <- delete_item(owned_item(), permanent = TRUE, token = token)
 
-  expect_identical(res, "i1")
+  expect_identical(res$itemId, "i1")
   expect_match(captured$req$url, "/content/users/jdoe/items/i1/delete$")
   expect_identical(form_values(captured$req)$permanentDelete, "true")
 })
 
 test_that("protect_item() and unprotect_item() call their endpoints", {
   captured <- mock_item_ops(list(success = TRUE))
-  protect_item(owned_item(), host = host, token = NULL)
+  protect_item(owned_item(), token = token)
   expect_match(captured$req$url, "/items/i1/protect$")
 
   captured <- mock_item_ops(list(success = TRUE))
-  unprotect_item("i1", user = "jdoe", host = host, token = NULL)
+  unprotect_item("i1", user = "jdoe", token = token)
   expect_match(captured$req$url, "/items/i1/unprotect$")
 })
 
@@ -93,7 +95,6 @@ test_that("move_items() moves the signed in user's items", {
       list(itemId = "b2", success = FALSE)
     )
   ))
-  token <- httr2::oauth_token("1234", arcgis_host = host, username = "jdoe")
 
   expect_warning(
     res <- move_items(c("a1", "b2"), "/", token = token),
@@ -108,7 +109,6 @@ test_that("move_items() moves the signed in user's items", {
 })
 
 test_that("move_items() validates its arguments", {
-  token <- httr2::oauth_token("1234", arcgis_host = host, username = "jdoe")
   expect_error(move_items("a1", "", token = token), "folder")
   expect_error(move_items(paste0("i", 1:101), "/", token = token), "100")
 })
@@ -123,8 +123,7 @@ test_that("copy_item() returns the copy from either id field", {
     owned_item(),
     title = "Copy",
     include_resources = TRUE,
-    host = host,
-    token = NULL
+    token = token
   )
 
   expect_match(captured$req$url, "/items/i1/copy$")
@@ -138,13 +137,13 @@ test_that("copy_item() returns the copy from either id field", {
     list(success = TRUE, itemId = "c2"),
     item = list(id = "c2", owner = "jdoe")
   )
-  expect_identical(copy_item(owned_item(), host = host, token = NULL)$id, "c2")
+  expect_identical(copy_item(owned_item(), token = token)$id, "c2")
 })
 
 test_that("reassign_item() sends the target user and folder", {
   captured <- mock_item_ops(list(success = TRUE, itemId = "i1"))
 
-  reassign_item(owned_item(), "asmith", "Handover", host = host, token = NULL)
+  reassign_item(owned_item(), "asmith", "Handover", token = token)
 
   expect_match(captured$req$url, "/items/i1/reassign$")
   form <- form_values(captured$req)
@@ -157,7 +156,7 @@ test_that("update_thumbnail() uploads the image", {
   path <- tempfile(fileext = ".png")
   writeBin(as.raw(1:10), path)
 
-  update_thumbnail(owned_item(), path, host = host, token = NULL)
+  update_thumbnail(owned_item(), path, token = token)
 
   expect_match(captured$req$url, "/items/i1/updateThumbnail$")
   expect_s3_class(form_values(captured$req)$file, "form_file")
@@ -168,7 +167,7 @@ test_that("lifecycle functions surface portal errors", {
   mock_item_ops(list(error = list(code = 403, message = "Item is protected")))
 
   expect_error(
-    delete_item(owned_item(), host = host, token = NULL),
+    delete_item(owned_item(), token = token),
     "Item is protected"
   )
 })

@@ -18,8 +18,8 @@ test_that("share_access() maps access onto the wire parameters", {
 })
 
 test_that("share_access() rejects an unknown level", {
-  expect_error(share_access("everyone"), "access")
-  expect_error(share_access(c("org", "public")), "access")
+  expect_error(share_access("everyone"), "ItemAccess")
+  expect_error(share_access(c("org", "public")), "ItemAccess")
 })
 
 test_that("share_item() requires an item id and owner", {
@@ -54,20 +54,6 @@ test_that("warn_not_shared() warns on partial success", {
   expect_warning(warn_not_shared(list(notSharedWith = c("g1"))), "g1")
   expect_no_warning(warn_not_shared(list(notSharedWith = character())))
   expect_no_warning(warn_not_shared(list()))
-})
-
-test_that("item_owner_req() builds the documented endpoint", {
-  req <- item_owner_req(
-    list(id = "abc123", owner = "jdoe"),
-    "share",
-    "https://www.arcgis.com",
-    NULL
-  )
-
-  expect_identical(
-    req$url,
-    "https://www.arcgis.com/sharing/rest/content/users/jdoe/items/abc123/share"
-  )
 })
 
 test_that("item_owner() prefers an explicit user", {

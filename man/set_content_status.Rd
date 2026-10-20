@@ -4,7 +4,13 @@
 \alias{set_content_status}
 \title{Set an Item's Content Status}
 \usage{
-set_content_status(item, status, ..., host = arc_host(), token = arc_token())
+set_content_status(
+  item,
+  status,
+  ...,
+  token = arc_token(),
+  error_call = rlang::caller_env()
+)
 }
 \arguments{
 \item{item}{a \code{PortalItem} from \code{\link[=arc_item]{arc_item()}} or a scalar character item ID.}
@@ -15,15 +21,16 @@ the status.}
 
 \item{...}{these dots are for future extensions and must be empty.}
 
-\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
-
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
+
+\item{error_call}{the caller environment to be used when propagating errors.}
 }
 \value{
-The item ID, invisibly.
+A list with the elements \code{success} and \code{itemId}.
 }
 \description{
-Marks an item as authoritative or deprecated, or clears its status.
+\code{set_content_status()} marks an item as authoritative or deprecated, or
+clears its status.
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

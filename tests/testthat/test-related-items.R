@@ -68,13 +68,13 @@ test_that("arc_related_items() returns zero rows when there are none", {
   expect_identical(nrow(res), 0L)
 })
 
-test_that("enum errors name the offending argument", {
+test_that("invalid enum values error", {
   expect_error(
     arc_related_items(public_item, direction = "backward"),
-    "direction"
+    "RelationshipDirection"
   )
   expect_error(
     arc_related_items(public_item, relationship_type = "Nope"),
-    "relationship_type"
+    "RelationshipType"
   )
 })

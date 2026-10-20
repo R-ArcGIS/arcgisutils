@@ -28,12 +28,12 @@ or related function}
 A \code{data.frame} with columns \code{itemId} and \code{success}.
 }
 \description{
-Moves up to 100 items owned by the signed in user into a folder.
+\code{move_items()} moves up to 100 of the signed in user's items into a folder.
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-The function warns about each item it could not move.
+\code{move_items()} warns about each item it could not move.
 }
 \examples{
 \dontrun{

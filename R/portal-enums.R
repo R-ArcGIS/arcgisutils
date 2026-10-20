@@ -143,18 +143,3 @@ RelationshipType <- s7x::new_enum(
   package = "arcgisutils",
   allow_na = FALSE
 )
-
-# s7x reports the failing property, not the argument it came from
-enum_arg <- function(
-  enum,
-  value,
-  arg = rlang::caller_arg(value),
-  call = rlang::caller_env()
-) {
-  rlang::try_fetch(
-    as.character(enum(value)),
-    error = function(cnd) {
-      cli::cli_abort("{.arg {arg}} is not valid.", parent = cnd, call = call)
-    }
-  )
-}

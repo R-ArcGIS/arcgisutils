@@ -36,14 +36,11 @@ arc_related_items <- function(
 
   query <- list(
     f = "json",
-    direction = enum_arg(RelationshipDirection, direction)
+    direction = RelationshipDirection(direction)@value
   )
 
   if (!is.null(relationship_type)) {
-    query[["relationshipType"]] <- enum_arg(
-      RelationshipType,
-      relationship_type
-    )
+    query[["relationshipType"]] <- RelationshipType(relationship_type)@value
   }
 
   resp <- arc_base_req(

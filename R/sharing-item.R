@@ -48,7 +48,20 @@ share_item <- function(
 
   body <- share_body(parts$id, access, groups, confirm_item_control)
 
-  resp <- item_owner_req(parts, "share", host, token) |>
+  resp <- arc_base_req(
+    host,
+    token,
+    path = c(
+      "sharing",
+      "rest",
+      "content",
+      "users",
+      parts$owner,
+      "items",
+      parts$id,
+      "share"
+    )
+  ) |>
     httr2::req_body_form(!!!body) |>
     httr2::req_perform() |>
     httr2::resp_body_string() |>
@@ -79,7 +92,20 @@ unshare_item <- function(
     body[["groups"]] <- paste0(group_ids(groups), collapse = ",")
   }
 
-  resp <- item_owner_req(parts, "unshare", host, token) |>
+  resp <- arc_base_req(
+    host,
+    token,
+    path = c(
+      "sharing",
+      "rest",
+      "content",
+      "users",
+      parts$owner,
+      "items",
+      parts$id,
+      "unshare"
+    )
+  ) |>
     httr2::req_body_form(!!!body) |>
     httr2::req_perform() |>
     httr2::resp_body_string() |>
@@ -90,7 +116,7 @@ unshare_item <- function(
 }
 
 share_access <- function(access, call = rlang::caller_env()) {
-  access <- enum_arg(ItemAccess, access, arg = "access", call = call)
+  access <- ItemAccess(access)@value
 
   list(
     everyone = tolower(as.character(access == "public")),
@@ -167,21 +193,4 @@ item_owner <- function(item, user, call = rlang::caller_env()) {
   }
 
   list(id = id, owner = owner)
-}
-
-item_owner_req <- function(parts, operation, host, token) {
-  arc_base_req(
-    host,
-    token,
-    path = c(
-      "sharing",
-      "rest",
-      "content",
-      "users",
-      parts$owner,
-      "items",
-      parts$id,
-      operation
-    )
-  )
 }
