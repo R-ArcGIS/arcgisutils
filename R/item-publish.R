@@ -64,7 +64,7 @@ analyze_file <- function(
     f = "json",
     filetype = file_type,
     analyzeParameters = if (!is.null(analyze_parameters)) {
-      as_json_param(analyze_parameters)
+      yyjsonr::write_json_str(analyze_parameters, auto_unbox = TRUE)
     }
   ))
 
@@ -336,7 +336,7 @@ export_item <- function(
     exportFormat = export_format,
     title = title,
     exportParameters = if (!is.null(export_parameters)) {
-      as_json_param(export_parameters)
+      yyjsonr::write_json_str(export_parameters, auto_unbox = TRUE)
     }
   ))
 
@@ -357,28 +357,6 @@ export_item <- function(
     httr2::resp_body_string() |>
     RcppSimdJson::fparse() |>
     detect_errors()
-}
-
-# yyjsonr writes the double 0 as 0.0, which the portal can reject where it
-# expects an integer such as a layer ID
-as_json_param <- function(x) {
-  yyjsonr::write_json_str(integerish(x), auto_unbox = TRUE)
-}
-
-integerish <- function(x) {
-  if (is.list(x)) {
-    x[] <- lapply(x, integerish)
-    return(x)
-  }
-
-  whole <- is.double(x) &&
-    all(is.na(x) | (x == trunc(x) & abs(x) <= .Machine$integer.max))
-
-  if (whole) {
-    storage.mode(x) <- "integer"
-  }
-
-  x
 }
 
 # a bare item ID is most often the signed in user's own item

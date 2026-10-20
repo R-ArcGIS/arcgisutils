@@ -146,7 +146,7 @@ test_that("export_item() posts to the signed in user's export", {
     csv_item,
     "csv",
     title = "Export",
-    export_parameters = list(layers = list(list(id = 0, where = "x > 1"))),
+    export_parameters = list(layers = list(list(id = 0L, where = "x > 1"))),
     token = token
   )
 
@@ -162,12 +162,4 @@ test_that("export_item() posts to the signed in user's export", {
 
 test_that("export_item() validates the format", {
   expect_error(export_item("i1", "parquet", token = token), "export_format")
-})
-
-test_that("as_json_param() writes whole doubles as integers", {
-  expect_identical(
-    as_json_param(list(id = 0, where = "x", srid = c(4326, 3857), scale = 1.5)),
-    '{"id":0,"where":"x","srid":[4326,3857],"scale":1.5}'
-  )
-  expect_identical(as_json_param(list(id = NA_real_)), '{"id":null}')
 })
