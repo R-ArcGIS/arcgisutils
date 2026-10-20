@@ -7,6 +7,7 @@
 \alias{RelationshipDirection}
 \alias{SortOrder}
 \alias{GroupRole}
+\alias{ContentStatus}
 \alias{ItemSortField}
 \alias{RelationshipType}
 \title{Portal enumerations}
@@ -20,6 +21,8 @@ RelationshipDirection(value)
 SortOrder(value)
 
 GroupRole(value)
+
+ContentStatus(value)
 
 ItemSortField(value)
 
@@ -45,10 +48,13 @@ try(ItemAccess("everyone"))
 }
 \seealso{
 Other portal item:
+\code{\link[=add_relationship]{add_relationship()}},
 \code{\link[=arc_item]{arc_item()}},
 \code{\link[=arc_item_data]{arc_item_data()}},
 \code{\link[=arc_related_items]{arc_related_items()}},
 \code{\link[=delete_items]{delete_items()}},
+\code{\link[=set_content_status]{set_content_status()}},
+\code{\link[=set_item_categories]{set_item_categories()}},
 \code{\link[=share_item]{share_item()}},
 \code{\link[=upload_file]{upload_file()}}
 }

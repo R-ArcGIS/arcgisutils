@@ -31,10 +31,13 @@ arc_item("9df5e769bfe8412b8de36a2e618c7672")
 }
 \seealso{
 Other portal item:
+\code{\link[=add_relationship]{add_relationship()}},
 \code{\link[=arc_item_data]{arc_item_data()}},
 \code{\link[=arc_related_items]{arc_related_items()}},
 \code{\link[=delete_items]{delete_items()}},
 \code{\link{portal_enums}},
+\code{\link[=set_content_status]{set_content_status()}},
+\code{\link[=set_item_categories]{set_item_categories()}},
 \code{\link[=share_item]{share_item()}},
 \code{\link[=upload_file]{upload_file()}}
 }

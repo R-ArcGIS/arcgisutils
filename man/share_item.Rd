@@ -72,11 +72,14 @@ unshare_item(item)
 }
 \seealso{
 Other portal item:
+\code{\link[=add_relationship]{add_relationship()}},
 \code{\link[=arc_item]{arc_item()}},
 \code{\link[=arc_item_data]{arc_item_data()}},
 \code{\link[=arc_related_items]{arc_related_items()}},
 \code{\link[=delete_items]{delete_items()}},
 \code{\link{portal_enums}},
+\code{\link[=set_content_status]{set_content_status()}},
+\code{\link[=set_item_categories]{set_item_categories()}},
 \code{\link[=upload_file]{upload_file()}}
 }
 \concept{portal item}

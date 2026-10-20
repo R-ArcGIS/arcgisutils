@@ -63,6 +63,15 @@ GroupRole <- s7x::new_enum(
 
 #' @rdname portal_enums
 #' @export
+ContentStatus <- s7x::new_enum(
+  "ContentStatus",
+  c("org_authoritative", "public_authoritative", "deprecated", "none"),
+  package = "arcgisutils",
+  allow_na = FALSE
+)
+
+#' @rdname portal_enums
+#' @export
 ItemSortField <- s7x::new_enum(
   "ItemSortField",
   c(
