@@ -77,9 +77,4 @@ await_item(export$exportItemId, export$jobId, "export")
 \references{
 \href{https://developers.arcgis.com/rest/users-groups-and-items/status/}{API Reference}
 }
-\seealso{
-Other portal publish:
-\code{\link[=analyze_file]{analyze_file()}},
-\code{\link[=export_item]{export_item()}}
-}
-\concept{portal publish}
+\keyword{internal}

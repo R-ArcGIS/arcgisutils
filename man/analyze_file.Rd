@@ -68,7 +68,6 @@ analysis$publishParameters
 }
 \seealso{
 Other portal publish:
-\code{\link[=export_item]{export_item()}},
-\code{\link[=item_status]{item_status()}}
+\code{\link[=export_item]{export_item()}}
 }
 \concept{portal publish}

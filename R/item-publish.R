@@ -168,8 +168,7 @@ analyze_file <- function(
 #' yet. `await_item()` returns when the status is `"completed"` and raises an
 #' error when the status is `"failed"` or when `timeout` elapses.
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/status/)
-#' @export
-#' @family portal publish
+#' @keywords internal
 #' @returns A list with the elements `status`, `statusMessage`, and `itemId`.
 #' @examples
 #' \dontrun{
@@ -240,7 +239,6 @@ item_status <- function(
     detect_errors(error_call = error_call)
 }
 
-#' @export
 #' @rdname item_status
 await_item <- function(
   item,

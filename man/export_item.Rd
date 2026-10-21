@@ -69,7 +69,6 @@ await_item(export$exportItemId, export$jobId, "export")
 }
 \seealso{
 Other portal publish:
-\code{\link[=analyze_file]{analyze_file()}},
-\code{\link[=item_status]{item_status()}}
+\code{\link[=analyze_file]{analyze_file()}}
 }
 \concept{portal publish}
