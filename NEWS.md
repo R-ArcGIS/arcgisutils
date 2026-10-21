@@ -1,5 +1,8 @@
 # arcgisutils 0.6.1 (development)
 
+- Adds scheduled task functions: `arc_user_tasks()` lists the signed in user's tasks, `arc_task()` gets one task, `arc_create_task()` creates a task, `arc_task_update()` replaces a task's settings, `arc_task_disable()` and `arc_task_enable()` pause and resume a task, `arc_task_delete()` deletes a task, and `arc_task_history()` lists a task's past runs
+- Adds folder functions: `arc_create_folder()` creates a folder, `arc_rename_folder()` renames one, `arc_delete_folder()` deletes one and its items, and `arc_folder()` lists the items in a folder <https://github.com/R-ArcGIS/arcgis/issues/61>
+
 - Adds `search_groups()`, `search_users()`, and `search_group_content()`, which search a portal for groups, users, and the items shared with one group <https://github.com/R-ArcGIS/arcgis/issues/61>
 - Adds `add_relationship()` and `delete_relationship()`, which create and remove relationships between items, `set_content_status()`, which marks an item as authoritative or deprecated, and `set_item_categories()`, which assigns content categories to items. Adds the `ContentStatus` enum <https://github.com/R-ArcGIS/arcgis/issues/61>
 - Adds item lifecycle functions: `update_item()` changes metadata or replaces the file, `delete_item()` deletes one item, `move_items()` moves items between folders, `copy_item()` copies an item, `reassign_item()` transfers ownership, `protect_item()` and `unprotect_item()` guard against deletion, and `update_thumbnail()` replaces the thumbnail <https://github.com/R-ArcGIS/arcgis/issues/61>
