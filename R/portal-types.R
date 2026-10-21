@@ -383,6 +383,7 @@ portal_item_types <- function() {
     "Feature Collection",
     "Feature Collection Template",
     "Feature Service",
+    "Parquet Feature Layer",
     "Geodata Service",
     "Group Layer",
     "Media Layer",
