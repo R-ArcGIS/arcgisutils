@@ -20,6 +20,9 @@ Closed value sets are s7x enums, not `rlang::arg_match()`. Use the enum directly
 - Before writing anything, check whether arcgisutils already has it, such as `rbind_results()`, `data_frame()` or `infer_item_type()`.
 - An asynchronous job (submit, poll, results) uses the `arc_gp_job` structure. Never write a second polling loop.
 
+### Function names
+- Every new exported function starts with `arc_`, as in `arc_create_folder()`.
+
 ### Function signatures
 - A function that requires a signed-in user takes no `host` argument. It uses `token[["arcgis_host"]]`.
 - Every function takes `error_call = rlang::caller_env()` and passes it to every `check_*()`, `cli::cli_abort()`, `arc_base_req()` and `detect_errors()`.

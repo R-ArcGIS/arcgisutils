@@ -34,8 +34,8 @@ upload_large_file(
 
 \item{folder}{String. Folder to upload into. Defaults to the root folder.}
 
-\item{part_size}{default \code{50}. The size of each part in megabytes. The
-portal requires at least 5 and accepts at most 10,000 parts per file.}
+\item{part_size}{default \code{50}. The size of each part in megabytes. The portal
+requires at least 5 and accepts at most 10,000 parts per file.}
 
 \item{timeout}{default \code{Inf}. The maximum number of seconds to wait.}
 
@@ -58,13 +58,13 @@ and tile packages.
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-\code{upload_large_file()} creates an empty item, uploads the file in parts,
-and commits them. The portal then assembles the parts in the background,
-and \code{upload_large_file()} waits for it with \code{\link[=await_item]{await_item()}} before it sets
-the title, tags, description, and snippet.
+\code{upload_large_file()} creates an empty item, uploads the file in parts, and
+commits them. The portal then assembles the parts in the background, and
+\code{upload_large_file()} waits for it with \code{\link[=await_item]{await_item()}} before it sets the
+title, tags, description, and snippet.
 
-If any step fails, \code{upload_large_file()} deletes the partial item and
-raises the error.
+If any step fails, \code{upload_large_file()} deletes the partial item and raises
+the error.
 }
 \examples{
 \dontrun{
