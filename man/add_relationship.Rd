@@ -75,6 +75,7 @@ delete_relationship(map, "b512083cd1b64e2da1d3f66dbb135956", "Map2Service")
 }
 \seealso{
 Other portal item:
+\code{\link[=arc_add_item_resource]{arc_add_item_resource()}},
 \code{\link[=arc_item]{arc_item()}},
 \code{\link[=arc_item_data]{arc_item_data()}},
 \code{\link[=arc_item_resources]{arc_item_resources()}},

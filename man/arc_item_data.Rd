@@ -31,6 +31,7 @@ arc_item_data("9df5e769bfe8412b8de36a2e618c7672")
 \seealso{
 Other portal item:
 \code{\link[=add_relationship]{add_relationship()}},
+\code{\link[=arc_add_item_resource]{arc_add_item_resource()}},
 \code{\link[=arc_item]{arc_item()}},
 \code{\link[=arc_item_resources]{arc_item_resources()}},
 \code{\link[=arc_related_items]{arc_related_items()}},

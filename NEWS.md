@@ -1,6 +1,6 @@
 # arcgisutils 0.6.1 (development)
 
-- Adds `arc_item_resources()`, which lists the files in an item's resources folder, and the `ResourceSortField` enum
+- Adds `arc_item_resources()`, which lists the files in an item's resources folder, and `arc_add_item_resource()`, which uploads a file or text to it
 - `item_type()` and `portal_item_types()` now accept `"Parquet Feature Layer"`
 - Adds scheduled task functions: `arc_user_tasks()` lists the signed in user's tasks, `arc_task()` gets one task, `arc_create_task()` creates a task, `arc_task_update()` replaces a task's settings, `arc_task_disable()` and `arc_task_enable()` pause and resume a task, `arc_task_delete()` deletes a task, and `arc_task_history()` lists a task's past runs
 - Adds folder functions: `arc_create_folder()` creates a folder, `arc_rename_folder()` renames one, `arc_delete_folder()` deletes one and its items, and `arc_folder()` lists the items in a folder <https://github.com/R-ArcGIS/arcgis/issues/61>

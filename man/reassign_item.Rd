@@ -56,6 +56,7 @@ reassign_item(item, "asmith", "Handover")
 \seealso{
 Other portal item:
 \code{\link[=add_relationship]{add_relationship()}},
+\code{\link[=arc_add_item_resource]{arc_add_item_resource()}},
 \code{\link[=arc_item]{arc_item()}},
 \code{\link[=arc_item_data]{arc_item_data()}},
 \code{\link[=arc_item_resources]{arc_item_resources()}},
