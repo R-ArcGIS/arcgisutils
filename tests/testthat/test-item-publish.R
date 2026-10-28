@@ -158,5 +158,5 @@ test_that("export_item() posts to the signed in user's export", {
 })
 
 test_that("export_item() validates the format", {
-  expect_error(export_item("i1", "parquet", token = token), "export_format")
+  expect_error(export_item("i1", "parquet", token = token), "must be one of")
 })

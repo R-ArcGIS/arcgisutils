@@ -350,23 +350,7 @@ export_item <- function(
   id <- item_id(item, call = error_call)
   check_string(title, allow_null = TRUE, allow_empty = FALSE, call = error_call)
 
-  export_format <- rlang::arg_match(
-    export_format,
-    c(
-      "csv",
-      "excel",
-      "shapefile",
-      "file geodatabase",
-      "geoPackage",
-      "geojson",
-      "kml",
-      "feature collection",
-      "mobile geodatabase",
-      "Scene Package",
-      "Vector Tile Package"
-    ),
-    error_call = error_call
-  )
+  export_format <- ExportFormat(export_format)@value
 
   if (!is.null(export_parameters) && !is.list(export_parameters)) {
     cli::cli_abort("{.arg export_parameters} must be a list.", call = error_call)

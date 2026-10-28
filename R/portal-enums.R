@@ -72,6 +72,27 @@ ContentStatus <- s7x::new_enum(
 
 #' @rdname portal_enums
 #' @export
+ExportFormat <- s7x::new_enum(
+  "ExportFormat",
+  c(
+    "csv",
+    "excel",
+    "shapefile",
+    "file geodatabase",
+    "geoPackage",
+    "geojson",
+    "kml",
+    "feature collection",
+    "mobile geodatabase",
+    "Scene Package",
+    "Vector Tile Package"
+  ),
+  package = "arcgisutils",
+  allow_na = FALSE
+)
+
+#' @rdname portal_enums
+#' @export
 MetadataFormat <- s7x::new_enum(
   "MetadataFormat",
   c("fgdc", "inspire", "iso19139", "iso19139-3.2", "iso19115", "dcplus"),
