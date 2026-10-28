@@ -62,6 +62,66 @@ test_that("update_item() replaces the file", {
   expect_s3_class(form_values(captured$req)$file, "form_file")
 })
 
+test_that("update_item() serializes typed fields", {
+  captured <- mock_item_ops(list(success = TRUE, id = "i1"))
+
+  update_item(
+    owned_item(),
+    metadata_editable = TRUE,
+    metadata_format = "dcplus",
+    extent = c(-110.05, 44.13, -110, 44.98),
+    spatial_reference = 4326,
+    classification = list(classification = "In-confidence", banner = "IC"),
+    categories = "/Categories/Water",
+    token = token
+  )
+
+  form <- form_values(captured$req)
+  expect_identical(form$metadataEditable, "true")
+  expect_identical(form$metadataFormats, "dcplus")
+  expect_identical(form$extent, "-110.05,44.13,-110,44.98")
+  expect_identical(form$spatialReference, "4326")
+  expect_identical(
+    yyjsonr::read_json_str(form$classification),
+    list(classification = "In-confidence", banner = "IC")
+  )
+  expect_identical(form$categories, "[\"/Categories/Water\"]")
+})
+
+test_that("update_item() sends files or URLs for images", {
+  captured <- mock_item_ops(list(success = TRUE, id = "i1"))
+  path <- tempfile(fileext = ".png")
+  writeLines("png", path)
+
+  update_item(
+    owned_item(),
+    thumbnail = "https://example.com/thumb.png",
+    banner = path,
+    screenshots = c("https://example.com/one.png", path),
+    token = token
+  )
+
+  data <- captured$req$body$data
+  expect_identical(form_values(captured$req)$thumbnailurl, "https://example.com/thumb.png")
+  expect_null(data$thumbnail)
+  expect_s3_class(data$banner, "form_file")
+  expect_identical(sum(names(data) == "screenshot"), 2L)
+})
+
+test_that("update_item() validates typed fields", {
+  expect_error(
+    update_item(owned_item(), metadata_format = "xml", token = token)
+  )
+  expect_error(
+    update_item(owned_item(), classification = list("x"), token = token),
+    "named list"
+  )
+  expect_error(
+    update_item(owned_item(), thumbnail = "nope.png", token = token),
+    "does not exist"
+  )
+})
+
 test_that("update_item() requires a field and an existing file", {
   expect_error(update_item(owned_item()), "at least one field")
   expect_error(update_item(owned_item(), path = "nope.csv"), "does not exist")

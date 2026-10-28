@@ -14,7 +14,7 @@ Closed value sets are s7x enums, not `rlang::arg_match()`. Use the enum directly
 
 ### No helpers
 - Don't write internal helper functions. Inline the logic in the exported function.
-- Never create a helper with only one caller. Inline it.
+- Never create a helper with fewer than three callers. Inline it.
 - Don't wrap a request in a thin helper. Each function builds its own `arc_base_req()` call.
 - Don't put endpoint-specific parsing in a shared helper. Parse inline per endpoint, as `search_items()` does.
 - Before writing anything, check whether arcgisutils already has it, such as `rbind_results()`, `data_frame()` or `infer_item_type()`.

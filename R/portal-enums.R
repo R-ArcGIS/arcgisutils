@@ -72,6 +72,15 @@ ContentStatus <- s7x::new_enum(
 
 #' @rdname portal_enums
 #' @export
+MetadataFormat <- s7x::new_enum(
+  "MetadataFormat",
+  c("fgdc", "inspire", "iso19139", "iso19139-3.2", "iso19115", "dcplus"),
+  package = "arcgisutils",
+  allow_na = FALSE
+)
+
+#' @rdname portal_enums
+#' @export
 ItemSortField <- s7x::new_enum(
   "ItemSortField",
   c(

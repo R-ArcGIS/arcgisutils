@@ -9,6 +9,7 @@ arc_item_resources(
   page_size = 50,
   max_pages = Inf,
   .progress = TRUE,
+  host = arc_host(),
   token = arc_token(),
   error_call = rlang::caller_env()
 )
@@ -22,13 +23,16 @@ arc_item_resources(
 
 \item{.progress}{default \code{TRUE}. Whether to display a progress bar for requests.}
 
+\item{host}{default \code{"https://www.arcgis.com"}. The host of your ArcGIS Portal.}
+
 \item{token}{an \code{httr2_token} as created by \code{auth_code()} or similar}
 
 \item{error_call}{the caller environment to be used when propagating errors.}
 }
 \value{
 A \code{data.frame} with one row per resource. \code{arc_item_resources()}
-converts the \code{created} column to date-times. Zero rows if there are none.
+converts the \code{created} and \code{expires} columns to date-times. Zero rows if
+there are none.
 }
 \description{
 \code{arc_item_resources()} lists the files stored in an item's resources
@@ -36,9 +40,6 @@ folder, such as the Parquet files behind a \code{"Parquet Feature Layer"}.
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-The portal returns the \code{access} column only to the item owner and
-organization administrators.
 }
 \examples{
 \dontrun{

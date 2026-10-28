@@ -45,8 +45,31 @@ share_item <- function(
 ) {
   rlang::check_dots_empty()
   parts <- item_owner(item, user)
+  access <- ItemAccess(access)@value
+  check_bool(confirm_item_control)
 
-  body <- share_body(parts$id, access, groups, confirm_item_control)
+  body <- list(
+    f = "json",
+    everyone = tolower(as.character(access == "public")),
+    org = tolower(as.character(access == "org")),
+    confirmItemControl = tolower(as.character(confirm_item_control))
+  )
+
+  if (!is.null(groups)) {
+    ids <- vapply(
+      groups,
+      function(g) {
+        if (inherits(g, "PortalGroup")) {
+          g[["id"]]
+        } else {
+          g
+        }
+      },
+      character(1)
+    )
+    check_character(ids)
+    body[["groups"]] <- paste0(ids, collapse = ",")
+  }
 
   resp <- arc_base_req(
     host,
@@ -68,7 +91,13 @@ share_item <- function(
     RcppSimdJson::fparse() |>
     detect_errors()
 
-  warn_not_shared(resp)
+  not_shared <- resp[["notSharedWith"]]
+
+  if (!rlang::is_empty(not_shared)) {
+    cli::cli_warn(
+      "Item was not shared with {length(not_shared)} group{?s}: {.val {not_shared}}"
+    )
+  }
 
   invisible(resp[["itemId"]] %||% parts$id)
 }
@@ -89,7 +118,19 @@ unshare_item <- function(
   body <- list(f = "json")
 
   if (!is.null(groups)) {
-    body[["groups"]] <- paste0(group_ids(groups), collapse = ",")
+    ids <- vapply(
+      groups,
+      function(g) {
+        if (inherits(g, "PortalGroup")) {
+          g[["id"]]
+        } else {
+          g
+        }
+      },
+      character(1)
+    )
+    check_character(ids)
+    body[["groups"]] <- paste0(ids, collapse = ",")
   }
 
   resp <- arc_base_req(
@@ -113,60 +154,6 @@ unshare_item <- function(
     detect_errors()
 
   invisible(resp[["itemId"]] %||% parts$id)
-}
-
-share_access <- function(access, call = rlang::caller_env()) {
-  access <- ItemAccess(access)@value
-
-  list(
-    everyone = tolower(as.character(access == "public")),
-    org = tolower(as.character(access == "org"))
-  )
-}
-
-share_body <- function(
-  id,
-  access,
-  groups,
-  confirm_item_control,
-  call = rlang::caller_env()
-) {
-  check_bool(confirm_item_control, call = call)
-
-  body <- c(
-    list(f = "json"),
-    share_access(access, call = call),
-    list(confirmItemControl = tolower(as.character(confirm_item_control)))
-  )
-
-  if (!is.null(groups)) {
-    body[["groups"]] <- paste0(group_ids(groups, call = call), collapse = ",")
-  }
-
-  body
-}
-
-group_ids <- function(groups, call = rlang::caller_env()) {
-  ids <- vapply(
-    groups,
-    function(g) if (inherits(g, "PortalGroup")) g[["id"]] else g,
-    character(1)
-  )
-
-  check_character(ids, call = call)
-  ids
-}
-
-warn_not_shared <- function(resp) {
-  not_shared <- resp[["notSharedWith"]]
-
-  if (rlang::is_empty(not_shared)) {
-    return(invisible(NULL))
-  }
-
-  cli::cli_warn(
-    "Item was not shared with {length(not_shared)} group{?s}: {.val {not_shared}}"
-  )
 }
 
 item_owner <- function(item, user, call = rlang::caller_env()) {

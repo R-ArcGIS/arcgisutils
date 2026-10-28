@@ -8,14 +8,12 @@
 #' @inheritParams arc_base_req
 #' @details
 #' `r lifecycle::badge("experimental")`
-#'
-#' The portal returns the `access` column only to the item owner and
-#' organization administrators.
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/item-resources/)
 #' @export
 #' @family portal item
 #' @returns A `data.frame` with one row per resource. `arc_item_resources()`
-#'   converts the `created` column to date-times. Zero rows if there are none.
+#'   converts the `created` and `expires` columns to date-times. Zero rows if
+#'   there are none.
 #' @examples
 #' \dontrun{
 #' set_arc_token(auth_user())
@@ -27,14 +25,15 @@ arc_item_resources <- function(
   page_size = 50,
   max_pages = Inf,
   .progress = TRUE,
+  host = arc_host(),
   token = arc_token(),
   error_call = rlang::caller_env()
 ) {
   id <- item_id(item, call = error_call)
-  obj_check_token(token, call = error_call)
+  check_string(host, allow_empty = FALSE, call = error_call)
 
   req <- arc_base_req(
-    token[["arcgis_host"]],
+    host,
     token,
     path = c("sharing", "rest", "content", "items", id, "resources"),
     query = c(f = "json"),
@@ -60,6 +59,10 @@ arc_item_resources <- function(
 
   if (!is.null(res[["created"]])) {
     res[["created"]] <- from_esri_date(res[["created"]])
+  }
+
+  if (!is.null(res[["expires"]])) {
+    res[["expires"]] <- from_esri_date(res[["expires"]])
   }
 
   res

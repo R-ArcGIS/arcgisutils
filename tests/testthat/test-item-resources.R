@@ -32,7 +32,8 @@ test_that("arc_item_resources() lists an item's resources", {
     resources = list(list(
       resource = "run/part-00000.parquet",
       created = 1790035587000,
-      size = 30286
+      size = 30286,
+      expires = 1793128000000
     ))
   ))
 
@@ -44,6 +45,21 @@ test_that("arc_item_resources() lists an item's resources", {
   )
   expect_identical(res$resource, "run/part-00000.parquet")
   expect_s3_class(res$created, "POSIXct")
+  expect_s3_class(res$expires, "POSIXct")
+})
+
+test_that("arc_item_resources() works without a token", {
+  captured <- mock_resources(list(
+    total = 0,
+    start = 1,
+    num = 0,
+    nextStart = -1,
+    resources = list()
+  ))
+
+  arc_item_resources("i1", .progress = FALSE, host = host, token = NULL)
+
+  expect_null(captured$req$headers[["X-Esri-Authorization"]])
 })
 
 test_that("arc_item_resources() returns zero rows when there are none", {

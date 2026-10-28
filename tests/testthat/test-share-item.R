@@ -5,21 +5,16 @@ item <- function(...) {
   )
 }
 
-test_that("share_access() maps access onto the wire parameters", {
-  expect_identical(
-    share_access("private"),
-    list(everyone = "false", org = "false")
-  )
-  expect_identical(share_access("org"), list(everyone = "false", org = "true"))
-  expect_identical(
-    share_access("public"),
-    list(everyone = "true", org = "false")
-  )
+test_that("share_item() rejects an unknown access level", {
+  expect_error(share_item(item(), "everyone"), "ItemAccess")
+  expect_error(share_item(item(), c("org", "public")), "ItemAccess")
 })
 
-test_that("share_access() rejects an unknown level", {
-  expect_error(share_access("everyone"), "ItemAccess")
-  expect_error(share_access(c("org", "public")), "ItemAccess")
+test_that("share_item() requires a logical confirm_item_control", {
+  expect_error(
+    share_item(item(), "org", confirm_item_control = "yes"),
+    "confirm_item_control"
+  )
 })
 
 test_that("share_item() requires an item id and owner", {
@@ -27,33 +22,8 @@ test_that("share_item() requires an item id and owner", {
   expect_error(share_item(item(owner = NULL)), "owner")
 })
 
-test_that("share_item() accepts a bare id when user is given", {
+test_that("share_item() requires user for a bare id", {
   expect_error(share_item("abc123"), "user")
-  expect_no_error(share_body("abc123", "org", NULL, FALSE))
-})
-
-test_that("share_body() collapses groups", {
-  body <- share_body("abc123", "org", c("g1", "g2"), FALSE)
-
-  expect_identical(body$groups, "g1,g2")
-  expect_identical(body$org, "true")
-  expect_identical(body$confirmItemControl, "false")
-})
-
-test_that("share_body() omits groups when absent", {
-  expect_false("groups" %in% names(share_body("abc123", "org", NULL, FALSE)))
-})
-
-test_that("share_body() accepts PortalGroup objects", {
-  grp <- structure(list(id = "g1"), class = c("PortalGroup", "list"))
-
-  expect_identical(share_body("abc123", "org", list(grp), FALSE)$groups, "g1")
-})
-
-test_that("warn_not_shared() warns on partial success", {
-  expect_warning(warn_not_shared(list(notSharedWith = c("g1"))), "g1")
-  expect_no_warning(warn_not_shared(list(notSharedWith = character())))
-  expect_no_warning(warn_not_shared(list()))
 })
 
 test_that("item_owner() prefers an explicit user", {
