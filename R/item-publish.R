@@ -74,7 +74,14 @@ analyze_file <- function(
   if (!is.null(file_type)) {
     file_type <- rlang::arg_match(
       file_type,
-      c("csv", "excel", "shapefile", "geoPackage", "geojson", "Service Definition"),
+      c(
+        "csv",
+        "excel",
+        "shapefile",
+        "geoPackage",
+        "geojson",
+        "Service Definition"
+      ),
       error_call = error_call
     )
   } else if (!is.null(path)) {
@@ -194,7 +201,12 @@ item_status <- function(
   }
 
   parts <- item_owner(item, user, call = error_call)
-  check_string(job_id, allow_null = TRUE, allow_empty = FALSE, call = error_call)
+  check_string(
+    job_id,
+    allow_null = TRUE,
+    allow_empty = FALSE,
+    call = error_call
+  )
 
   if (!is.null(job_type)) {
     job_type <- rlang::arg_match(
@@ -353,7 +365,10 @@ export_item <- function(
   export_format <- ExportFormat(export_format)@value
 
   if (!is.null(export_parameters) && !is.list(export_parameters)) {
-    cli::cli_abort("{.arg export_parameters} must be a list.", call = error_call)
+    cli::cli_abort(
+      "{.arg export_parameters} must be a list.",
+      call = error_call
+    )
   }
 
   body <- compact(list(

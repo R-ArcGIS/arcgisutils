@@ -207,7 +207,8 @@ arc_create_task <- function(
   }
 
   if (
-    type %in% c("ExecuteSceneCook", "ExecuteReport", "GPService") &&
+    type %in%
+      c("ExecuteSceneCook", "ExecuteReport", "GPService") &&
       is.null(parameters)
   ) {
     cli::cli_abort(

@@ -52,7 +52,12 @@ search_groups <- function(
   error_call = rlang::caller_env()
 ) {
   check_string(query, allow_null = TRUE, allow_empty = FALSE, call = error_call)
-  check_string(filter, allow_null = TRUE, allow_empty = FALSE, call = error_call)
+  check_string(
+    filter,
+    allow_null = TRUE,
+    allow_empty = FALSE,
+    call = error_call
+  )
   check_bool(member_only, call = error_call)
 
   if (is.null(query) && is.null(filter)) {
@@ -133,7 +138,12 @@ search_users <- function(
   error_call = rlang::caller_env()
 ) {
   check_string(query, allow_null = TRUE, allow_empty = FALSE, call = error_call)
-  check_string(filter, allow_null = TRUE, allow_empty = FALSE, call = error_call)
+  check_string(
+    filter,
+    allow_null = TRUE,
+    allow_empty = FALSE,
+    call = error_call
+  )
 
   if (is.null(query) && is.null(filter)) {
     cli::cli_abort(
@@ -217,7 +227,12 @@ search_group_content <- function(
 
   check_string(group, allow_empty = FALSE, call = error_call)
   check_string(query, allow_null = TRUE, allow_empty = FALSE, call = error_call)
-  check_string(filter, allow_null = TRUE, allow_empty = FALSE, call = error_call)
+  check_string(
+    filter,
+    allow_null = TRUE,
+    allow_empty = FALSE,
+    call = error_call
+  )
   check_character(categories, allow_null = TRUE, call = error_call)
 
   if (is.null(query) && is.null(filter)) {

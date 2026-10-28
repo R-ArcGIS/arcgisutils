@@ -154,7 +154,12 @@ update_item <- function(
     allow_empty = FALSE,
     call = error_call
   )
-  check_string(banner, allow_null = TRUE, allow_empty = FALSE, call = error_call)
+  check_string(
+    banner,
+    allow_null = TRUE,
+    allow_empty = FALSE,
+    call = error_call
+  )
   check_character(screenshots, allow_null = TRUE, call = error_call)
   check_bool(is_viewer_copiable, allow_null = TRUE, call = error_call)
   check_bool(clear_empty_fields, allow_null = TRUE, call = error_call)
@@ -598,7 +603,12 @@ copy_item <- function(
   parts <- item_owner(item, user, call = error_call)
   check_string(title, allow_null = TRUE, allow_empty = FALSE, call = error_call)
   check_character(tags, allow_null = TRUE, call = error_call)
-  check_string(folder, allow_null = TRUE, allow_empty = FALSE, call = error_call)
+  check_string(
+    folder,
+    allow_null = TRUE,
+    allow_empty = FALSE,
+    call = error_call
+  )
   check_bool(include_resources, call = error_call)
 
   body <- compact(list(

@@ -36,7 +36,12 @@ upload_file <- function(
   check_character(tags, allow_null = TRUE, call = error_call)
   check_string(description, allow_null = TRUE, call = error_call)
   check_string(snippet, allow_null = TRUE, call = error_call)
-  check_string(folder, allow_null = TRUE, allow_empty = FALSE, call = error_call)
+  check_string(
+    folder,
+    allow_null = TRUE,
+    allow_empty = FALSE,
+    call = error_call
+  )
   check_token_has_user(token, call = error_call)
 
   if (!file.exists(path)) {

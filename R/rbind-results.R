@@ -116,7 +116,11 @@ rbind_results <- function(
     # results from one service share a crs object, so compare the attribute
     # directly and only fall back to the semantic comparison when it differs
     crs <- attr(geometries[[1L]], "crs")
-    same <- vapply(geometries, function(g) identical(attr(g, "crs"), crs), logical(1))
+    same <- vapply(
+      geometries,
+      function(g) identical(attr(g, "crs"), crs),
+      logical(1)
+    )
 
     if (!all(same)) {
       equal <- vapply(

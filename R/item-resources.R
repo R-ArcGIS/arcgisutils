@@ -134,7 +134,12 @@ arc_add_item_resource <- function(
     allow_empty = FALSE,
     call = error_call
   )
-  check_string(prefix, allow_null = TRUE, allow_empty = FALSE, call = error_call)
+  check_string(
+    prefix,
+    allow_null = TRUE,
+    allow_empty = FALSE,
+    call = error_call
+  )
   check_bool(archive, call = error_call)
   access <- rlang::arg_match0(
     access,
