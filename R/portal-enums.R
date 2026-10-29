@@ -173,3 +173,20 @@ RelationshipType <- s7x::new_enum(
   package = "arcgisutils",
   allow_na = FALSE
 )
+
+#' @rdname portal_enums
+#' @export
+TaskType <- s7x::new_enum(
+  "TaskType",
+  c(
+    "ExecuteNotebook",
+    "UpdateInsightsWorkbook",
+    "ExecuteSceneCook",
+    "ExecuteWorkflowManager",
+    "ExecuteReport",
+    "GPService",
+    "RunDataPipeline"
+  ),
+  package = "arcgisutils",
+  allow_na = FALSE
+)

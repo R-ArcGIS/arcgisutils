@@ -2,9 +2,8 @@
 #'
 #' `arc_user_tasks()` lists the scheduled tasks owned by the signed in user.
 #'
-#' @param type optional. A character vector of one or more of `"ExecuteNotebook"`,
-#'   `"UpdateInsightsWorkbook"`, `"ExecuteSceneCook"`, `"ExecuteWorkflowManager"`,
-#'   `"ExecuteReport"`, or `"GPService"`. The portal returns only tasks of these types.
+#' @param type optional. A character vector of one or more [`TaskType`] values. The portal
+#'   returns only tasks of these types.
 #' @param state optional. A scalar character, one of `"active"`, `"completed"`,
 #'   `"disabled"`, `"failed"`, or `"paused"`. The portal returns only tasks in this state.
 #' @inheritParams arc_paginate_req
@@ -14,7 +13,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' A scheduled task runs a notebook, Insights workbook, scene cook, Workflow Manager job,
-#' administrative report, or geoprocessing service on a schedule. This endpoint requires
+#' administrative report, geoprocessing service, or data pipeline on a schedule. This endpoint requires
 #' ArcGIS Enterprise 10.8.1 or later or ArcGIS Online.
 #' @references [API Reference](https://developers.arcgis.com/rest/users-groups-and-items/all-user-scheduled-tasks/)
 #' @export
@@ -42,19 +41,7 @@ arc_user_tasks <- function(
   check_token_has_user(token, call = error_call)
 
   if (!is.null(type)) {
-    type <- rlang::arg_match(
-      type,
-      c(
-        "ExecuteNotebook",
-        "UpdateInsightsWorkbook",
-        "ExecuteSceneCook",
-        "ExecuteWorkflowManager",
-        "ExecuteReport",
-        "GPService"
-      ),
-      multiple = TRUE,
-      error_call = error_call
-    )
+    type <- vapply(type, function(x) TaskType(x)@value, character(1))
     type <- paste0(type, collapse = ",")
   }
 
@@ -113,9 +100,8 @@ arc_user_tasks <- function(
 #' @param item a `PortalItem` from [`arc_item()`] or a scalar character item ID of the notebook,
 #'   workbook, or other item that the task runs. Pass `NULL` for `"ExecuteReport"` tasks, which
 #'   run on no item.
-#' @param type a scalar character, one of `"ExecuteNotebook"`, `"UpdateInsightsWorkbook"`,
-#'   `"ExecuteSceneCook"`, `"ExecuteWorkflowManager"`, `"ExecuteReport"`, or `"GPService"`.
-#'   The value sets the type of task that `arc_create_task()` creates.
+#' @param type a scalar character, one of the [`TaskType`] values. The value sets the type of
+#'   task that `arc_create_task()` creates.
 #' @param schedule a scalar character cron expression with 5 fields: minute, hour, day of month,
 #'   month, and day of week, such as `"0 6 ? * 2"`. The portal reads hours and days in UTC.
 #'   Use 1 for Sunday through 7 for Saturday in the day of week field.
@@ -162,18 +148,7 @@ arc_create_task <- function(
   rlang::check_dots_empty()
   check_token_has_user(token, call = error_call)
 
-  type <- rlang::arg_match(
-    type,
-    c(
-      "ExecuteNotebook",
-      "UpdateInsightsWorkbook",
-      "ExecuteSceneCook",
-      "ExecuteWorkflowManager",
-      "ExecuteReport",
-      "GPService"
-    ),
-    error_call = error_call
-  )
+  type <- TaskType(type)@value
 
   check_string(schedule, allow_empty = FALSE, call = error_call)
   check_string(title, allow_null = TRUE, call = error_call)
@@ -523,18 +498,7 @@ arc_task_update <- function(
   check_string(task, allow_empty = FALSE, call = error_call)
   check_token_has_user(token, call = error_call)
 
-  type <- rlang::arg_match(
-    type,
-    c(
-      "ExecuteNotebook",
-      "UpdateInsightsWorkbook",
-      "ExecuteSceneCook",
-      "ExecuteWorkflowManager",
-      "ExecuteReport",
-      "GPService"
-    ),
-    error_call = error_call
-  )
+  type <- TaskType(type)@value
 
   check_string(schedule, allow_empty = FALSE, call = error_call)
   check_string(title, allow_null = TRUE, call = error_call)

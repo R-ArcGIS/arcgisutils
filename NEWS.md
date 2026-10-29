@@ -1,5 +1,7 @@
 # arcgisutils 0.6.1 (development)
 
+- `arc_user_tasks()`, `arc_create_task()`, and `arc_task_update()` accept the `"RunDataPipeline"` task type, which runs a data pipeline on a schedule, and validate `type` with the new `TaskType` enum
+- Adds data pipeline functions: `arc_pipeline_list()` lists runs, `arc_pipeline_submit()` starts a run of a data pipeline item and `arc_pipeline_run()` gets one run, both as a `PipelineRun` object, `arc_pipeline_cancel()` cancels a run, and `arc_pipeline_results()` gets the outcome of a run. `arc_pipeline_run()`, `arc_pipeline_cancel()`, and `arc_pipeline_results()` take a `PipelineRun` or a run ID
 - Adds `arc_item_resources()`, which lists the files in an item's resources folder and needs no token for public items, and `arc_add_item_resource()`, which uploads a file or text to it
 - `update_item()` gains arguments for thumbnails, metadata, extent, spatial reference, credits, license, culture, classification, properties, item data, URLs, categories, application images, copy permission, clearing empty fields, and asynchronous uploads. Adds the `MetadataFormat` enum
 - `export_item()` validates `export_format` with the new `ExportFormat` enum <https://github.com/R-ArcGIS/arcgisutils/issues/105>
